@@ -1,0 +1,962 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8" />
+  <title>Creator Segmentation & Pricing</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="Calcola il tuo segmento social e il piano ideale in base ai follower, da profilo casual fino ad agenzia top." />
+  <style>
+    :root {
+      --bg: #f3f4f6;          /* body background */
+      --blue: #6366f1;        /* brand primary */
+      --blue-dark: #4f46e5;   /* brand darker */
+      --accent: #ec4899;      /* social accent (rosa) */
+      --text-main: #0f172a;
+      --text-muted: #6b7280;
+      --card-bg: #ffffff;
+      --border: #e5e7eb;
+      --radius-xl: 24px;
+      --radius-lg: 16px;
+      --shadow: 0 18px 40px rgba(15, 23, 42, 0.16);
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: radial-gradient(circle at top left, #eef2ff 0, var(--bg) 40%, #fdf2ff 100%);
+      color: var(--text-main);
+    }
+    .top-bar {
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      backdrop-filter: blur(12px);
+      background: linear-gradient(to bottom, rgba(245,247,251,0.9), rgba(245,247,251,0.75));
+      border-bottom: 1px solid rgba(148,163,184,0.3);
+    }
+    .top-inner {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 12px 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .logo-svg {
+      flex-shrink: 0;
+      filter: drop-shadow(0 4px 14px rgba(15,23,42,0.22));
+    }
+    .brand-text {
+      display: flex;
+      flex-direction: column;
+    }
+    .brand-name {
+      font-size: 1.05rem;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      color: var(--blue-dark);
+    }
+    .brand-sub {
+      font-size: 0.78rem;
+      color: var(--text-muted);
+    }
+    .top-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 4px 10px;
+      border-radius: 999px;
+      background: rgba(99,102,241,0.08);
+      border: 1px solid rgba(99,102,241,0.18);
+      font-size: 0.75rem;
+      color: var(--blue-dark);
+      text-transform: uppercase;
+      letter-spacing: 0.07em;
+    }
+    .top-pill-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 999px;
+      background: #22c55e;
+      box-shadow: 0 0 0 4px rgba(34,197,94,0.35);
+    }
+    .main {
+      max-width: 1100px;
+      margin: 24px auto 32px;
+      padding: 0 20px;
+    }
+    .hero {
+      display: grid;
+      grid-template-columns: minmax(0,1.25fr) minmax(0,1fr);
+      gap: 24px;
+      align-items: stretch;
+    }
+    @media (max-width: 900px) {
+      .hero { grid-template-columns: 1fr; }
+    }
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 4px 10px;
+      border-radius: 999px;
+      background: rgba(15,23,42,0.03);
+      border: 1px solid rgba(148,163,184,0.5);
+      font-size: 0.8rem;
+      color: var(--blue-dark);
+      margin-bottom: 10px;
+    }
+    .pill-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 999px;
+      background: var(--accent);
+    }
+    .hero-title {
+      font-size: clamp(2.1rem,4vw,2.5rem);
+      line-height: 1.1;
+      font-weight: 800;
+      letter-spacing: -0.05em;
+      margin-bottom: 10px;
+      color: var(--text-main);
+    }
+    .hero-highlight {
+      background: linear-gradient(120deg, var(--blue), var(--accent));
+      -webkit-background-clip: text;
+      color: transparent;
+    }
+    .hero-subtitle {
+      font-size: 0.95rem;
+      color: var(--text-muted);
+      max-width: 30rem;
+      margin-bottom: 18px;
+    }
+    .hero-bullets {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(160px,1fr));
+      gap: 10px;
+      margin-bottom: 14px;
+    }
+    .hero-bullet {
+      display: flex;
+      gap: 8px;
+      font-size: 0.84rem;
+      color: var(--text-muted);
+    }
+    .hero-bullet-icon {
+      margin-top: 3px;
+      width: 18px;
+      height: 18px;
+      border-radius: 999px;
+      background: rgba(99,102,241,0.08);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.7rem;
+      color: var(--blue);
+    }
+    .hero-footnote {
+      font-size: 0.78rem;
+      color: var(--text-muted);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-top: 8px;
+    }
+    .hero-footnote-badge {
+      padding: 2px 7px;
+      border-radius: 999px;
+      background: #0f172a;
+      color: #e5e7eb;
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      letter-spacing: 0.07em;
+    }
+    .card {
+      position: relative;
+      background: radial-gradient(circle at top left,#eef2ff 0,#ffffff 40%,#ffffff 100%);
+      border-radius: var(--radius-xl);
+      padding: 18px 18px 16px;
+      border: 1px solid rgba(148,163,184,0.3);
+      box-shadow: var(--shadow);
+      overflow: hidden;
+    }
+    .card::before {
+      content: "";
+      position: absolute;
+      inset: -60%;
+      background:
+        radial-gradient(circle at top left,rgba(99,102,241,0.18),transparent 60%),
+        radial-gradient(circle at bottom right,rgba(236,72,153,0.22),transparent 65%);
+      opacity: 0.8;
+      pointer-events: none;
+    }
+    .card-inner { position: relative; z-index: 1; }
+    .card-title {
+      font-size: 1rem;
+      font-weight: 600;
+      margin-bottom: 4px;
+      color: var(--blue-dark);
+    }
+    .card-sub {
+      font-size: 0.84rem;
+      color: var(--text-muted);
+      margin-bottom: 12px;
+    }
+    .field-group {
+      border-radius: var(--radius-lg);
+      background: rgba(255,255,255,0.9);
+      border: 1px solid rgba(148,163,184,0.45);
+      padding: 12px 12px 10px;
+      margin-bottom: 10px;
+    }
+    .field-group h3 {
+      margin: 0 0 6px;
+      font-size: 0.9rem;
+      color: var(--blue-dark);
+    }
+    .field {
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+      margin-bottom: 7px;
+      font-size: 0.8rem;
+    }
+    .field-label {
+      font-weight: 500;
+      color: var(--text-main);
+    }
+    .field-hint {
+      font-size: 0.74rem;
+      color: var(--text-muted);
+    }
+    .field input,
+    .field select {
+      border-radius: 999px;
+      border: 1px solid var(--border);
+      padding: 7px 12px;
+      font-size: 0.8rem;
+      outline: none;
+      background: #ffffff;
+      transition: border-color 0.15s, box-shadow 0.15s;
+    }
+    .field input:focus,
+    .field select:focus {
+      border-color: var(--blue);
+      box-shadow: 0 0 0 1px rgba(99,102,241,0.65);
+    }
+    .grid-2 {
+      display: grid;
+      grid-template-columns: repeat(2,minmax(0,1fr));
+      gap: 8px;
+    }
+    @media (max-width: 600px) {
+      .grid-2 { grid-template-columns: 1fr; }
+    }
+    .tabs {
+      display: flex;
+      gap: 6px;
+      margin-bottom: 8px;
+      background: rgba(148,163,184,0.12);
+      border-radius: 999px;
+      padding: 3px;
+    }
+    .tab {
+      flex: 1;
+      font-size: 0.8rem;
+      padding: 5px 0;
+      border-radius: 999px;
+      text-align: center;
+      cursor: pointer;
+      border: none;
+      background: transparent;
+      color: var(--text-muted);
+      font-weight: 500;
+    }
+    .tab.active {
+      background: #ffffff;
+      color: var(--blue-dark);
+      box-shadow: 0 1px 4px rgba(15,23,42,0.12);
+    }
+    .primary-button {
+      border: none;
+      cursor: pointer;
+      border-radius: 999px;
+      padding: 8px 14px;
+      font-size: 0.82rem;
+      font-weight: 600;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: linear-gradient(135deg,var(--blue),var(--blue-dark));
+      color: #ffffff;
+      box-shadow: 0 12px 26px rgba(99,102,241,0.55);
+      transition: transform 0.1s, box-shadow 0.1s, filter 0.1s;
+    }
+    .primary-button:hover {
+      transform: translateY(-1px);
+      filter: brightness(1.05);
+      box-shadow: 0 16px 32px rgba(99,102,241,0.65);
+    }
+    .primary-button:active {
+      transform: translateY(0);
+      box-shadow: 0 6px 16px rgba(99,102,241,0.5);
+    }
+    .primary-button .icon { font-size: 0.9rem; }
+    .status-text {
+      font-size: 0.76rem;
+      color: var(--text-muted);
+      min-height: 1em;
+      margin-top: 3px;
+    }
+    .status-text.error { color: #b91c1c; }
+    .status-text.success { color: #15803d; }
+
+    .section-title {
+      margin: 22px 0 8px;
+      font-size: 1rem;
+      font-weight: 600;
+      color: var(--blue-dark);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .section-title .badge {
+      font-size: 0.7rem;
+      padding: 2px 7px;
+      border-radius: 999px;
+      border: 1px solid rgba(148,163,184,0.7);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--text-muted);
+    }
+    .hidden { display: none; }
+
+    .dash-grid {
+      display: grid;
+      grid-template-columns: minmax(0,1.1fr) minmax(0,0.9fr);
+      gap: 12px;
+    }
+    @media (max-width: 900px) {
+      .dash-grid { grid-template-columns: 1fr; }
+    }
+    .dash-card {
+      background: #ffffff;
+      border-radius: var(--radius-lg);
+      border: 1px solid rgba(148,163,184,0.5);
+      padding: 10px 12px;
+      box-shadow: 0 10px 22px rgba(15,23,42,0.08);
+      font-size: 0.82rem;
+    }
+    .dash-card h3 {
+      margin: 0 0 6px;
+      font-size: 0.9rem;
+      color: var(--blue-dark);
+    }
+    .dash-highlight {
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: var(--blue-dark);
+      margin-bottom: 4px;
+    }
+    .pill-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      border-radius: 999px;
+      padding: 3px 9px;
+      font-size: 0.74rem;
+      background: rgba(15,23,42,0.03);
+      border: 1px solid rgba(148,163,184,0.6);
+      color: var(--text-muted);
+    }
+    .price-big {
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: var(--blue-dark);
+    }
+    .price-period {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+    }
+    .price-note {
+      font-size: 0.74rem;
+      color: var(--text-muted);
+      margin-top: 4px;
+    }
+    .media-kit {
+      font-size: 0.8rem;
+    }
+    .media-kit-row {
+      display: flex;
+      justify-content: space-between;
+      padding: 4px 0;
+      border-bottom: 1px solid #e5e7eb;
+    }
+    .media-kit-row:last-child {
+      border-bottom: none;
+    }
+    .media-kit-label {
+      color: var(--text-muted);
+    }
+    .media-kit-value {
+      font-weight: 500;
+      color: var(--text-main);
+    }
+    footer {
+      text-align: center;
+      font-size: 0.74rem;
+      color: var(--text-muted);
+      padding: 10px 20px 18px;
+    }
+  </style>
+</head>
+<body>
+<header class="top-bar">
+  <div class="top-inner">
+    <div class="brand">
+      <svg width="40" height="40" viewBox="0 0 40 40" class="logo-svg" aria-hidden="true">
+        <defs>
+          <linearGradient id="crGradient" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0%" stop-color="#6366f1" />
+            <stop offset="100%" stop-color="#4f46e5" />
+          </linearGradient>
+        </defs>
+        <rect x="0" y="0" width="40" height="40" rx="12" fill="url(#crGradient)" />
+        <text
+          x="50%"
+          y="50%"
+          text-anchor="middle"
+          dominant-baseline="middle"
+          fill="#ffffff"
+          font-size="16"
+          font-family="system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif"
+          font-weight="700">
+          CR
+        </text>
+      </svg>
+      <div class="brand-text">
+        <div class="brand-name">Creator Segmentation</div>
+        <div class="brand-sub">Da profilo casual a top agency, con un solo strumento.</div>
+      </div>
+    </div>
+    <div class="top-pill">
+      <span class="top-pill-dot"></span>
+      <span>Pricing intelligence per social profile</span>
+    </div>
+  </div>
+</header>
+
+<main class="main">
+  <section class="hero">
+    <div>
+      <div class="pill">
+        <span class="pill-dot"></span>
+        <span>Casual &nbsp;·&nbsp; Emergente &nbsp;·&nbsp; Pro &nbsp;·&nbsp; Agenzia</span>
+      </div>
+      <h1 class="hero-title">
+        Scopri quanto “vali”
+        <span class="hero-highlight">come profilo social</span>.
+      </h1>
+      <p class="hero-subtitle">
+        Inserisci i tuoi follower e lascia che il sistema ti classifichi in
+        <strong>Casual, Emergente, Creator Pro o Top Agenzia</strong> con il piano ideale:
+        gratuito, 4,90€, 9,90€ o 99–399€ al mese.
+      </p>
+      <div class="hero-bullets">
+        <div class="hero-bullet">
+          <div class="hero-bullet-icon">①</div>
+          <div>Registrati con email, piattaforma principale e follower complessivi.</div>
+        </div>
+        <div class="hero-bullet">
+          <div class="hero-bullet-icon">②</div>
+          <div>Il sistema calcola il tuo segmento e il piano mensile / annuale ideale.</div>
+        </div>
+        <div class="hero-bullet">
+          <div class="hero-bullet-icon">③</div>
+          <div>Genera un media kit con prezzi suggeriti per post, stories e pacchetti.</div>
+        </div>
+      </div>
+      <div class="hero-footnote">
+        <span class="hero-footnote-badge">Per tutti</span>
+        <span>Profili “sport”, micro influencer, creator pro e agenzie con più account.</span>
+      </div>
+    </div>
+
+    <div>
+      <div class="card">
+        <div class="card-inner">
+          <div class="card-title">Accesso</div>
+          <div class="card-sub">
+            Registrazione rapida oppure login se hai già creato il tuo profilo.
+          </div>
+
+          <div class="tabs">
+            <button class="tab active" id="tab-signup">Registrazione</button>
+            <button class="tab" id="tab-login">Login</button>
+          </div>
+
+          <!-- SIGNUP -->
+          <div id="signupPanel">
+            <div class="field-group">
+              <h3>Dati account</h3>
+              <div class="field">
+                <span class="field-label">Email</span>
+                <input type="email" id="suEmail" placeholder="tu@email.com" />
+              </div>
+              <div class="field">
+                <span class="field-label">Password</span>
+                <input type="password" id="suPassword" placeholder="Minimo 6 caratteri" />
+              </div>
+            </div>
+
+            <div class="field-group">
+              <h3>Profilo social principale</h3>
+              <div class="grid-2">
+                <div class="field">
+                  <span class="field-label">Piattaforma</span>
+                  <select id="suPlatform">
+                    <option value="instagram">Instagram</option>
+                    <option value="tiktok">TikTok</option>
+                    <option value="youtube">YouTube</option>
+                    <option value="twitch">Twitch</option>
+                    <option value="altro">Altro</option>
+                  </select>
+                </div>
+                <div class="field">
+                  <span class="field-label">Username</span>
+                  <input type="text" id="suUsername" placeholder="@il_tuo_handle" />
+                </div>
+              </div>
+              <div class="grid-2">
+                <div class="field">
+                  <span class="field-label">Follower complessivi</span>
+                  <span class="field-hint">Somma approssimativa tra tutte le piattaforme.</span>
+                  <input type="number" id="suFollowers" placeholder="Es. 12500" min="0" />
+                </div>
+                <div class="field">
+                  <span class="field-label">Profili che gestisci</span>
+                  <span class="field-hint">Per agenzie / team (altrimenti lascia 1).</span>
+                  <input type="number" id="suProfiles" placeholder="1" min="1" value="1" />
+                </div>
+              </div>
+            </div>
+
+            <button class="primary-button" id="signupButton">
+              <span class="icon">🚀</span>
+              <span>Calcola segmento e crea account</span>
+            </button>
+            <p id="signupStatus" class="status-text"></p>
+          </div>
+
+          <!-- LOGIN -->
+          <div id="loginPanel" class="hidden">
+            <div class="field-group">
+              <h3>Login</h3>
+              <div class="field">
+                <span class="field-label">Email</span>
+                <input type="email" id="liEmail" placeholder="tu@email.com" />
+              </div>
+              <div class="field">
+                <span class="field-label">Password</span>
+                <input type="password" id="liPassword" placeholder="La tua password" />
+              </div>
+            </div>
+            <button class="primary-button" id="loginButton">
+              <span class="icon">🔑</span>
+              <span>Entra nel tuo profilo</span>
+            </button>
+            <p id="loginStatus" class="status-text"></p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- DASHBOARD -->
+  <section id="dashboardSection" class="hidden">
+    <div class="section-title">
+      <span>La tua posizione nel mondo social</span>
+      <span class="badge" id="dashBadge">Profilo</span>
+    </div>
+
+    <div class="dash-grid">
+      <div class="dash-card">
+        <h3>Segmento & piano consigliato</h3>
+        <div class="dash-highlight" id="segmentLabel">-</div>
+        <div class="pill-tag" id="segmentTag">
+          <span id="segmentName">-</span>
+        </div>
+        <p id="segmentDesc" style="margin:6px 0 10px; font-size:0.8rem; color:var(--text-muted);">
+          -
+        </p>
+        <div style="display:flex; gap:16px; align-items: baseline; flex-wrap: wrap;">
+          <div>
+            <div class="price-big" id="priceMonthly">-</div>
+            <div class="price-period">al mese</div>
+          </div>
+          <div>
+            <div class="price-big" id="priceYearly">-</div>
+            <div class="price-period">all'anno</div>
+          </div>
+        </div>
+        <div class="price-note" id="priceNote"></div>
+      </div>
+
+      <div class="dash-card">
+        <h3>Dati di base profilo</h3>
+        <div class="media-kit">
+          <div class="media-kit-row">
+            <div class="media-kit-label">Email</div>
+            <div class="media-kit-value" id="infoEmail">-</div>
+          </div>
+          <div class="media-kit-row">
+            <div class="media-kit-label">Piattaforma</div>
+            <div class="media-kit-value" id="infoPlatform">-</div>
+          </div>
+          <div class="media-kit-row">
+            <div class="media-kit-label">Username</div>
+            <div class="media-kit-value" id="infoUsername">-</div>
+          </div>
+          <div class="media-kit-row">
+            <div class="media-kit-label">Follower complessivi</div>
+            <div class="media-kit-value" id="infoFollowers">-</div>
+          </div>
+          <div class="media-kit-row">
+            <div class="media-kit-label">Profili gestiti</div>
+            <div class="media-kit-value" id="infoProfiles">-</div>
+          </div>
+        </div>
+        <div style="margin-top:10px;">
+          <button class="primary-button" id="mediaKitButton">
+            <span class="icon">📄</span>
+            <span>Genera media kit con prezzi suggeriti</span>
+          </button>
+          <p id="mediaKitStatus" class="status-text"></p>
+        </div>
+      </div>
+    </div>
+
+    <div class="section-title" style="margin-top:18px;">
+      <span>Media kit & prezzi suggeriti</span>
+      <span class="badge">Anteprima</span>
+    </div>
+
+    <div class="dash-card" id="mediaKitCard">
+      <h3 id="mkTitle">Nessun media kit generato.</h3>
+      <p id="mkSubtitle" style="font-size:0.8rem; color:var(--text-muted); margin-top:2px;">
+        Dopo aver generato il media kit vedrai qui i numeri chiave e i range di prezzo suggeriti.
+      </p>
+
+      <div id="mkContent" class="media-kit hidden">
+        <div class="media-kit-row">
+          <div class="media-kit-label">Profilo</div>
+          <div class="media-kit-value" id="mkProfile">-</div>
+        </div>
+        <div class="media-kit-row">
+          <div class="media-kit-label">Segmento</div>
+          <div class="media-kit-value" id="mkSegment">-</div>
+        </div>
+        <div class="media-kit-row">
+          <div class="media-kit-label">Follower</div>
+          <div class="media-kit-value" id="mkFollowers">-</div>
+        </div>
+        <div class="media-kit-row">
+          <div class="media-kit-label">Views post stimate</div>
+          <div class="media-kit-value" id="mkPostViews">-</div>
+        </div>
+        <div class="media-kit-row">
+          <div class="media-kit-label">Views stories stimate</div>
+          <div class="media-kit-value" id="mkStoryViews">-</div>
+        </div>
+        <div style="margin-top:10px; font-weight:600; font-size:0.9rem;">
+          Range prezzi suggeriti (EUR)
+        </div>
+        <div class="media-kit-row">
+          <div class="media-kit-label">Post singolo</div>
+          <div class="media-kit-value" id="mkPostPrice">-</div>
+        </div>
+        <div class="media-kit-row">
+          <div class="media-kit-label">Story singola</div>
+          <div class="media-kit-value" id="mkStoryPrice">-</div>
+        </div>
+        <div class="media-kit-row">
+          <div class="media-kit-label">Pacchetto post + 3 stories</div>
+          <div class="media-kit-value" id="mkBundlePrice">-</div>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  © Creator Segmentation. Segmenti e prezzi indicativi basati su follower e stime di reach.
+</footer>
+
+<script>
+  let currentUserId = null;
+
+  const tabSignup = document.getElementById("tab-signup");
+  const tabLogin = document.getElementById("tab-login");
+  const signupPanel = document.getElementById("signupPanel");
+  const loginPanel = document.getElementById("loginPanel");
+
+  tabSignup.addEventListener("click", () => {
+    tabSignup.classList.add("active");
+    tabLogin.classList.remove("active");
+    signupPanel.classList.remove("hidden");
+    loginPanel.classList.add("hidden");
+  });
+
+  tabLogin.addEventListener("click", () => {
+    tabLogin.classList.add("active");
+    tabSignup.classList.remove("active");
+    loginPanel.classList.remove("hidden");
+    signupPanel.classList.add("hidden");
+  });
+
+  const signupButton = document.getElementById("signupButton");
+  const signupStatus = document.getElementById("signupStatus");
+
+  const suEmail = document.getElementById("suEmail");
+  const suPassword = document.getElementById("suPassword");
+  const suPlatform = document.getElementById("suPlatform");
+  const suUsername = document.getElementById("suUsername");
+  const suFollowers = document.getElementById("suFollowers");
+  const suProfiles = document.getElementById("suProfiles");
+
+  const loginButton = document.getElementById("loginButton");
+  const loginStatus = document.getElementById("loginStatus");
+  const liEmail = document.getElementById("liEmail");
+  const liPassword = document.getElementById("liPassword");
+
+  const dashboardSection = document.getElementById("dashboardSection");
+  const dashBadge = document.getElementById("dashBadge");
+
+  const segmentLabel = document.getElementById("segmentLabel");
+  const segmentTag = document.getElementById("segmentTag");
+  const segmentName = document.getElementById("segmentName");
+  const segmentDesc = document.getElementById("segmentDesc");
+  const priceMonthly = document.getElementById("priceMonthly");
+  const priceYearly = document.getElementById("priceYearly");
+  const priceNote = document.getElementById("priceNote");
+
+  const infoEmail = document.getElementById("infoEmail");
+  const infoPlatform = document.getElementById("infoPlatform");
+  const infoUsername = document.getElementById("infoUsername");
+  const infoFollowers = document.getElementById("infoFollowers");
+  const infoProfiles = document.getElementById("infoProfiles");
+
+  const mediaKitButton = document.getElementById("mediaKitButton");
+  const mediaKitStatus = document.getElementById("mediaKitStatus");
+
+  const mkTitle = document.getElementById("mkTitle");
+  const mkSubtitle = document.getElementById("mkSubtitle");
+  const mkContent = document.getElementById("mkContent");
+  const mkProfile = document.getElementById("mkProfile");
+  const mkSegment = document.getElementById("mkSegment");
+  const mkFollowers = document.getElementById("mkFollowers");
+  const mkPostViews = document.getElementById("mkPostViews");
+  const mkStoryViews = document.getElementById("mkStoryViews");
+  const mkPostPrice = document.getElementById("mkPostPrice");
+  const mkStoryPrice = document.getElementById("mkStoryPrice");
+  const mkBundlePrice = document.getElementById("mkBundlePrice");
+
+  function setStatus(el, msg, type = "") {
+    el.textContent = msg || "";
+    el.classList.remove("error", "success");
+    if (type) el.classList.add(type);
+  }
+
+  function formatPrice(value) {
+    if (value === null || value === undefined || isNaN(value)) return "-";
+    const v = Number(value);
+    if (v === 0) return "0 €";
+    return v.toFixed(2).replace(".", ",") + " €";
+  }
+
+  function formatRange(range) {
+    if (!range || typeof range.min === "undefined" || typeof range.max === "undefined") {
+      return "-";
+    }
+    return formatPrice(range.min) + " – " + formatPrice(range.max);
+  }
+
+  function segmentLabelText(segment) {
+    if (segment === "casual") return "Casual · profilo per sport";
+    if (segment === "emerging") return "Emergente · primi passi nel mondo brand";
+    if (segment === "pro") return "Creator Pro · collaborazioni strutturate";
+    if (segment === "agency") return "Top / Agenzia · gestione profili importanti";
+    return "Profilo";
+  }
+
+  function fillDashboardFromUser(data) {
+    const plan = data.plan;
+    currentUserId = data.user_id;
+
+    const segment = data.segment;
+    dashBadge.textContent = segmentLabelText(segment);
+
+    segmentLabel.textContent = plan.label;
+    segmentName.textContent = segment.toUpperCase();
+    segmentDesc.textContent = plan.description;
+
+    if (plan.monthly_price === 0) {
+      priceMonthly.textContent = "0 €";
+      priceYearly.textContent = "0 €";
+    } else {
+      priceMonthly.textContent = formatPrice(plan.monthly_price);
+      if (plan.yearly_price === null || typeof plan.yearly_price === "undefined") {
+        priceYearly.textContent = "—";
+      } else {
+        priceYearly.textContent = formatPrice(plan.yearly_price);
+      }
+    }
+    priceNote.textContent = plan.billing_note || "";
+
+    infoEmail.textContent = data.email;
+    infoPlatform.textContent = data.main_platform;
+    infoUsername.textContent = data.username;
+    infoFollowers.textContent = data.followers.toLocaleString("it-IT");
+    infoProfiles.textContent = data.profiles_count;
+
+    dashboardSection.classList.remove("hidden");
+    dashboardSection.scrollIntoView({ behavior: "smooth", block: "start" });
+  }
+
+  signupButton.addEventListener("click", async () => {
+    const email = suEmail.value.trim();
+    const password = suPassword.value.trim();
+    const platform = suPlatform.value;
+    const username = suUsername.value.trim();
+    const followers = Number(suFollowers.value);
+    const profiles = Number(suProfiles.value || "1");
+
+    if (!email || !password || !username || isNaN(followers)) {
+      setStatus(signupStatus, "Compila tutti i campi obbligatori.", "error");
+      return;
+    }
+    if (password.length < 6) {
+      setStatus(signupStatus, "Password troppo corta (minimo 6 caratteri).", "error");
+      return;
+    }
+    if (followers < 0) {
+      setStatus(signupStatus, "Follower non validi.", "error");
+      return;
+    }
+
+    setStatus(signupStatus, "Creo l'account e calcolo il segmento...", "");
+    setStatus(loginStatus, "", "");
+    setStatus(mediaKitStatus, "", "");
+
+    try {
+      const res = await fetch("/api/signup", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          email,
+          password,
+          main_platform: platform,
+          username,
+          followers,
+          profiles_count: profiles || 1
+        })
+      });
+      if (!res.ok) {
+        const data = await res.json().catch(() => ({}));
+        setStatus(signupStatus, data.detail || "Errore durante la registrazione.", "error");
+        return;
+      }
+      const data = await res.json();
+      const userRes = await fetch(`/api/user?user_id=${encodeURIComponent(data.user_id)}`);
+      if (!userRes.ok) {
+        setStatus(signupStatus, "Errore nel recupero dati utente.", "error");
+        return;
+      }
+      const userData = await userRes.json();
+      setStatus(signupStatus, "Account creato. Segmento calcolato.", "success");
+      fillDashboardFromUser(userData);
+    } catch (err) {
+      setStatus(signupStatus, "Errore di rete.", "error");
+    }
+  });
+
+  loginButton.addEventListener("click", async () => {
+    const email = liEmail.value.trim();
+    const password = liPassword.value.trim();
+    if (!email || !password) {
+      setStatus(loginStatus, "Inserisci email e password.", "error");
+      return;
+    }
+    setStatus(loginStatus, "Verifico i dati di accesso...", "");
+    setStatus(signupStatus, "", "");
+    setStatus(mediaKitStatus, "", "");
+
+    try {
+      const res = await fetch("/api/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, password })
+      });
+      if (!res.ok) {
+        const data = await res.json().catch(() => ({}));
+        setStatus(loginStatus, data.detail || "Errore durante il login.", "error");
+        return;
+      }
+      const data = await res.json();
+      const userRes = await fetch(`/api/user?user_id=${encodeURIComponent(data.user_id)}`);
+      if (!userRes.ok) {
+        setStatus(loginStatus, "Errore nel recupero dati utente.", "error");
+        return;
+      }
+      const userData = await userRes.json();
+      setStatus(loginStatus, "Accesso effettuato.", "success");
+      fillDashboardFromUser(userData);
+    } catch (err) {
+      setStatus(loginStatus, "Errore di rete.", "error");
+    }
+  });
+
+  mediaKitButton.addEventListener("click", async () => {
+    if (!currentUserId) {
+      setStatus(mediaKitStatus, "Crea o carica prima un account.", "error");
+      return;
+    }
+    setStatus(mediaKitStatus, "Genero il media kit con i prezzi suggeriti...", "");
+    try {
+      const res = await fetch(`/api/media-kit?user_id=${encodeURIComponent(currentUserId)}`);
+      if (!res.ok) {
+        const data = await res.json().catch(() => ({}));
+        setStatus(mediaKitStatus, data.detail || "Errore nel media kit.", "error");
+        return;
+      }
+      const kit = await res.json();
+      setStatus(mediaKitStatus, "Media kit aggiornato.", "success");
+
+      mkTitle.textContent = `Media kit per ${kit.username}`;
+      mkSubtitle.textContent = "Numeri chiave del profilo e range consigliati per i tuoi contenuti.";
+      mkProfile.textContent = `${kit.username} su ${kit.main_platform}`;
+      mkSegment.textContent = kit.segment_label;
+      mkFollowers.textContent = kit.followers.toLocaleString("it-IT");
+      mkPostViews.textContent = kit.estimated.post_avg_views.toLocaleString("it-IT");
+      mkStoryViews.textContent = kit.estimated.story_avg_views.toLocaleString("it-IT");
+
+      mkPostPrice.textContent = formatRange(kit.suggested_rates_eur.single_post);
+      mkStoryPrice.textContent = formatRange(kit.suggested_rates_eur.single_story);
+      mkBundlePrice.textContent = formatRange(kit.suggested_rates_eur.bundle_post_3stories);
+
+      mkContent.classList.remove("hidden");
+    } catch (err) {
+      setStatus(mediaKitStatus, "Errore di rete.", "error");
+    }
+  });
+</script>
+</body>
+</html>
