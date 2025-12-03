@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8" />
+  <title>For Creators – Per brand e agenzie</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="For Creators per brand e agenzie: standardizzi compensi, confronti creator e costruisci pacchetti chiari." />
+  <style>
+    :root {
+      --bg: #f3f4f6;
+      --blue: #6366f1;
+      --blue-dark: #4f46e5;
+      --accent: #ec4899;
+      --text-main: #0f172a;
+      --text-muted: #6b7280;
+      --card-bg: #ffffff;
+      --border: #e5e7eb;
+      --radius-xl: 24px;
+      --radius-lg: 16px;
+      --shadow: 0 18px 40px rgba(15, 23, 42, 0.16);
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: radial-gradient(circle at top left, #eef2ff 0, var(--bg) 40%, #fdf2ff 100%);
+      color: var(--text-main);
+    }
+    a { color: inherit; text-decoration: none; }
+    .top-bar {
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      backdrop-filter: blur(12px);
+      background: linear-gradient(to bottom, rgba(245,247,251,0.9), rgba(245,247,251,0.75));
+      border-bottom: 1px solid rgba(148,163,184,0.3);
+    }
+    .top-inner {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 12px 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .logo-svg {
+      flex-shrink: 0;
+      filter: drop-shadow(0 4px 14px rgba(15,23,42,0.22));
+    }
+    .brand-text {
+      display: flex;
+      flex-direction: column;
+    }
+    .brand-name {
+      font-size: 1.05rem;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      color: var(--blue-dark);
+    }
+    .brand-sub {
+      font-size: 0.78rem;
+      color: var(--text-muted);
+    }
+    .top-nav {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      font-size: 0.82rem;
+      color: var(--text-muted);
+    }
+    .top-nav a {
+      padding: 4px 8px;
+      border-radius: 999px;
+    }
+    .top-nav a.active {
+      background: rgba(99,102,241,0.12);
+      color: var(--blue-dark);
+      font-weight: 600;
+    }
+    .top-nav a.cta {
+      background: linear-gradient(135deg,var(--blue),var(--blue-dark));
+      color: #fff;
+      font-weight: 600;
+      padding: 6px 12px;
+      box-shadow: 0 10px 20px rgba(99,102,241,0.4);
+    }
+    .main {
+      max-width: 1100px;
+      margin: 24px auto 32px;
+      padding: 0 20px;
+    }
+    .hero-title {
+      font-size: clamp(2.1rem,4vw,2.5rem);
+      line-height: 1.1;
+      font-weight: 800;
+      letter-spacing: -0.05em;
+      margin-bottom: 10px;
+      color: var(--text-main);
+    }
+    .hero-highlight {
+      background: linear-gradient(120deg, var(--blue), var(--accent));
+      -webkit-background-clip: text;
+      color: transparent;
+    }
+    .hero-subtitle {
+      font-size: 0.95rem;
+      color: var(--text-muted);
+      max-width: 40rem;
+      margin-bottom: 20px;
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: minmax(0,1.3fr) minmax(0,0.9fr);
+      gap: 20px;
+    }
+    @media (max-width: 900px) {
+      .grid { grid-template-columns: 1fr; }
+    }
+    .card {
+      background: #ffffff;
+      border-radius: var(--radius-lg);
+      border: 1px solid rgba(148,163,184,0.5);
+      padding: 14px 14px 12px;
+      box-shadow: 0 16px 32px rgba(15,23,42,0.08);
+      font-size: 0.85rem;
+    }
+    .card-title {
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: var(--blue-dark);
+      margin-bottom: 4px;
+    }
+    .card-subtitle {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      margin-bottom: 8px;
+    }
+    .list {
+      list-style: none;
+      padding: 0;
+      margin: 6px 0 4px;
+      font-size: 0.8rem;
+      color: var(--text-muted);
+    }
+    .list li {
+      display: flex;
+      gap: 6px;
+      margin-bottom: 4px;
+    }
+    .bullet {
+      width: 14px;
+      height: 14px;
+      border-radius: 999px;
+      background: rgba(99,102,241,0.08);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.65rem;
+      color: var(--blue-dark);
+      flex-shrink: 0;
+    }
+    .tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      border-radius: 999px;
+      padding: 3px 9px;
+      font-size: 0.74rem;
+      background: rgba(15,23,42,0.03);
+      border: 1px solid rgba(148,163,184,0.6);
+      color: var(--text-muted);
+      margin-bottom: 6px;
+    }
+    .primary-button {
+      border: none;
+      cursor: pointer;
+      border-radius: 999px;
+      padding: 8px 16px;
+      font-size: 0.86rem;
+      font-weight: 600;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: linear-gradient(135deg,var(--blue),var(--blue-dark));
+      color: #ffffff;
+      box-shadow: 0 12px 26px rgba(99,102,241,0.55);
+      transition: transform 0.1s, box-shadow 0.1s, filter 0.1s;
+      margin-top: 16px;
+    }
+    .primary-button:hover {
+      transform: translateY(-1px);
+      filter: brightness(1.05);
+      box-shadow: 0 16px 32px rgba(99,102,241,0.65);
+    }
+    .primary-button .icon { font-size: 0.9rem; }
+    footer {
+      text-align: center;
+      font-size: 0.74rem;
+      color: var(--text-muted);
+      padding: 10px 20px 18px;
+    }
+  </style>
+</head>
+<body>
+<header class="top-bar">
+  <div class="top-inner">
+    <div class="brand">
+      <a href="/">
+        <svg width="40" height="40" viewBox="0 0 40 40" class="logo-svg" aria-hidden="true">
+          <defs>
+            <linearGradient id="fcGradient" x1="0" y1="0" x2="1" y2="1">
+              <stop offset="0%" stop-color="#6366f1" />
+              <stop offset="100%" stop-color="#4f46e5" />
+            </linearGradient>
+          </defs>
+          <rect x="0" y="0" width="40" height="40" rx="12" fill="url(#fcGradient)" />
+          <text
+            x="50%"
+            y="50%"
+            text-anchor="middle"
+            dominant-baseline="middle"
+            fill="#ffffff"
+            font-size="16"
+            font-family="system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif"
+            font-weight="700">
+            fc
+          </text>
+        </svg>
+      </a>
+      <div class="brand-text">
+        <div class="brand-name">For Creators</div>
+        <div class="brand-sub">Da profilo casual a top agency, con un solo strumento.</div>
+      </div>
+    </div>
+    <nav class="top-nav">
+      <a href="/">Dashboard</a>
+      <a href="/pricing">Pricing</a>
+      <a href="/come-funziona">Come funziona</a>
+      <a href="/per-brand" class="active">Per brand</a>
+      <a href="/faq">FAQ</a>
+      <a href="/contatti" class="cta">Contatti</a>
+    </nav>
+  </div>
+</header>
+
+<main class="main">
+  <section class="grid">
+    <div>
+      <h1 class="hero-title">
+        Per brand e
+        <span class="hero-highlight">agenzie</span>.
+      </h1>
+      <p class="hero-subtitle">
+        For Creators non nasce solo per chi crea contenuti, ma anche per chi
+        li acquista. Se gestisci budget, campagne o un portafoglio di creator,
+        hai bisogno di <strong>numeri coerenti</strong> e di un modo rapido per
+        capire se un compenso ha senso oppure no.
+      </p>
+
+      <div class="card">
+        <div class="card-title">Perché usare For Creators lato brand</div>
+        <p class="card-subtitle">
+          Non è l’ennesima piattaforma per “scoprire influencer”, ma
+          uno strumento per <strong>normalizzare le aspettative</strong> su
+          tariffe e segmenti.
+        </p>
+        <ul class="list">
+          <li>
+            <span class="bullet">1</span>
+            <span>Ogni creator viene classificato in Casual, Emergente, Pro o Agenzia in base ai numeri.</span>
+          </li>
+          <li>
+            <span class="bullet">2</span>
+            <span>Vedi subito se quello che chiede è in linea con il suo segmento.</span>
+          </li>
+          <li>
+            <span class="bullet">3</span>
+            <span>Puoi costruire pacchetti comparabili tra creator diversi.</span>
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <div>
+      <div class="card">
+        <div class="tag">Per agenzie, network, talent manager</div>
+        <div class="card-title">Dashboard multi-profilo</div>
+        <p class="card-subtitle">
+          Ogni profilo ha il suo media kit, ma tu hai anche una vista generale
+          sull’intero portafoglio creator.
+        </p>
+        <ul class="list">
+          <li><span class="bullet">✓</span><span>Fino a 2 profili con il piano da 99€/mese.</span></li>
+          <li><span class="bullet">✓</span><span>3 profili a 199€/mese, 4 profili a 299€/mese.</span></li>
+          <li><span class="bullet">✓</span><span>5+ profili con piano da 399€/mese.</span></li>
+        </ul>
+      </div>
+
+      <div class="card">
+        <div class="card-title">Use case tipici</div>
+        <ul class="list">
+          <li><span class="bullet">●</span><span>Stai valutando 10 creator per una campagna: For Creators ti dice chi è Casual, chi Emergente, chi Pro.</span></li>
+          <li><span class="bullet">●</span><span>Devi rispondere a richieste economiche molto diverse: confronti velocemente con il range suggerito.</span></li>
+          <li><span class="bullet">●</span><span>Vuoi avere una base dati interna per i tuoi talent, senza creare mille fogli Excel.</span></li>
+        </ul>
+        <a href="/contatti" class="primary-button">
+          <span class="icon">🤝</span>
+          <span>Parla con noi per un accesso business</span>
+        </a>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  © For Creators. Non sostituisce i contratti o le trattative, ma ti aiuta a partire da numeri coerenti.
+</footer>
+</body>
+</html>

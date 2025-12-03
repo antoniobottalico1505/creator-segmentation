@@ -1,0 +1,535 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8" />
+  <title>For Creators – Piani & Prezzi</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="Piani e prezzi di For Creators: da profilo casual a top agenzia, con segmenti automatici in base ai follower." />
+  <style>
+    :root {
+      --bg: #f3f4f6;
+      --blue: #6366f1;
+      --blue-dark: #4f46e5;
+      --accent: #ec4899;
+      --text-main: #0f172a;
+      --text-muted: #6b7280;
+      --card-bg: #ffffff;
+      --border: #e5e7eb;
+      --radius-xl: 24px;
+      --radius-lg: 16px;
+      --shadow: 0 18px 40px rgba(15, 23, 42, 0.16);
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: radial-gradient(circle at top left, #eef2ff 0, var(--bg) 40%, #fdf2ff 100%);
+      color: var(--text-main);
+    }
+    a { color: inherit; text-decoration: none; }
+    .top-bar {
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      backdrop-filter: blur(12px);
+      background: linear-gradient(to bottom, rgba(245,247,251,0.9), rgba(245,247,251,0.75));
+      border-bottom: 1px solid rgba(148,163,184,0.3);
+    }
+    .top-inner {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 12px 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .logo-svg {
+      flex-shrink: 0;
+      filter: drop-shadow(0 4px 14px rgba(15,23,42,0.22));
+    }
+    .brand-text {
+      display: flex;
+      flex-direction: column;
+    }
+    .brand-name {
+      font-size: 1.05rem;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      color: var(--blue-dark);
+    }
+    .brand-sub {
+      font-size: 0.78rem;
+      color: var(--text-muted);
+    }
+    .top-nav {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      font-size: 0.82rem;
+      color: var(--text-muted);
+    }
+    .top-nav a {
+      padding: 4px 8px;
+      border-radius: 999px;
+    }
+    .top-nav a.active {
+      background: rgba(99,102,241,0.12);
+      color: var(--blue-dark);
+      font-weight: 600;
+    }
+    .top-nav a.cta {
+      background: linear-gradient(135deg,var(--blue),var(--blue-dark));
+      color: #fff;
+      font-weight: 600;
+      padding: 6px 12px;
+      box-shadow: 0 10px 20px rgba(99,102,241,0.4);
+    }
+    .main {
+      max-width: 1100px;
+      margin: 24px auto 32px;
+      padding: 0 20px;
+    }
+    .hero-title {
+      font-size: clamp(2.1rem,4vw,2.5rem);
+      line-height: 1.1;
+      font-weight: 800;
+      letter-spacing: -0.05em;
+      margin-bottom: 10px;
+      color: var(--text-main);
+    }
+    .hero-highlight {
+      background: linear-gradient(120deg, var(--blue), var(--accent));
+      -webkit-background-clip: text;
+      color: transparent;
+    }
+    .hero-subtitle {
+      font-size: 0.95rem;
+      color: var(--text-muted);
+      max-width: 36rem;
+      margin-bottom: 20px;
+    }
+    .badge-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 14px;
+      font-size: 0.8rem;
+      color: var(--text-muted);
+    }
+    .badge {
+      padding: 3px 9px;
+      border-radius: 999px;
+      border: 1px solid rgba(148,163,184,0.6);
+      background: rgba(248,250,252,0.9);
+    }
+    .pricing-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px,1fr));
+      gap: 16px;
+      margin-top: 10px;
+    }
+    .card {
+      background: #ffffff;
+      border-radius: var(--radius-lg);
+      border: 1px solid rgba(148,163,184,0.5);
+      padding: 14px 14px 12px;
+      box-shadow: 0 16px 32px rgba(15,23,42,0.08);
+      font-size: 0.85rem;
+      position: relative;
+      overflow: hidden;
+    }
+    .card.highlight {
+      border-color: var(--blue);
+      box-shadow: 0 18px 40px rgba(79,70,229,0.35);
+    }
+    .card-ribbon {
+      position: absolute;
+      top: 10px;
+      right: -40px;
+      background: linear-gradient(135deg,var(--blue),var(--accent));
+      color: #fff;
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      padding: 4px 40px;
+      transform: rotate(20deg);
+    }
+    .card-title {
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: var(--blue-dark);
+      margin-bottom: 2px;
+    }
+    .card-subtitle {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      margin-bottom: 8px;
+    }
+    .price-row {
+      display: flex;
+      align-items: baseline;
+      gap: 4px;
+      margin: 4px 0;
+    }
+    .price-main {
+      font-size: 1.4rem;
+      font-weight: 800;
+      color: var(--blue-dark);
+    }
+    .price-period {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+    }
+    .price-note {
+      font-size: 0.78rem;
+      color: var(--text-muted);
+      margin-top: 2px;
+      margin-bottom: 6px;
+    }
+    .divider {
+      border-top: 1px dashed #e5e7eb;
+      margin: 8px 0;
+    }
+    .feature-list {
+      list-style: none;
+      padding: 0;
+      margin: 6px 0 4px;
+      font-size: 0.8rem;
+      color: var(--text-muted);
+    }
+    .feature-list li {
+      display: flex;
+      gap: 6px;
+      margin-bottom: 4px;
+    }
+    .feature-bullet {
+      width: 14px;
+      height: 14px;
+      border-radius: 999px;
+      background: rgba(99,102,241,0.08);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.65rem;
+      color: var(--blue-dark);
+      flex-shrink: 0;
+    }
+    .section-title {
+      margin: 26px 0 8px;
+      font-size: 1rem;
+      font-weight: 600;
+      color: var(--blue-dark);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .section-title .mini {
+      font-size: 0.72rem;
+      padding: 2px 7px;
+      border-radius: 999px;
+      border: 1px solid rgba(148,163,184,0.7);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--text-muted);
+    }
+    .text-muted {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      max-width: 40rem;
+    }
+    .cta-row {
+      margin-top: 18px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      align-items: center;
+    }
+    .primary-button {
+      border: none;
+      cursor: pointer;
+      border-radius: 999px;
+      padding: 8px 16px;
+      font-size: 0.86rem;
+      font-weight: 600;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: linear-gradient(135deg,var(--blue),var(--blue-dark));
+      color: #ffffff;
+      box-shadow: 0 12px 26px rgba(99,102,241,0.55);
+      transition: transform 0.1s, box-shadow 0.1s, filter 0.1s;
+    }
+    .primary-button:hover {
+      transform: translateY(-1px);
+      filter: brightness(1.05);
+      box-shadow: 0 16px 32px rgba(99,102,241,0.65);
+    }
+    .primary-button .icon {
+      font-size: 0.9rem;
+    }
+    footer {
+      text-align: center;
+      font-size: 0.74rem;
+      color: var(--text-muted);
+      padding: 10px 20px 18px;
+    }
+  </style>
+</head>
+<body>
+<header class="top-bar">
+  <div class="top-inner">
+    <div class="brand">
+      <a href="/">
+        <svg width="40" height="40" viewBox="0 0 40 40" class="logo-svg" aria-hidden="true">
+          <defs>
+            <linearGradient id="fcGradient" x1="0" y1="0" x2="1" y2="1">
+              <stop offset="0%" stop-color="#6366f1" />
+              <stop offset="100%" stop-color="#4f46e5" />
+            </linearGradient>
+          </defs>
+          <rect x="0" y="0" width="40" height="40" rx="12" fill="url(#fcGradient)" />
+          <text
+            x="50%"
+            y="50%"
+            text-anchor="middle"
+            dominant-baseline="middle"
+            fill="#ffffff"
+            font-size="16"
+            font-family="system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif"
+            font-weight="700">
+            fc
+          </text>
+        </svg>
+      </a>
+      <div class="brand-text">
+        <div class="brand-name">For Creators</div>
+        <div class="brand-sub">Da profilo casual a top agency, con un solo strumento.</div>
+      </div>
+    </div>
+    <nav class="top-nav">
+      <a href="/">Dashboard</a>
+      <a href="/pricing" class="active">Pricing</a>
+      <a href="/come-funziona">Come funziona</a>
+      <a href="/per-brand">Per brand</a>
+      <a href="/faq">FAQ</a>
+      <a href="/contatti" class="cta">Contatti</a>
+    </nav>
+  </div>
+</header>
+
+<main class="main">
+  <section>
+    <h1 class="hero-title">
+      Piani pensati per ogni
+      <span class="hero-highlight">tipo di profilo</span>.
+    </h1>
+    <p class="hero-subtitle">
+      Il segmento viene assegnato automaticamente in base ai follower complessivi
+      e ai profili gestiti. Tu inserisci i numeri, For Creators ti dice se sei
+      <strong>Casual, Emergente, Creator Pro o Top Agenzia</strong> e quale piano ti spetta.
+    </p>
+
+    <div class="badge-row">
+      <span class="badge">Casual &lt; 2.000 follower → FREE</span>
+      <span class="badge">Emergente 2.000 – 9.999 → 4,90€/mese</span>
+      <span class="badge">Creator Pro 10.000 – 199.999 → 9,90€/mese</span>
+      <span class="badge">Top Agenzia 200.000+ o multi-profilo → da 99€/mese</span>
+    </div>
+
+    <div class="pricing-grid">
+      <!-- Casual -->
+      <div class="card">
+        <div class="card-title">Casual</div>
+        <div class="card-subtitle">Profili “sport”, creator agli inizi, fino a 2.000 follower.</div>
+        <div class="price-row">
+          <div class="price-main">0€</div>
+          <div class="price-period">/ mese</div>
+        </div>
+        <div class="price-note">Per sempre gratuito.</div>
+        <div class="divider"></div>
+        <ul class="feature-list">
+          <li>
+            <span class="feature-bullet">✓</span>
+            <span>Segmentazione automatica come profilo Casual.</span>
+          </li>
+          <li>
+            <span class="feature-bullet">✓</span>
+            <span>Accesso base alla dashboard con i tuoi numeri.</span>
+          </li>
+          <li>
+            <span class="feature-bullet">✓</span>
+            <span>Media kit essenziale con range di prezzo di partenza.</span>
+          </li>
+        </ul>
+      </div>
+
+      <!-- Emergente -->
+      <div class="card">
+        <div class="card-title">Emergente</div>
+        <div class="card-subtitle">Tra 2.000 e 9.999 follower complessivi.</div>
+        <div class="price-row">
+          <div class="price-main">4,90€</div>
+          <div class="price-period">/ mese</div>
+        </div>
+        <div class="price-note">Oppure 49€/anno (2 mesi gratis).</div>
+        <div class="divider"></div>
+        <ul class="feature-list">
+          <li>
+            <span class="feature-bullet">✓</span>
+            <span>Segmento “Emergente” assegnato in automatico.</span>
+          </li>
+          <li>
+            <span class="feature-bullet">✓</span>
+            <span>Media kit dettagliato con prezzi consigliati per post, stories e pacchetti.</span>
+          </li>
+          <li>
+            <span class="feature-bullet">✓</span>
+            <span>Note e suggerimenti su come presentarti ai brand.</span>
+          </li>
+        </ul>
+      </div>
+
+      <!-- Creator Pro -->
+      <div class="card highlight">
+        <div class="card-ribbon">Più scelto</div>
+        <div class="card-title">Creator Pro</div>
+        <div class="card-subtitle">Da 10.000 a 199.999 follower complessivi.</div>
+        <div class="price-row">
+          <div class="price-main">9,90€</div>
+          <div class="price-period">/ mese</div>
+        </div>
+        <div class="price-note">Oppure 99€/anno (2 mesi gratis).</div>
+        <div class="divider"></div>
+        <ul class="feature-list">
+          <li>
+            <span class="feature-bullet">✓</span>
+            <span>Segmento “Creator Pro” con posizionamento chiaro per brand e agenzie.</span>
+          </li>
+          <li>
+            <span class="feature-bullet">✓</span>
+            <span>Media kit avanzato con range prezzo ottimizzati per marchi e categoria.</span>
+          </li>
+          <li>
+            <span class="feature-bullet">✓</span>
+            <span>Metriche stimate su views, reach e bundle di contenuti.</span>
+          </li>
+        </ul>
+      </div>
+
+      <!-- Top Agenzia / Grandi profili -->
+      <div class="card">
+        <div class="card-title">Top Agenzia</div>
+        <div class="card-subtitle">
+          Oltre 200.000 follower o gestione di più profili importanti.
+        </div>
+        <div class="price-row">
+          <div class="price-main">da 99€</div>
+          <div class="price-period">/ mese</div>
+        </div>
+        <div class="price-note">
+          Fino a 399€/mese in base al numero di profili gestiti.
+        </div>
+        <div class="divider"></div>
+        <ul class="feature-list">
+          <li>
+            <span class="feature-bullet">✓</span>
+            <span>Dashboard multi-profilo per creator, talent e agenzie.</span>
+          </li>
+          <li>
+            <span class="feature-bullet">✓</span>
+            <span>Media kit per singolo profilo + overview di portafoglio.</span>
+          </li>
+          <li>
+            <span class="feature-bullet">✓</span>
+            <span>Struttura prezzi dedicata per pacchetti complessi e campagne.</span>
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <h2 class="section-title">
+      Piani per aziende e agenzie
+      <span class="mini">Per brand</span>
+    </h2>
+    <p class="text-muted">
+      Se gestisci campagne per più creator o vuoi standardizzare i compensi,
+      For Creators può essere usato anche lato brand / agenzia.
+      La logica è semplice: paghi in base al numero di profili che vuoi
+      monitorare in modo strutturato.
+    </p>
+
+    <div class="pricing-grid">
+      <div class="card">
+        <div class="card-title">Business 2 profili</div>
+        <div class="card-subtitle">Perfetto per piccoli brand o boutique agency.</div>
+        <div class="price-row">
+          <div class="price-main">99€</div>
+          <div class="price-period">/ mese</div>
+        </div>
+        <div class="divider"></div>
+        <ul class="feature-list">
+          <li><span class="feature-bullet">✓</span><span>Fino a 2 profili monitorati.</span></li>
+          <li><span class="feature-bullet">✓</span><span>Media kit e range consigliati per ogni creator.</span></li>
+        </ul>
+      </div>
+
+      <div class="card">
+        <div class="card-title">Business 3–4 profili</div>
+        <div class="card-subtitle">Per agenzie in crescita o brand multi-canale.</div>
+        <div class="price-row">
+          <div class="price-main">199–299€</div>
+          <div class="price-period">/ mese</div>
+        </div>
+        <div class="price-note">
+          199€/mese per 3 profili, 299€/mese per 4 profili.
+        </div>
+        <div class="divider"></div>
+        <ul class="feature-list">
+          <li><span class="feature-bullet">✓</span><span>Dashboard coordinata per tutti i creator.</span></li>
+          <li><span class="feature-bullet">✓</span><span>Supporto su segmentazione e pricing.</span></li>
+        </ul>
+      </div>
+
+      <div class="card">
+        <div class="card-title">Business 5+ profili</div>
+        <div class="card-subtitle">Per agenzie strutturate e network di talent.</div>
+        <div class="price-row">
+          <div class="price-main">399€</div>
+          <div class="price-period">/ mese</div>
+        </div>
+        <div class="price-note">
+          Include 5 profili, con possibilità di personalizzazioni su richiesta.
+        </div>
+        <div class="divider"></div>
+        <ul class="feature-list">
+          <li><span class="feature-bullet">✓</span><span>Gestione di portafogli creator complessi.</span></li>
+          <li><span class="feature-bullet">✓</span><span>Prezzi e pacchetti guidati dai dati.</span></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="cta-row">
+      <a href="/" class="primary-button">
+        <span class="icon">🚀</span>
+        <span>Vai alla dashboard e calcola il tuo segmento</span>
+      </a>
+      <span class="text-muted">
+        Il segmento (Casual, Emergente, Creator Pro, Top Agenzia)
+        viene scelto automaticamente in base ai follower e ai profili gestiti.
+      </span>
+    </div>
+  </section>
+</main>
+
+<footer>
+  © For Creators. Piani soggetti a possibili modifiche senza preavviso. Segmenti e prezzi indicativi basati su follower e stime di reach.
+</footer>
+</body>
+</html>

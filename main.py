@@ -214,6 +214,33 @@ def index() -> str:
         return "<h1>Creator App</h1><p>index.html non trovato.</p>"
     return INDEX_PATH.read_text(encoding="utf-8")
 
+from fastapi import FastAPI, Request
+from fastapi.responses import HTMLResponse
+from fastapi.templating import Jinja2Templates
+
+# ... qui il resto del tuo codice esistente ...
+
+templates = Jinja2Templates(directory="templates")
+
+@app.get("/pricing", response_class=HTMLResponse)
+async def pricing_page(request: Request):
+    return templates.TemplateResponse("pricing.html", {"request": request})
+
+@app.get("/come-funziona", response_class=HTMLResponse)
+async def how_it_works_page(request: Request):
+    return templates.TemplateResponse("how_it_works.html", {"request": request})
+
+@app.get("/per-brand", response_class=HTMLResponse)
+async def for_brands_page(request: Request):
+    return templates.TemplateResponse("for_brands.html", {"request": request})
+
+@app.get("/faq", response_class=HTMLResponse)
+async def faq_page(request: Request):
+    return templates.TemplateResponse("faq.html", {"request": request})
+
+@app.get("/contatti", response_class=HTMLResponse)
+async def contact_page(request: Request):
+    return templates.TemplateResponse("contact.html", {"request": request})
 
 @app.post("/api/signup")
 def signup(req: SignupRequest) -> Dict[str, Any]:
