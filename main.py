@@ -4,6 +4,21 @@ from fastapi.templating import Jinja2Templates
 from pydantic import BaseModel, field_validator
 from typing import Dict, Any, Literal, List
 import uuid
+import os
+import smtplib
+from email.message import EmailMessage
+
+# =======================
+# CONFIG SMTP NEL CODICE
+# =======================
+SMTP_HOST = "smtp.gmail.com"
+SMTP_PORT = 587
+
+# mittente tecnico: account con cui fai LOGIN su Gmail
+SMTP_SENDER = "antoniobottalico1505@gmail.com"
+SMTP_PASSWORD = "uxqahnmdjvjddycv"
+CONTACT_RECIPIENT = "we20trust25@gmail.com"
+# =======================
 
 app = FastAPI(title="ForCreators App")
 
@@ -87,12 +102,11 @@ def compute_segment(followers: int, profiles_count: int) -> SegmentType:
 def compute_plan(segment: SegmentType, profiles_count: int) -> Dict[str, Any]:
     if segment == "casual":
         return {
-            "label": 'Casual – profilo "sport"',
+            "label": "Casual – profilo per sport",
             "description": "Per chi usa i social “per sport” e vuole una base di prezzo minima per le prime collaborazioni.",
             "monthly_price": 0.0,
             "yearly_price": 0.0,
             "billing_note": "Piano gratuito per profili sotto i 2.000 follower.",
-            "requires_payment": False,
         }
 
     if segment == "emerging":
@@ -102,7 +116,6 @@ def compute_plan(segment: SegmentType, profiles_count: int) -> Dict[str, Any]:
             "monthly_price": 4.90,
             "yearly_price": 49.00,
             "billing_note": "Puoi scegliere mensile (4,90€) o annuale (49€, 2 mesi gratis).",
-            "requires_payment": True,
         }
 
     if segment == "pro":
@@ -112,7 +125,6 @@ def compute_plan(segment: SegmentType, profiles_count: int) -> Dict[str, Any]:
             "monthly_price": 9.90,
             "yearly_price": 99.00,
             "billing_note": "Pensato per chi vive (o quasi) di contenuti.",
-            "requires_payment": True,
         }
 
     # AGENZIA
@@ -135,78 +147,62 @@ def compute_plan(segment: SegmentType, profiles_count: int) -> Dict[str, Any]:
         "monthly_price": monthly,
         "yearly_price": None,
         "billing_note": f"Piano agenzia: {note}",
-        "requires_payment": True,
     }
 
 
 def compute_media_kit(user: User) -> Dict[str, Any]:
-    """
-    Calcola:
-    - views stimate per post/story
-    - prezzi esatti (non range) per post, story, bundle
-    usando:
-      * numeri medi "da internet" su view-rate
-      * regola 10 €/1000 follower come base (Instagram)
-      * moltiplicatori per piattaforma (TikTok / YouTube)
-    """
     followers = max(0, user.followers)
     segment = user.segment or "casual"
     platform = (user.main_platform or "instagram").lower()
 
-    # 1) VIEW-RATE "BASE" PER SEGMENTO (pensato per Instagram)
+    # VIEW-RATE base per segmento (Instagram)
     if segment == "casual":
-        base_post_rate = 0.25   # 25% dei follower vedono un post
-        base_story_rate = 0.08  # 8% vedono una story
+        base_post_rate = 0.25
+        base_story_rate = 0.08
     elif segment == "emerging":
-        base_post_rate = 0.20   # 20%
-        base_story_rate = 0.05  # 5%
+        base_post_rate = 0.20
+        base_story_rate = 0.05
     elif segment == "pro":
-        base_post_rate = 0.12   # 12%
-        base_story_rate = 0.03  # 3%
-    else:  # agency / top
-        base_post_rate = 0.10   # 10%
-        base_story_rate = 0.02  # 2%
+        base_post_rate = 0.12
+        base_story_rate = 0.03
+    else:  # agency
+        base_post_rate = 0.10
+        base_story_rate = 0.02
 
-    # 2) MOLTIPLICATORI PER PIATTAFORMA (views rispetto a Instagram)
+    # Moltiplicatori piattaforma
     view_multipliers = {
-        "instagram": 1.0,  # base
-        "tiktok": 1.4,     # TikTok di solito ha ~40% views in più a parità di follower
-        "youtube": 2.5,    # YouTube ha view-rate molto più alto vs subscriber
-        # Twitch: per numeri seri servirebbero CCV e ore; per ora lo trattiamo neutro
+        "instagram": 1.0,
+        "tiktok": 1.4,
+        "youtube": 2.5,
         "twitch": 1.0,
     }
     view_mult = view_multipliers.get(platform, 1.0)
 
-    # 3) CALCOLO VIEWS STIMATE
     post_views = int(followers * base_post_rate * view_mult)
     story_views = int(followers * base_story_rate * view_mult)
 
-    # 4) PREZZO ESATTO PER POST/STORY IN BASE AI FOLLOWER
+    # Prezzi esatti per post / story / bundle
     base_rate_per_1k = {
-        "instagram": 10.0,  # 10 €/1000 follower
-        "tiktok": 9.0,      # leggermente sotto IG (CPM un filo più basso)
-        "youtube": 20.0,    # YT in media vale ~2x IG
-        "twitch": 10.0,     # placeholder finché non usi CCV/ore
+        "instagram": 10.0,
+        "tiktok": 9.0,
+        "youtube": 20.0,
+        "twitch": 10.0,
     }
     rate_per_1k = base_rate_per_1k.get(platform, 10.0)
 
-    # prezzo post = follower/1000 * rate_per_1k (con pavimento minimo)
     post_price_eur = (followers / 1000.0) * rate_per_1k
     if post_price_eur < 5.0:
         post_price_eur = 5.0
     post_price_eur = round(post_price_eur, 2)
 
-    # story ≈ 50% del post, con minimo 3 €
     story_price_eur = post_price_eur * 0.5
     if story_price_eur < 3.0:
         story_price_eur = 3.0
     story_price_eur = round(story_price_eur, 2)
 
-    # bundle 1 post + 3 stories con ~20% di sconto rispetto alla somma piena
     full_bundle = post_price_eur + 3 * story_price_eur
     bundle_price_eur = round(full_bundle * 0.8, 2)
 
-    # 5) LABEL SEGMENTO (testo che vedi sul sito)
     segment_label_map = {
         "casual": 'Casual – profilo "sport"',
         "emerging": "Emergente – primi brand",
@@ -293,6 +289,45 @@ def compute_profile_tips(user: User) -> Dict[str, Any]:
         "followers": followers,
         "segment": segment,
     }
+
+
+from typing import Dict, Any
+
+def send_contact_email(record: Dict[str, Any]) -> None:
+    """
+    Invia una mail al proprietario del sito con i dati del form contatti.
+    Usa i parametri SMTP scritti nelle costanti in alto.
+    """
+    user_email = (record.get("email") or "").strip()
+
+    msg = EmailMessage()
+    msg["Subject"] = f"[ForCreators] Nuovo contatto: {record.get('subject', '')}"
+    msg["From"] = SMTP_SENDER
+    msg["To"] = CONTACT_RECIPIENT
+
+    # così quando fai "Rispondi" dal client mail, rispondi all'utente
+    if user_email:
+        msg["Reply-To"] = user_email
+
+    body_lines = [
+        "Hai ricevuto un nuovo messaggio dal form Contatti di ForCreators:",
+        "",
+        f"Nome: {record.get('name', '')}",
+        f"Email: {user_email}",
+        f"Oggetto: {record.get('subject', '')}",
+        "",
+        "Messaggio:",
+        record.get("message", ""),
+    ]
+    msg.set_content("\n".join(body_lines))
+
+    print("DEBUG SMTP:", SMTP_HOST, SMTP_PORT, "FROM:", SMTP_SENDER, "TO:", CONTACT_RECIPIENT)
+
+    with smtplib.SMTP(SMTP_HOST, SMTP_PORT) as server:
+        server.starttls()
+        server.login(SMTP_SENDER, SMTP_PASSWORD)
+        server.send_message(msg)
+        print("✅ Email contatto inviata a", CONTACT_RECIPIENT)
 
 
 @app.get("/", response_class=HTMLResponse)
@@ -382,14 +417,6 @@ async def api_media_kit(user_id: str):
     if not user:
         raise HTTPException(status_code=404, detail="Utente non trovato.")
 
-    # blocco per piani a pagamento
-    plan = user.plan or {}
-    if plan.get("requires_payment"):
-        raise HTTPException(
-            status_code=402,
-            detail="Per il tuo segmento è richiesto un abbonamento per vedere il media kit e i prezzi suggeriti.",
-        )
-
     kit = compute_media_kit(user)
     return kit
 
@@ -410,5 +437,11 @@ async def api_contact(payload: ContactRequest):
     record = payload.model_dump()
     record["contact_id"] = contact_id
     contacts_db.append(record)
-    # In produzione qui manderesti una mail o salveresti su DB
+
+    try:
+        send_contact_email(record)
+    except Exception as e:
+        # importante: loggare l’errore
+        print("❌ Errore invio email contatto:", repr(e))
+
     return {"contact_id": contact_id, "status": "received"}
