@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <title>ForCreators – Segmentation & Pricing</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <meta name="description" content="ForCreators: calcola il tuo segmento social, il piano ideale e i prezzi suggeriti per creator e agenzie." />
+  <meta name="description" content="ForCreators: calcola il tuo segmento social e il piano ideale in base ai follower, da profilo casual fino ad agenzia top." />
   <style>
     :root {
       --bg: #f3f4f6;
@@ -25,10 +25,9 @@
       font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
       background: radial-gradient(circle at top left, #eef2ff 0, var(--bg) 40%, #fdf2ff 100%);
       color: var(--text-main);
-      scroll-behavior: smooth;
     }
 
-    /* HEADER + NAV UNICO */
+    /* HEADER + NAV (UGUALE SU TUTTE LE PAGINE) */
     .top-bar {
       position: sticky;
       top: 0;
@@ -80,7 +79,7 @@
       gap: 12px;
       font-size: 0.82rem;
       color: var(--text-muted);
-      flex-wrap: wrap;
+      flex-wrap: wrap;               /* <- IMPORTANTE PER MOBILE */
     }
     .top-nav a {
       padding: 4px 8px;
@@ -121,11 +120,11 @@
       }
       .top-right {
         width: 100%;
-        flex-wrap: wrap;
+        flex-wrap: wrap;           /* NAV E PILL SOTTO, NON "BUCANO" */
         justify-content: space-between;
       }
       .top-nav {
-        width: 100%;
+        width: 100%;               /* NAV OCCUPA LA LARGHEZZA E VA SU 2 RIGHE */
       }
     }
 
@@ -135,7 +134,6 @@
       padding: 0 20px;
     }
 
-    /* ELEMENTI COMUNI */
     .pill {
       display: inline-flex;
       align-items: center;
@@ -154,7 +152,7 @@
       border-radius: 999px;
       background: var(--accent);
     }
-    .hero-title, .page-title {
+    .hero-title {
       font-size: clamp(2.1rem,4vw,2.5rem);
       line-height: 1.1;
       font-weight: 800;
@@ -162,39 +160,58 @@
       margin-bottom: 10px;
       color: var(--text-main);
     }
-    .page-title {
-      margin-top: 40px;
-    }
     .hero-highlight {
       background: linear-gradient(120deg, var(--blue), var(--accent));
       -webkit-background-clip: text;
       color: transparent;
     }
-    .hero-subtitle, .page-subtitle, .section-text {
+    .hero-subtitle {
       font-size: 0.95rem;
       color: var(--text-muted);
-      max-width: 40rem;
+      max-width: 30rem;
       margin-bottom: 18px;
     }
-    .section-title {
-      margin: 22px 0 8px;
-      font-size: 1rem;
-      font-weight: 600;
-      color: var(--blue-dark);
+    .hero-bullets {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(160px,1fr));
+      gap: 10px;
+      margin-bottom: 14px;
+    }
+    .hero-bullet {
+      display: flex;
+      gap: 8px;
+      font-size: 0.84rem;
+      color: var(--text-muted);
+    }
+    .hero-bullet-icon {
+      margin-top: 3px;
+      width: 18px;
+      height: 18px;
+      border-radius: 999px;
+      background: rgba(99,102,241,0.08);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.7rem;
+      color: var(--blue);
+    }
+    .hero-footnote {
+      font-size: 0.78rem;
+      color: var(--text-muted);
       display: flex;
       align-items: center;
       gap: 8px;
+      margin-top: 8px;
     }
-    .badge {
-      font-size: 0.7rem;
+    .hero-footnote-badge {
       padding: 2px 7px;
       border-radius: 999px;
-      border: 1px solid rgba(148,163,184,0.7);
+      background: #0f172a;
+      color: #e5e7eb;
+      font-size: 0.7rem;
       text-transform: uppercase;
-      letter-spacing: 0.08em;
-      color: var(--text-muted);
+      letter-spacing: 0.07em;
     }
-    .hidden { display: none; }
 
     .card {
       position: relative;
@@ -216,14 +233,16 @@
       pointer-events: none;
     }
     .card-inner { position: relative; z-index: 1; }
-
-    .dash-card {
-      background: #ffffff;
-      border-radius: var(--radius-lg);
-      border: 1px solid rgba(148,163,184,0.5);
-      padding: 10px 12px;
-      box-shadow: 0 10px 22px rgba(15,23,42,0.08);
-      font-size: 0.82rem;
+    .card-title {
+      font-size: 1rem;
+      font-weight: 600;
+      margin-bottom: 4px;
+      color: var(--blue-dark);
+    }
+    .card-sub {
+      font-size: 0.84rem;
+      color: var(--text-muted);
+      margin-bottom: 12px;
     }
 
     .field-group {
@@ -254,8 +273,7 @@
       color: var(--text-muted);
     }
     .field input,
-    .field select,
-    .field textarea {
+    .field select {
       border-radius: 999px;
       border: 1px solid var(--border);
       padding: 7px 12px;
@@ -264,18 +282,11 @@
       background: #ffffff;
       transition: border-color 0.15s, box-shadow 0.15s;
     }
-    .field textarea {
-      border-radius: 10px;
-      resize: vertical;
-      min-height: 90px;
-    }
     .field input:focus,
-    .field select:focus,
-    .field textarea:focus {
+    .field select:focus {
       border-color: var(--blue);
       box-shadow: 0 0 0 1px rgba(99,102,241,0.65);
     }
-
     .grid-2 {
       display: grid;
       grid-template-columns: repeat(2,minmax(0,1fr));
@@ -336,7 +347,6 @@
       box-shadow: 0 6px 16px rgba(99,102,241,0.5);
     }
     .primary-button .icon { font-size: 0.9rem; }
-
     .status-text {
       font-size: 0.76rem;
       color: var(--text-muted);
@@ -346,57 +356,25 @@
     .status-text.error { color: #b91c1c; }
     .status-text.success { color: #15803d; }
 
-    .hero {
-      display: grid;
-      grid-template-columns: minmax(0,1.25fr) minmax(0,1fr);
-      gap: 24px;
-      align-items: stretch;
-    }
-    @media (max-width: 900px) {
-      .hero { grid-template-columns: 1fr; }
-    }
-
-    .hero-bullets {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(160px,1fr));
-      gap: 10px;
-      margin-bottom: 14px;
-    }
-    .hero-bullet {
-      display: flex;
-      gap: 8px;
-      font-size: 0.84rem;
-      color: var(--text-muted);
-    }
-    .hero-bullet-icon {
-      margin-top: 3px;
-      width: 18px;
-      height: 18px;
-      border-radius: 999px;
-      background: rgba(99,102,241,0.08);
+    .section-title {
+      margin: 22px 0 8px;
+      font-size: 1rem;
+      font-weight: 600;
+      color: var(--blue-dark);
       display: flex;
       align-items: center;
-      justify-content: center;
+      gap: 8px;
+    }
+    .section-title .badge {
       font-size: 0.7rem;
-      color: var(--blue);
-    }
-    .hero-footnote {
-      font-size: 0.78rem;
-      color: var(--text-muted);
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      margin-top: 8px;
-    }
-    .hero-footnote-badge {
       padding: 2px 7px;
       border-radius: 999px;
-      background: #0f172a;
-      color: #e5e7eb;
-      font-size: 0.7rem;
+      border: 1px solid rgba(148,163,184,0.7);
       text-transform: uppercase;
-      letter-spacing: 0.07em;
+      letter-spacing: 0.08em;
+      color: var(--text-muted);
     }
+    .hidden { display: none; }
 
     .dash-grid {
       display: grid;
@@ -406,7 +384,19 @@
     @media (max-width: 900px) {
       .dash-grid { grid-template-columns: 1fr; }
     }
-
+    .dash-card {
+      background: #ffffff;
+      border-radius: var(--radius-lg);
+      border: 1px solid rgba(148,163,184,0.5);
+      padding: 10px 12px;
+      box-shadow: 0 10px 22px rgba(15,23,42,0.08);
+      font-size: 0.82rem;
+    }
+    .dash-card h3 {
+      margin: 0 0 6px;
+      font-size: 0.9rem;
+      color: var(--blue-dark);
+    }
     .dash-highlight {
       font-size: 1.1rem;
       font-weight: 700;
@@ -468,171 +458,6 @@
       margin-bottom: 4px;
     }
 
-    /* PRICING SECTION */
-    .plans-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit,minmax(220px,1fr));
-      gap: 16px;
-    }
-    .plan-card {
-      background: #ffffff;
-      border-radius: var(--radius-lg);
-      border: 1px solid rgba(148,163,184,0.5);
-      padding: 14px 14px 12px;
-      box-shadow: 0 12px 26px rgba(15,23,42,0.07);
-      font-size: 0.85rem;
-    }
-    .plan-label {
-      font-size: 0.8rem;
-      text-transform: uppercase;
-      letter-spacing: 0.08em;
-      color: var(--blue-dark);
-      margin-bottom: 4px;
-    }
-    .plan-name {
-      font-size: 1.2rem;
-      font-weight: 700;
-      margin-bottom: 4px;
-      color: var(--text-main);
-    }
-    .plan-tagline {
-      font-size: 0.8rem;
-      color: var(--text-muted);
-      margin-bottom: 6px;
-    }
-    .plan-price-main {
-      font-size: 1.1rem;
-      font-weight: 700;
-      color: var(--blue-dark);
-    }
-    .plan-price-sub {
-      font-size: 0.78rem;
-      color: var(--text-muted);
-    }
-    .plan-line {
-      font-size: 0.78rem;
-      color: var(--text-muted);
-      margin-top: 6px;
-    }
-    .plan-list {
-      margin: 8px 0 0;
-      padding-left: 18px;
-      font-size: 0.8rem;
-      color: var(--text-muted);
-    }
-    .plan-list li {
-      margin-bottom: 4px;
-    }
-
-    /* COME FUNZIONA */
-    .steps-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit,minmax(250px,1fr));
-      gap: 16px;
-      margin-bottom: 26px;
-    }
-    .step-card {
-      background: #ffffff;
-      border-radius: var(--radius-lg);
-      border: 1px solid rgba(148,163,184,0.5);
-      padding: 14px 14px 12px;
-      box-shadow: 0 10px 22px rgba(15,23,42,0.06);
-      font-size: 0.85rem;
-    }
-    .step-number {
-      width: 26px;
-      height: 26px;
-      border-radius: 999px;
-      background: rgba(99,102,241,0.12);
-      color: var(--blue-dark);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 0.8rem;
-      font-weight: 600;
-      margin-bottom: 6px;
-    }
-    .step-title {
-      font-weight: 600;
-      margin-bottom: 4px;
-      color: var(--text-main);
-    }
-    .step-text {
-      font-size: 0.82rem;
-      color: var(--text-muted);
-    }
-
-    /* PER BRAND */
-    .grid-two {
-      display: grid;
-      grid-template-columns: minmax(0,1.2fr) minmax(0,1fr);
-      gap: 18px;
-    }
-    @media (max-width: 900px) {
-      .grid-two { grid-template-columns: 1fr; }
-    }
-    .card-simple {
-      background: #ffffff;
-      border-radius: var(--radius-lg);
-      border: 1px solid rgba(148,163,184,0.5);
-      padding: 14px 14px 12px;
-      box-shadow: 0 12px 26px rgba(15,23,42,0.06);
-      font-size: 0.85rem;
-    }
-    .card-simple h2 {
-      margin: 0 0 6px;
-      font-size: 1rem;
-      color: var(--blue-dark);
-    }
-    .card-simple p {
-      margin: 0 0 8px;
-      font-size: 0.85rem;
-      color: var(--text-muted);
-    }
-    .card-simple ul {
-      margin: 8px 0 0;
-      padding-left: 18px;
-      font-size: 0.82rem;
-      color: var(--text-muted);
-    }
-    .card-simple ul li {
-      margin-bottom: 4px;
-    }
-
-    /* FAQ */
-    .faq-list {
-      display: grid;
-      grid-template-columns: minmax(0,1fr);
-      gap: 10px;
-    }
-    .faq-item {
-      background: #ffffff;
-      border-radius: var(--radius-lg);
-      border: 1px solid rgba(148,163,184,0.5);
-      padding: 10px 12px;
-      box-shadow: 0 8px 18px rgba(15,23,42,0.06);
-      font-size: 0.85rem;
-    }
-    .faq-q {
-      font-weight: 600;
-      margin-bottom: 4px;
-      color: var(--text-main);
-    }
-    .faq-a {
-      font-size: 0.83rem;
-      color: var(--text-muted);
-    }
-
-    /* CONTATTI */
-    .contact-grid {
-      display: grid;
-      grid-template-columns: minmax(0,1.1fr) minmax(0,0.9fr);
-      gap: 18px;
-    }
-    @media (max-width: 900px) {
-      .contact-grid { grid-template-columns: 1fr; }
-    }
-
     footer {
       text-align: center;
       font-size: 0.74rem;
@@ -672,12 +497,12 @@
     </div>
     <div class="top-right">
       <nav class="top-nav">
-        <a href="#dashboard" class="active">Dashboard</a>
-        <a href="#pricing">Pricing</a>
-        <a href="#come-funziona">Come funziona</a>
-        <a href="#per-brand">Per brand</a>
-        <a href="#faq">FAQ</a>
-        <a href="#contatti">Contatti</a>
+        <a href="/" class="active">Dashboard</a>
+        <a href="/pricing">Pricing</a>
+        <a href="/come-funziona">Come funziona</a>
+        <a href="/per-brand">Per brand</a>
+        <a href="/faq">FAQ</a>
+        <a href="/contatti">Contatti</a>
       </nav>
       <div class="top-pill">
         <span class="top-pill-dot"></span>
@@ -688,9 +513,7 @@
 </header>
 
 <main class="main">
-
-  <!-- DASHBOARD / HERO -->
-  <section id="dashboard" class="hero">
+  <section class="hero">
     <div>
       <div class="pill">
         <span class="pill-dot"></span>
@@ -703,8 +526,7 @@
       <p class="hero-subtitle">
         Inserisci i tuoi follower e lascia che il sistema ti classifichi in
         <strong>Casual, Emergente, Creator Pro o Top Agenzia</strong> con il piano ideale:
-        gratuito, 4,90€, 9,90€ o 99–399€ al mese. In più ottieni prezzi suggeriti e consigli pratici
-        su come migliorare il tuo profilo.
+        gratuito, 4,90€, 9,90€ o 99–399€ al mese.
       </p>
       <div class="hero-bullets">
         <div class="hero-bullet">
@@ -729,10 +551,8 @@
     <div>
       <div class="card">
         <div class="card-inner">
-          <div class="card-title" style="font-size:1rem;font-weight:600;color:var(--blue-dark);margin-bottom:4px;">
-            Accesso
-          </div>
-          <div class="card-sub" style="font-size:0.84rem;color:var(--text-muted);margin-bottom:12px;">
+          <div class="card-title">Accesso</div>
+          <div class="card-sub">
             Registrazione rapida oppure login se hai già creato il tuo profilo.
           </div>
 
@@ -818,9 +638,9 @@
     </div>
   </section>
 
-  <!-- DASHBOARD DETTAGLI + MEDIA KIT + TIP -->
-  <section id="dashboard-details" class="hidden">
-    <div class="section-title" style="margin-top:26px;">
+  <!-- DASHBOARD -->
+  <section id="dashboardSection" class="hidden">
+    <div class="section-title">
       <span>La tua posizione nel mondo social</span>
       <span class="badge" id="dashBadge">Profilo</span>
     </div>
@@ -945,285 +765,6 @@
       <ul id="tipsList" class="tips-list"></ul>
     </div>
   </section>
-
-  <!-- PRICING -->
-  <section id="pricing">
-    <h2 class="page-title">Piani ForCreators</h2>
-    <p class="page-subtitle">
-      Quattro livelli, stessi numeri in tutto il mondo: da profilo “sport” fino ad agenzia che
-      gestisce più account. Il segmento viene calcolato automaticamente in base ai follower e ai
-      profili gestiti.
-    </p>
-
-    <div class="plans-grid">
-      <div class="plan-card">
-        <div class="plan-label">Sotto 2.000 follower</div>
-        <div class="plan-name">Casual – profilo "sport"</div>
-        <div class="plan-tagline">
-          Per chi usa i social per hobby e vuole una base minima per le prime collaborazioni.
-        </div>
-        <div class="plan-price-main">0 €</div>
-        <div class="plan-price-sub">al mese · 0 € all'anno</div>
-        <div class="plan-line">
-          Accesso gratuito a media kit, stime di view e prezzi consigliati.
-        </div>
-        <ul class="plan-list">
-          <li>Per profili sotto i 2.000 follower totali.</li>
-          <li>Stime di views per post e stories.</li>
-          <li>Prezzo consigliato per singolo post/story.</li>
-        </ul>
-      </div>
-
-      <div class="plan-card">
-        <div class="plan-label">2.000 – 9.999 follower</div>
-        <div class="plan-name">Emergente</div>
-        <div class="plan-tagline">
-          Per creator che iniziano a lavorare con brand e vogliono numeri chiari.
-        </div>
-        <div class="plan-price-main">4,90 €</div>
-        <div class="plan-price-sub">al mese · 49 € all'anno</div>
-        <div class="plan-line">
-          Ideale per i primi contratti strutturati e per dare un listino chiaro ai brand.
-        </div>
-        <ul class="plan-list">
-          <li>Media kit completo con dati chiave.</li>
-          <li>Prezzi consigliati per post, stories e pacchetti.</li>
-          <li>Consigli pratici per crescere verso il livello Pro.</li>
-        </ul>
-      </div>
-
-      <div class="plan-card">
-        <div class="plan-label">10.000 – 199.999 follower</div>
-        <div class="plan-name">Creator Pro</div>
-        <div class="plan-tagline">
-          Per chi vive (o quasi) di contenuti e ha più collaborazioni ogni mese.
-        </div>
-        <div class="plan-price-main">9,90 €</div>
-        <div class="plan-price-sub">al mese · 99 € all'anno</div>
-        <div class="plan-line">
-          Pensato per negoziare meglio, automatizzare il listino e presentarsi ai brand in modo
-          professionale.
-        </div>
-        <ul class="plan-list">
-          <li>Media kit avanzato con stime di performance.</li>
-          <li>Prezzi consigliati ottimizzati per piattaforma.</li>
-          <li>Suggerimenti per pacchetti e diritti d'uso.</li>
-        </ul>
-      </div>
-
-      <div class="plan-card">
-        <div class="plan-label">Da 200.000 follower o più profili</div>
-        <div class="plan-name">Top Agenzia</div>
-        <div class="plan-tagline">
-          Per agenzie, network e team che gestiscono più profili importanti.
-        </div>
-        <div class="plan-price-main">99 – 399 €</div>
-        <div class="plan-price-sub">al mese · senza vincolo annuale</div>
-        <div class="plan-line">
-          Il prezzo varia in base al numero di profili gestiti:
-        </div>
-        <ul class="plan-list">
-          <li>99 €/mese fino a 2 profili.</li>
-          <li>199 €/mese fino a 3 profili.</li>
-          <li>299 €/mese fino a 4 profili.</li>
-          <li>399 €/mese da 5 profili in su.</li>
-        </ul>
-      </div>
-    </div>
-  </section>
-
-  <!-- COME FUNZIONA -->
-  <section id="come-funziona">
-    <h2 class="page-title">Come funziona ForCreators</h2>
-    <p class="page-subtitle">
-      In 3 passi trasformi i tuoi follower in un segmento chiaro, un media kit ordinato e un listino
-      suggerito coerente con quello che si trova online.
-    </p>
-
-    <div class="steps-grid">
-      <div class="step-card">
-        <div class="step-number">1</div>
-        <div class="step-title">Registrazione e dati base</div>
-        <p class="step-text">
-          Inserisci email, piattaforma principale, username, follower complessivi e quanti profili
-          gestisci (se sei un’agenzia). Bastano pochi secondi.
-        </p>
-      </div>
-      <div class="step-card">
-        <div class="step-number">2</div>
-        <div class="step-title">Calcolo del segmento</div>
-        <p class="step-text">
-          Il motore classifica il tuo account in <strong>Casual, Emergente, Creator Pro o Top Agenzia</strong>,
-          usando soglie chiare di follower e profili gestiti. In base al segmento ti assegna il piano
-          corretto (gratis, 4,90€, 9,90€ o 99–399€).
-        </p>
-      </div>
-      <div class="step-card">
-        <div class="step-number">3</div>
-        <div class="step-title">Media kit e prezzi suggeriti</div>
-        <p class="step-text">
-          In un clic generi il media kit: stime di views per post e stories, più
-          <strong>prezzi suggeriti precisi</strong> per post singolo, story singola e pacchetto post + 3 stories,
-          adattati alla piattaforma (Instagram, TikTok, YouTube, Twitch).
-        </p>
-      </div>
-    </div>
-
-    <h3 class="section-title">
-      <span>Da dove arrivano i numeri?</span>
-    </h3>
-    <p class="section-text">
-      Le stime di views e i prezzi suggeriti si basano su percentuali e regole
-      <strong>ampiamente diffuse online</strong> (view-rate medi e indicazioni tipo “10 €/1.000 follower”
-      per post Instagram), adattate per segmento e piattaforma. L’obiettivo non è imporre tariffe,
-      ma darti una base realistica da cui partire per le tue trattative.
-    </p>
-  </section>
-
-  <!-- PER BRAND -->
-  <section id="per-brand">
-    <h2 class="page-title">Per brand e agenzie</h2>
-    <p class="page-subtitle">
-      ForCreators aiuta i brand a capire se le richieste economiche dei creator sono allineate a numeri
-      realistici di follower e views. Non sostituisce una negoziazione, ma mette tutti sullo stesso piano.
-    </p>
-
-    <div class="grid-two">
-      <div class="card-simple">
-        <h2>Perché usarlo lato brand</h2>
-        <p>
-          Quando un creator ti propone una fee, è difficile capire se il prezzo è fuori mercato o meno.
-          ForCreators traduce follower e piattaforma in una fascia di prezzo coerente con i benchmark più diffusi online.
-        </p>
-        <ul>
-          <li>Verifica rapida: numero di follower → segmento → fascia di prezzo suggerita.</li>
-          <li>Stime di views per post e stories per capire il costo per mille impression.</li>
-          <li>Trasparenza verso il creator: stessi numeri, stessa base di partenza.</li>
-        </ul>
-      </div>
-
-      <div class="card-simple">
-        <h2>Come integrarlo nel tuo flusso</h2>
-        <p>
-          Puoi richiedere ai creator di inviarti lo screenshot del loro pannello ForCreators insieme al
-          media kit o includere ForCreators nel form di candidatura alle tue campagne.
-        </p>
-        <ul>
-          <li>Chiedi email e username con cui sono registrati su ForCreators.</li>
-          <li>Valuta il segmento: Casual, Emergente, Creator Pro o Top Agenzia.</li>
-          <li>Confronta le fee richieste con i prezzi suggeriti, prima di fare una controproposta.</li>
-        </ul>
-      </div>
-    </div>
-  </section>
-
-  <!-- FAQ -->
-  <section id="faq">
-    <h2 class="page-title">FAQ</h2>
-    <p class="page-subtitle">
-      Alcune delle domande più frequenti su ForCreators. I numeri sono indicativi ma si basano su logiche
-      e range molto usati nel settore.
-    </p>
-
-    <div class="faq-list">
-      <div class="faq-item">
-        <div class="faq-q">ForCreators garantisce che i brand pagheranno esattamente questi prezzi?</div>
-        <div class="faq-a">
-          No. ForCreators ti dà <strong>una base di riferimento</strong> coerente con i numeri più diffusi
-          online (CPM, €/1.000 follower, ecc.). Ogni collaborazione resta soggetta a trattativa diretta
-          tra creator e brand.
-        </div>
-      </div>
-
-      <div class="faq-item">
-        <div class="faq-q">Da dove vengono i fattori di moltiplicazione per views e prezzi?</div>
-        <div class="faq-a">
-          Usiamo <strong>percentuali medie di view-rate</strong> (post e stories) e regole tipo “10 €/1.000 follower”
-          per i post IG, adattate per segmento (Casual, Emergente, Pro, Agenzia) e piattaforma
-          (Instagram, TikTok, YouTube, Twitch). I valori sono allineati a quelli più ripetuti sul web.
-        </div>
-      </div>
-
-      <div class="faq-item">
-        <div class="faq-q">Posso usare ForCreators con più profili?</div>
-        <div class="faq-a">
-          Sì. Se gestisci più profili (es. agenzia), il sistema tiene conto del numero di account e ti
-          assegna il piano <strong>Top Agenzia</strong> con pricing che cresce in base ai profili gestiti.
-        </div>
-      </div>
-
-      <div class="faq-item">
-        <div class="faq-q">I brand vedono direttamente i miei dati?</div>
-        <div class="faq-a">
-          I brand non hanno accesso automatico al tuo account. Puoi condividere tu stesso screenshot o
-          estratti del tuo media kit ForCreators quando ti candidi a una campagna.
-        </div>
-      </div>
-
-      <div class="faq-item">
-        <div class="faq-q">Come vengono gestiti i miei dati?</div>
-        <div class="faq-a">
-          Salviamo i dati minimi necessari per generare il tuo media kit (email, piattaforma, username,
-          follower, profili gestiti). Nessun accesso diretto al tuo account social: inserisci solo numeri
-          e username, non le credenziali dei social.
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- CONTATTI -->
-  <section id="contatti">
-    <h2 class="page-title">Contatta ForCreators</h2>
-    <p class="page-subtitle">
-      Scrivici per collaborazioni, domande sui piani, richieste lato brand o suggerimenti sul prodotto.
-    </p>
-
-    <div class="contact-grid">
-      <div class="dash-card">
-        <h3>Modulo di contatto</h3>
-        <p style="font-size:0.85rem;color:var(--text-muted);margin-bottom:10px;">
-          Compila il form, riceveremo la tua richiesta direttamente dal sistema.
-        </p>
-
-        <div class="field">
-          <span class="field-label">Nome</span>
-          <input type="text" id="cName" placeholder="Il tuo nome" />
-        </div>
-        <div class="field">
-          <span class="field-label">Email</span>
-          <input type="email" id="cEmail" placeholder="tu@email.com" />
-        </div>
-        <div class="field">
-          <span class="field-label">Oggetto</span>
-          <input type="text" id="cSubject" placeholder="Es. Collaborazione brand" />
-        </div>
-        <div class="field">
-          <span class="field-label">Messaggio</span>
-          <textarea id="cMessage" placeholder="Raccontaci in breve la tua richiesta..."></textarea>
-        </div>
-
-        <button class="primary-button" id="contactButton">
-          <span class="icon">📨</span>
-          <span>Invia messaggio</span>
-        </button>
-        <p id="contactStatus" class="status-text"></p>
-      </div>
-
-      <div class="dash-card">
-        <h3>Cosa facciamo con i tuoi messaggi</h3>
-        <p style="font-size:0.85rem;color:var(--text-muted);margin-bottom:8px;">
-          I messaggi inviati tramite questo modulo vengono salvati nel back-end dell’app insieme a
-          nome, email e oggetto. Possiamo usarli per risponderti, migliorare il prodotto o valutare
-          nuove funzionalità.
-        </p>
-        <p style="font-size:0.85rem;color:var(--text-muted);">
-          Non vendiamo a nessuno i tuoi dati di contatto. Se sei un brand, puoi indicarci anche un
-          riferimento interno (es. “ufficio marketing”, “agenzia partner”, ecc.) per semplificare il
-          follow-up.
-        </p>
-      </div>
-    </div>
-  </section>
 </main>
 
 <footer>
@@ -1233,7 +774,6 @@
 <script>
   let currentUserId = null;
 
-  // TAB SIGNUP / LOGIN
   const tabSignup = document.getElementById("tab-signup");
   const tabLogin = document.getElementById("tab-login");
   const signupPanel = document.getElementById("signupPanel");
@@ -1253,7 +793,6 @@
     signupPanel.classList.add("hidden");
   });
 
-  // FORM ELEMENTS
   const signupButton = document.getElementById("signupButton");
   const signupStatus = document.getElementById("signupStatus");
 
@@ -1269,7 +808,7 @@
   const liEmail = document.getElementById("liEmail");
   const liPassword = document.getElementById("liPassword");
 
-  const dashboardDetailsSection = document.getElementById("dashboard-details");
+  const dashboardSection = document.getElementById("dashboardSection");
   const dashBadge = document.getElementById("dashBadge");
 
   const segmentLabel = document.getElementById("segmentLabel");
@@ -1304,14 +843,6 @@
   const tipsLevel = document.getElementById("tipsLevel");
   const tipsSummary = document.getElementById("tipsSummary");
   const tipsList = document.getElementById("tipsList");
-
-  // CONTATTI
-  const contactButton = document.getElementById("contactButton");
-  const contactStatus = document.getElementById("contactStatus");
-  const cName = document.getElementById("cName");
-  const cEmail = document.getElementById("cEmail");
-  const cSubject = document.getElementById("cSubject");
-  const cMessage = document.getElementById("cMessage");
 
   function setStatus(el, msg, type = "") {
     el.textContent = msg || "";
@@ -1391,15 +922,14 @@
     infoFollowers.textContent = data.followers.toLocaleString("it-IT");
     infoProfiles.textContent = data.profiles_count;
 
-    dashboardDetailsSection.classList.remove("hidden");
-    dashboardDetailsSection.scrollIntoView({ behavior: "smooth", block: "start" });
+    dashboardSection.classList.remove("hidden");
+    dashboardSection.scrollIntoView({ behavior: "smooth", block: "start" });
 
     if (currentUserId) {
       loadProfileTips(currentUserId);
     }
   }
 
-  // SIGNUP
   signupButton.addEventListener("click", async () => {
     const email = suEmail.value.trim();
     const password = suPassword.value.trim();
@@ -1457,7 +987,6 @@
     }
   });
 
-  // LOGIN
   loginButton.addEventListener("click", async () => {
     const email = liEmail.value.trim();
     const password = liPassword.value.trim();
@@ -1494,7 +1023,6 @@
     }
   });
 
-  // MEDIA KIT
   mediaKitButton.addEventListener("click", async () => {
     if (!currentUserId) {
       setStatus(mediaKitStatus, "Crea o carica prima un account.", "error");
@@ -1526,48 +1054,6 @@
       mkContent.classList.remove("hidden");
     } catch (err) {
       setStatus(mediaKitStatus, "Errore di rete.", "error");
-    }
-  });
-
-  // CONTATTI
-  function setContactStatus(msg, type = "") {
-    contactStatus.textContent = msg || "";
-    contactStatus.classList.remove("error", "success");
-    if (type) contactStatus.classList.add(type);
-  }
-
-  contactButton.addEventListener("click", async () => {
-    const name = cName.value.trim();
-    const email = cEmail.value.trim();
-    const subject = cSubject.value.trim();
-    const message = cMessage.value.trim();
-
-    if (!name || !email || !subject || !message) {
-      setContactStatus("Compila tutti i campi.", "error");
-      return;
-    }
-
-    setContactStatus("Invio in corso...", "");
-
-    try {
-      const res = await fetch("/api/contact", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ name, email, subject, message })
-      });
-      if (!res.ok) {
-        const data = await res.json().catch(() => ({}));
-        setContactStatus(data.detail || "Errore durante l'invio del messaggio.", "error");
-        return;
-      }
-      await res.json();
-      setContactStatus("Messaggio ricevuto. Ti risponderemo il prima possibile.", "success");
-      cName.value = "";
-      cEmail.value = "";
-      cSubject.value = "";
-      cMessage.value = "";
-    } catch (err) {
-      setContactStatus("Errore di rete. Controlla la connessione e riprova.", "error");
     }
   });
 </script>

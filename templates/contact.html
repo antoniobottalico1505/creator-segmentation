@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <title>ForCreators – Contatti</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <meta name="description" content="Contatta il team ForCreators per supporto, domande su piani e collaborazioni con brand." />
+  <meta name="description" content="Contatta ForCreators per partnership, supporto o informazioni sui piani." />
   <style>
     :root {
       --bg: #f3f4f6;
@@ -26,6 +26,7 @@
       background: radial-gradient(circle at top left, #eef2ff 0, var(--bg) 40%, #fdf2ff 100%);
       color: var(--text-main);
     }
+
     .top-bar {
       position: sticky;
       top: 0;
@@ -77,6 +78,7 @@
       gap: 12px;
       font-size: 0.82rem;
       color: var(--text-muted);
+      flex-wrap: wrap;
     }
     .top-nav a {
       padding: 4px 8px;
@@ -109,96 +111,104 @@
       background: #22c55e;
       box-shadow: 0 0 0 4px rgba(34,197,94,0.35);
     }
+    @media (max-width: 900px) {
+      .top-inner {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+      .top-right {
+        width: 100%;
+        flex-wrap: wrap;
+        justify-content: space-between;
+      }
+      .top-nav {
+        width: 100%;
+      }
+    }
+
     .main {
-      max-width: 900px;
+      max-width: 1100px;
       margin: 24px auto 32px;
       padding: 0 20px;
     }
+
     .page-title {
-      font-size: clamp(1.7rem,3vw,2rem);
+      font-size: clamp(1.8rem,3vw,2.2rem);
       font-weight: 800;
       letter-spacing: -0.05em;
       margin-bottom: 6px;
+      color: var(--text-main);
     }
     .page-subtitle {
       font-size: 0.95rem;
       color: var(--text-muted);
-      margin-bottom: 18px;
-      max-width: 32rem;
+      max-width: 42rem;
+      margin-bottom: 20px;
     }
-    .card {
-      position: relative;
-      background: radial-gradient(circle at top left,#eef2ff 0,#ffffff 40%,#ffffff 100%);
-      border-radius: var(--radius-xl);
-      padding: 18px 18px 16px;
-      border: 1px solid rgba(148,163,184,0.3);
-      box-shadow: var(--shadow);
-      overflow: hidden;
-    }
-    .card::before {
-      content: "";
-      position: absolute;
-      inset: -60%;
-      background:
-        radial-gradient(circle at top left,rgba(99,102,241,0.18),transparent 60%),
-        radial-gradient(circle at bottom right,rgba(236,72,153,0.22),transparent 65%);
-      opacity: 0.8;
-      pointer-events: none;
-    }
-    .card-inner { position: relative; z-index: 1; }
 
-    .field-group {
-      border-radius: var(--radius-lg);
-      background: rgba(255,255,255,0.9);
-      border: 1px solid rgba(148,163,184,0.45);
-      padding: 12px 12px 10px;
-      margin-bottom: 10px;
+    .contact-grid {
+      display: grid;
+      grid-template-columns: minmax(0,1.2fr) minmax(0,0.8fr);
+      gap: 18px;
     }
-    .field-group h3 {
+    @media (max-width: 900px) {
+      .contact-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .card {
+      background: #ffffff;
+      border-radius: var(--radius-lg);
+      border: 1px solid rgba(148,163,184,0.5);
+      padding: 14px 14px 12px;
+      box-shadow: 0 10px 22px rgba(15,23,42,0.08);
+      font-size: 0.85rem;
+    }
+    .card h2 {
       margin: 0 0 6px;
-      font-size: 0.9rem;
+      font-size: 0.98rem;
       color: var(--blue-dark);
     }
+    .card p {
+      margin: 0 0 8px;
+      font-size: 0.84rem;
+      color: var(--text-muted);
+    }
+
     .field {
       display: flex;
       flex-direction: column;
       gap: 3px;
-      margin-bottom: 7px;
+      margin-bottom: 8px;
       font-size: 0.8rem;
     }
     .field-label {
       font-weight: 500;
       color: var(--text-main);
     }
-    .field-hint {
-      font-size: 0.74rem;
-      color: var(--text-muted);
-    }
-    .field input {
-      border-radius: 999px;
+    .field input,
+    .field textarea {
+      border-radius: 12px;
       border: 1px solid var(--border);
-      padding: 7px 12px;
-      font-size: 0.8rem;
+      padding: 7px 10px;
+      font-size: 0.82rem;
       outline: none;
+      resize: vertical;
+      min-height: 36px;
+      font-family: inherit;
       background: #ffffff;
       transition: border-color 0.15s, box-shadow 0.15s;
     }
     .field textarea {
-      border-radius: 14px;
-      border: 1px solid var(--border);
-      padding: 8px 12px;
-      font-size: 0.8rem;
-      outline: none;
-      background: #ffffff;
-      resize: vertical;
-      min-height: 110px;
-      transition: border-color 0.15s, box-shadow 0.15s;
+      min-height: 80px;
     }
     .field input:focus,
     .field textarea:focus {
       border-color: var(--blue);
       box-shadow: 0 0 0 1px rgba(99,102,241,0.65);
     }
+
     .primary-button {
       border: none;
       cursor: pointer;
@@ -219,54 +229,21 @@
       filter: brightness(1.05);
       box-shadow: 0 16px 32px rgba(99,102,241,0.65);
     }
-    .primary-button:active {
-      transform: translateY(0);
-      box-shadow: 0 6px 16px rgba(99,102,241,0.5);
-    }
-    .primary-button .icon { font-size: 0.9rem; }
+
     .status-text {
-      font-size: 0.76rem;
+      font-size: 0.78rem;
       color: var(--text-muted);
       min-height: 1em;
-      margin-top: 6px;
+      margin-top: 4px;
     }
     .status-text.error { color: #b91c1c; }
     .status-text.success { color: #15803d; }
-
-    .contact-alt {
-      font-size: 0.8rem;
-      color: var(--text-muted);
-      margin-top: 10px;
-    }
-    .contact-alt a {
-      color: var(--blue-dark);
-      text-decoration: none;
-      font-weight: 500;
-    }
-    .contact-alt a:hover {
-      text-decoration: underline;
-    }
 
     footer {
       text-align: center;
       font-size: 0.74rem;
       color: var(--text-muted);
       padding: 10px 20px 18px;
-    }
-
-    @media (max-width: 900px) {
-      .top-inner {
-        flex-direction: column;
-        align-items: flex-start;
-      }
-      .top-right {
-        width: 100%;
-        flex-wrap: wrap;
-        justify-content: space-between;
-      }
-      .top-nav {
-        flex-wrap: wrap;
-      }
     }
   </style>
 </head>
@@ -317,46 +294,56 @@
 </header>
 
 <main class="main">
-  <h1 class="page-title">Parliamone con calma.</h1>
+  <h1 class="page-title">Contatti</h1>
   <p class="page-subtitle">
-    Domande su piani, media kit o collaborazioni con brand? Compila il modulo, ti rispondiamo direttamente via email.
+    Scrivici per partnership, idee, supporto o per usare ForCreators su un numero elevato di profili.
   </p>
 
-  <section class="card">
-    <div class="card-inner">
-      <div class="field-group">
-        <h3>Scrivici</h3>
-        <div class="field">
-          <span class="field-label">Nome e cognome</span>
-          <input type="text" id="ctName" placeholder="Come vuoi essere chiamato" />
-        </div>
-        <div class="field">
-          <span class="field-label">Email</span>
-          <span class="field-hint">Ti risponderemo qui.</span>
-          <input type="email" id="ctEmail" placeholder="tu@email.com" />
-        </div>
-        <div class="field">
-          <span class="field-label">Oggetto</span>
-          <input type="text" id="ctSubject" placeholder="Es. Domanda sul piano Emerging" />
-        </div>
-        <div class="field">
-          <span class="field-label">Messaggio</span>
-          <textarea id="ctMessage" placeholder="Raccontaci brevemente cosa ti serve."></textarea>
-        </div>
-      </div>
+  <section class="contact-grid">
+    <article class="card">
+      <h2>Mandaci un messaggio</h2>
+      <p>Compila il modulo qui sotto, ti risponderemo all’indirizzo email indicato.</p>
 
-      <button class="primary-button" id="contactSubmit">
-        <span class="icon">📨</span>
-        <span>Invia messaggio</span>
-      </button>
-      <p id="contactStatus" class="status-text"></p>
+      <form id="contactForm">
+        <div class="field">
+          <label class="field-label" for="contactName">Nome</label>
+          <input type="text" id="contactName" required />
+        </div>
+        <div class="field">
+          <label class="field-label" for="contactEmail">Email</label>
+          <input type="email" id="contactEmail" required />
+        </div>
+        <div class="field">
+          <label class="field-label" for="contactSubject">Oggetto</label>
+          <input type="text" id="contactSubject" required />
+        </div>
+        <div class="field">
+          <label class="field-label" for="contactMessage">Messaggio</label>
+          <textarea id="contactMessage" required></textarea>
+        </div>
 
-      <div class="contact-alt">
-        Preferisci usare il tuo client email?<br />
-        Scrivici a
-        <a href="mailto:hello@forcreators.app">hello@forcreators.app</a>.
-      </div>
-    </div>
+        <button type="submit" class="primary-button">
+          <span>Invia messaggio</span>
+        </button>
+        <p id="contactStatus" class="status-text"></p>
+      </form>
+    </article>
+
+    <article class="card">
+      <h2>Per chi è ForCreators</h2>
+      <p>
+        <strong>Creator & influencer:</strong> ti aiutiamo a capire quanto chiedere ai brand
+        in base ai tuoi numeri reali.
+      </p>
+      <p>
+        <strong>Agenzie & network:</strong> puoi usare ForCreators come base comune per listini
+        e campagne con più profili.
+      </p>
+      <p>
+        <strong>Brand & ecommerce:</strong> se vuoi usare ForCreators come strumento interno di
+        valutazione, scrivici e studieremo una configurazione ad hoc.
+      </p>
+    </article>
   </section>
 </main>
 
@@ -365,35 +352,28 @@
 </footer>
 
 <script>
-  const ctName = document.getElementById("ctName");
-  const ctEmail = document.getElementById("ctEmail");
-  const ctSubject = document.getElementById("ctSubject");
-  const ctMessage = document.getElementById("ctMessage");
-  const contactSubmit = document.getElementById("contactSubmit");
+  const contactForm = document.getElementById("contactForm");
   const contactStatus = document.getElementById("contactStatus");
 
-  function setContactStatus(msg, type = "") {
-    contactStatus.textContent = msg || "";
+  function setContactStatus(message, type = "") {
+    contactStatus.textContent = message || "";
     contactStatus.classList.remove("error", "success");
     if (type) contactStatus.classList.add(type);
   }
 
-  contactSubmit.addEventListener("click", async () => {
-    const name = ctName.value.trim();
-    const email = ctEmail.value.trim();
-    const subject = ctSubject.value.trim();
-    const message = ctMessage.value.trim();
+  contactForm.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    const name = document.getElementById("contactName").value.trim();
+    const email = document.getElementById("contactEmail").value.trim();
+    const subject = document.getElementById("contactSubject").value.trim();
+    const message = document.getElementById("contactMessage").value.trim();
 
     if (!name || !email || !subject || !message) {
-      setContactStatus("Compila tutti i campi prima di inviare.", "error");
-      return;
-    }
-    if (!email.includes("@") || !email.includes(".")) {
-      setContactStatus("Inserisci un'email valida.", "error");
+      setContactStatus("Compila tutti i campi.", "error");
       return;
     }
 
-    setContactStatus("Invio del messaggio in corso...", "");
+    setContactStatus("Invio del messaggio in corso...");
 
     try {
       const res = await fetch("/api/contact", {
@@ -403,14 +383,13 @@
       });
       if (!res.ok) {
         const data = await res.json().catch(() => ({}));
-        setContactStatus(data.detail || "Errore durante l'invio del messaggio.", "error");
+        setContactStatus(data.detail || "Errore nell'invio del messaggio.", "error");
         return;
       }
-      const data = await res.json();
-      setContactStatus("Messaggio inviato. Ti risponderemo via email appena possibile.", "success");
-      ctMessage.value = "";
+      setContactStatus("Messaggio ricevuto, ti risponderemo via email.", "success");
+      contactForm.reset();
     } catch (err) {
-      setContactStatus("Errore di rete. Controlla la connessione e riprova.", "error");
+      setContactStatus("Errore di rete. Riprova tra poco.", "error");
     }
   });
 </script>

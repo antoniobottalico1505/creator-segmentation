@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <title>ForCreators – Per brand e agenzie</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <meta name="description" content="ForCreators per brand e agenzie: standardizzi compensi, confronti creator e costruisci pacchetti chiari." />
+  <meta name="description" content="ForCreators per brand e agenzie: capire il valore di un profilo e impostare budget realistici." />
   <style>
     :root {
       --bg: #f3f4f6;
@@ -26,7 +26,7 @@
       background: radial-gradient(circle at top left, #eef2ff 0, var(--bg) 40%, #fdf2ff 100%);
       color: var(--text-main);
     }
-    a { color: inherit; text-decoration: none; }
+
     .top-bar {
       position: sticky;
       top: 0;
@@ -58,147 +58,145 @@
       flex-direction: column;
     }
     .brand-name {
-  font-size: 1.05rem;
-  font-weight: 700;
-  letter-spacing: 0;         
-  color: var(--blue-dark);     
-}
+      font-size: 1.05rem;
+      font-weight: 700;
+      letter-spacing: 0;
+      color: var(--blue-dark);
+    }
     .brand-sub {
       font-size: 0.78rem;
       color: var(--text-muted);
     }
+    .top-right {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
     .top-nav {
       display: flex;
       align-items: center;
-      gap: 14px;
+      gap: 12px;
       font-size: 0.82rem;
       color: var(--text-muted);
+      flex-wrap: wrap;
     }
     .top-nav a {
       padding: 4px 8px;
       border-radius: 999px;
+      text-decoration: none;
+      color: inherit;
     }
     .top-nav a.active {
       background: rgba(99,102,241,0.12);
       color: var(--blue-dark);
       font-weight: 600;
     }
-    .top-nav a.cta {
-      background: linear-gradient(135deg,var(--blue),var(--blue-dark));
-      color: #fff;
-      font-weight: 600;
-      padding: 6px 12px;
-      box-shadow: 0 10px 20px rgba(99,102,241,0.4);
+    .top-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 4px 10px;
+      border-radius: 999px;
+      background: rgba(99,102,241,0.08);
+      border: 1px solid rgba(99,102,241,0.18);
+      font-size: 0.75rem;
+      color: var(--blue-dark);
+      text-transform: uppercase;
+      letter-spacing: 0.07em;
     }
+    .top-pill-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 999px;
+      background: #22c55e;
+      box-shadow: 0 0 0 4px rgba(34,197,94,0.35);
+    }
+    @media (max-width: 900px) {
+      .top-inner {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+      .top-right {
+        width: 100%;
+        flex-wrap: wrap;
+        justify-content: space-between;
+      }
+      .top-nav {
+        width: 100%;
+      }
+    }
+
     .main {
       max-width: 1100px;
       margin: 24px auto 32px;
       padding: 0 20px;
     }
-    .hero-title {
-      font-size: clamp(2.1rem,4vw,2.5rem);
-      line-height: 1.1;
+
+    .page-title {
+      font-size: clamp(1.8rem,3vw,2.2rem);
       font-weight: 800;
       letter-spacing: -0.05em;
-      margin-bottom: 10px;
+      margin-bottom: 6px;
       color: var(--text-main);
     }
-    .hero-highlight {
-      background: linear-gradient(120deg, var(--blue), var(--accent));
-      -webkit-background-clip: text;
-      color: transparent;
-    }
-    .hero-subtitle {
+    .page-subtitle {
       font-size: 0.95rem;
       color: var(--text-muted);
-      max-width: 40rem;
+      max-width: 42rem;
       margin-bottom: 20px;
     }
-    .grid {
+
+    .benefit-grid {
       display: grid;
-      grid-template-columns: minmax(0,1.3fr) minmax(0,0.9fr);
-      gap: 20px;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 16px;
     }
-    @media (max-width: 900px) {
-      .grid { grid-template-columns: 1fr; }
-    }
-    .card {
+    .benefit-card {
       background: #ffffff;
       border-radius: var(--radius-lg);
       border: 1px solid rgba(148,163,184,0.5);
       padding: 14px 14px 12px;
-      box-shadow: 0 16px 32px rgba(15,23,42,0.08);
+      box-shadow: 0 10px 22px rgba(15,23,42,0.08);
       font-size: 0.85rem;
     }
-    .card-title {
-      font-size: 0.95rem;
-      font-weight: 700;
-      color: var(--blue-dark);
-      margin-bottom: 4px;
-    }
-    .card-subtitle {
-      font-size: 0.8rem;
-      color: var(--text-muted);
-      margin-bottom: 8px;
-    }
-    .list {
-      list-style: none;
-      padding: 0;
-      margin: 6px 0 4px;
-      font-size: 0.8rem;
-      color: var(--text-muted);
-    }
-    .list li {
-      display: flex;
-      gap: 6px;
-      margin-bottom: 4px;
-    }
-    .bullet {
-      width: 14px;
-      height: 14px;
-      border-radius: 999px;
-      background: rgba(99,102,241,0.08);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 0.65rem;
-      color: var(--blue-dark);
-      flex-shrink: 0;
-    }
-    .tag {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      border-radius: 999px;
-      padding: 3px 9px;
-      font-size: 0.74rem;
-      background: rgba(15,23,42,0.03);
-      border: 1px solid rgba(148,163,184,0.6);
-      color: var(--text-muted);
-      margin-bottom: 6px;
-    }
-    .primary-button {
-      border: none;
-      cursor: pointer;
-      border-radius: 999px;
-      padding: 8px 16px;
-      font-size: 0.86rem;
+    .benefit-title {
       font-weight: 600;
+      margin-bottom: 4px;
+      color: var(--text-main);
+    }
+    .benefit-text {
+      font-size: 0.84rem;
+      color: var(--text-muted);
+    }
+
+    .section-title {
+      margin: 22px 0 8px;
+      font-size: 1rem;
+      font-weight: 600;
+      color: var(--blue-dark);
+    }
+    .mini-list {
+      padding-left: 18px;
+      font-size: 0.8rem;
+      color: var(--text-muted);
+    }
+    .mini-list li { margin-bottom: 4px; }
+
+    .primary-link {
       display: inline-flex;
       align-items: center;
       gap: 6px;
+      padding: 8px 14px;
+      border-radius: 999px;
+      border: none;
       background: linear-gradient(135deg,var(--blue),var(--blue-dark));
       color: #ffffff;
-      box-shadow: 0 12px 26px rgba(99,102,241,0.55);
-      transition: transform 0.1s, box-shadow 0.1s, filter 0.1s;
-      margin-top: 16px;
+      text-decoration: none;
+      font-size: 0.82rem;
+      font-weight: 600;
+      box-shadow: 0 12px 26px rgba(99,102,241,0.5);
     }
-    .primary-button:hover {
-      transform: translateY(-1px);
-      filter: brightness(1.05);
-      box-shadow: 0 16px 32px rgba(99,102,241,0.65);
-    }
-    .primary-button .icon { font-size: 0.9rem; }
+
     footer {
       text-align: center;
       font-size: 0.74rem;
@@ -211,116 +209,103 @@
 <header class="top-bar">
   <div class="top-inner">
     <div class="brand">
-      <a href="/">
-       <svg width="40" height="40" viewBox="0 0 40 40" class="logo-svg" aria-hidden="true">
-  <defs>
-    <linearGradient id="fcGradient" x1="0" y1="0" x2="1" y2="1">
-      <!-- stesso blu e stesso rosa della hero -->
-      <stop offset="0%" stop-color="#6366f1" />   <!-- var(--blue) -->
-      <stop offset="100%" stop-color="#ec4899" /> <!-- var(--accent) -->
-    </linearGradient>
-  </defs>
-  <rect x="0" y="0" width="40" height="40" rx="12" fill="url(#fcGradient)" />
-  <text
-    x="50%"
-    y="50%"
-    text-anchor="middle"
-    dominant-baseline="middle"
-    fill="#ffffff"
-    font-size="16"
-    font-family="system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif"
-    font-weight="700">
-    fc
-  </text>
-</svg>
-      </a>
+      <svg width="40" height="40" viewBox="0 0 40 40" class="logo-svg" aria-hidden="true">
+        <defs>
+          <linearGradient id="fcGradient" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0%" stop-color="#6366f1" />
+            <stop offset="100%" stop-color="#ec4899" />
+          </linearGradient>
+        </defs>
+        <rect x="0" y="0" width="40" height="40" rx="12" fill="url(#fcGradient)" />
+        <text
+          x="50%"
+          y="50%"
+          text-anchor="middle"
+          dominant-baseline="middle"
+          fill="#ffffff"
+          font-size="16"
+          font-family="system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif"
+          font-weight="700">
+          fc
+        </text>
+      </svg>
       <div class="brand-text">
         <div class="brand-name">ForCreators</div>
         <div class="brand-sub">Da profilo casual a top agency, con un solo strumento.</div>
       </div>
     </div>
-    <nav class="top-nav">
-      <a href="/">Dashboard</a>
-      <a href="/pricing">Pricing</a>
-      <a href="/come-funziona">Come funziona</a>
-      <a href="/per-brand" class="active">Per brand</a>
-      <a href="/faq">FAQ</a>
-      <a href="/contatti" class="cta">Contatti</a>
-    </nav>
+    <div class="top-right">
+      <nav class="top-nav">
+        <a href="/">Dashboard</a>
+        <a href="/pricing">Pricing</a>
+        <a href="/come-funziona">Come funziona</a>
+        <a href="/per-brand" class="active">Per brand</a>
+        <a href="/faq">FAQ</a>
+        <a href="/contatti">Contatti</a>
+      </nav>
+      <div class="top-pill">
+        <span class="top-pill-dot"></span>
+        <span>Pricing intelligence per social profile</span>
+      </div>
+    </div>
   </div>
 </header>
 
 <main class="main">
-  <section class="grid">
-    <div>
-      <h1 class="hero-title">
-        Per brand e
-        <span class="hero-highlight">agenzie</span>.
-      </h1>
-      <p class="hero-subtitle">
-        ForCreators non nasce solo per chi crea contenuti, ma anche per chi
-        li acquista. Se gestisci budget, campagne o un portafoglio di creator,
-        hai bisogno di <strong>numeri coerenti</strong> e di un modo rapido per
-        capire se un compenso ha senso oppure no.
+  <h1 class="page-title">ForCreators per brand e agenzie</h1>
+  <p class="page-subtitle">
+    ForCreators aiuta a capire se il prezzo richiesto da un creator è allineato ai numeri reali,
+    usando follower, stime di views e standard di mercato.
+  </p>
+
+  <section class="benefit-grid">
+    <article class="benefit-card">
+      <h2 class="benefit-title">Capire il "peso" di un profilo</h2>
+      <p class="benefit-text">
+        Ogni creator registrato viene classificato in uno dei segmenti ForCreators
+        (Casual, Emergente, Creator Pro, Top Agenzia) in base ai follower e al tipo di utilizzo
+        dei social. Questo ti permette di capire subito la fascia di valore.
       </p>
-
-      <div class="card">
-        <div class="card-title">Perché usare ForCreators lato brand</div>
-        <p class="card-subtitle">
-          Non è l’ennesima piattaforma per “scoprire influencer”, ma
-          uno strumento per <strong>normalizzare le aspettative</strong> su
-          tariffe e segmenti.
-        </p>
-        <ul class="list">
-          <li>
-            <span class="bullet">1</span>
-            <span>Ogni creator viene classificato in Casual, Emergente, Pro o Agenzia in base ai numeri.</span>
-          </li>
-          <li>
-            <span class="bullet">2</span>
-            <span>Vedi subito se quello che chiede è in linea con il suo segmento.</span>
-          </li>
-          <li>
-            <span class="bullet">3</span>
-            <span>Puoi costruire pacchetti comparabili tra creator diversi.</span>
-          </li>
-        </ul>
-      </div>
-    </div>
-
-    <div>
-      <div class="card">
-        <div class="tag">Per agenzie, network, talent manager</div>
-        <div class="card-title">Dashboard multi-profilo</div>
-        <p class="card-subtitle">
-          Ogni profilo ha il suo media kit, ma tu hai anche una vista generale
-          sull’intero portafoglio creator.
-        </p>
-        <ul class="list">
-          <li><span class="bullet">✓</span><span>Fino a 2 profili con il piano da 99€/mese.</span></li>
-          <li><span class="bullet">✓</span><span>3 profili a 199€/mese, 4 profili a 299€/mese.</span></li>
-          <li><span class="bullet">✓</span><span>5+ profili con piano da 399€/mese.</span></li>
-        </ul>
-      </div>
-
-      <div class="card">
-        <div class="card-title">Use case tipici</div>
-        <ul class="list">
-          <li><span class="bullet">●</span><span>Stai valutando 10 creator per una campagna: ForCreators ti dice chi è Casual, chi Emergente, chi Pro.</span></li>
-          <li><span class="bullet">●</span><span>Devi rispondere a richieste economiche molto diverse: confronti velocemente con il range suggerito.</span></li>
-          <li><span class="bullet">●</span><span>Vuoi avere una base dati interna per i tuoi talent, senza creare mille fogli Excel.</span></li>
-        </ul>
-        <a href="/contatti" class="primary-button">
-          <span class="icon">🤝</span>
-          <span>Parla con noi per un accesso business</span>
-        </a>
-      </div>
-    </div>
+    </article>
+    <article class="benefit-card">
+      <h2 class="benefit-title">Prezzi suggeriti realistici</h2>
+      <p class="benefit-text">
+        Il media kit generato mostra prezzi suggeriti per post, stories e bundle. Puoi usarli come
+        riferimento per negoziare, impostare budget e confrontare richieste diverse.
+      </p>
+    </article>
+    <article class="benefit-card">
+      <h2 class="benefit-title">Standardizzazione interna</h2>
+      <p class="benefit-text">
+        Per agenzie e network, segmentare i creator in fasce omogenee (Casual, Emerging, Pro)
+        rende più semplice definire listini coerenti, offerte ricorrenti e pacchetti scalabili.
+      </p>
+    </article>
+    <article class="benefit-card">
+      <h2 class="benefit-title">Trasparenza verso i creator</h2>
+      <p class="benefit-text">
+        Invece di “tirare numeri a caso”, potete adottare ForCreators come base condivisa per il
+        pricing, facilitando la relazione con creator e micro influencer in portfolio.
+      </p>
+    </article>
   </section>
+
+  <h2 class="section-title">Casi d’uso tipici</h2>
+  <ul class="mini-list">
+    <li>Valutare se il preventivo di un creator è coerente con i suoi numeri.</li>
+    <li>Creare fasce di compenso standard per le campagne UGC.</li>
+    <li>Gestire un roster di profili e mantenere prezzi allineati tra loro.</li>
+    <li>Dare ai creator uno strumento chiaro da mostrare ai brand partner.</li>
+  </ul>
+
+  <p style="margin-top:18px; font-size:0.85rem; color:var(--text-muted);">
+    Se sei un brand o un’agenzia e vuoi usare ForCreators in modo esteso, scrivici dalla sezione
+    <a href="/contatti" style="color:var(--blue-dark); font-weight:600;">Contatti</a>.
+  </p>
 </main>
 
 <footer>
-  © ForCreators. Non sostituisce i contratti o le trattative, ma ti aiuta a partire da numeri coerenti.
+  © ForCreators. Segmenti e prezzi indicativi basati su follower e stime di reach.
 </footer>
 </body>
 </html>

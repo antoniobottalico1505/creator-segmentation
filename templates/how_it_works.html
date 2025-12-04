@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <title>ForCreators – Come funziona</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <meta name="description" content="Come funziona ForCreators: segmentazione automatica del profilo social e media kit con prezzi suggeriti." />
+  <meta name="description" content="Come funziona ForCreators: registrazione, segmentazione, media kit e consigli per il profilo." />
   <style>
     :root {
       --bg: #f3f4f6;
@@ -26,7 +26,7 @@
       background: radial-gradient(circle at top left, #eef2ff 0, var(--bg) 40%, #fdf2ff 100%);
       color: var(--text-main);
     }
-    a { color: inherit; text-decoration: none; }
+
     .top-bar {
       position: sticky;
       top: 0;
@@ -58,149 +58,156 @@
       flex-direction: column;
     }
     .brand-name {
-  font-size: 1.05rem;
-  font-weight: 700;
-  letter-spacing: 0;           
-  color: var(--blue-dark);     
-}
+      font-size: 1.05rem;
+      font-weight: 700;
+      letter-spacing: 0;
+      color: var(--blue-dark);
+    }
     .brand-sub {
       font-size: 0.78rem;
       color: var(--text-muted);
     }
+    .top-right {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
     .top-nav {
       display: flex;
       align-items: center;
-      gap: 14px;
+      gap: 12px;
       font-size: 0.82rem;
       color: var(--text-muted);
+      flex-wrap: wrap;
     }
     .top-nav a {
       padding: 4px 8px;
       border-radius: 999px;
+      text-decoration: none;
+      color: inherit;
     }
     .top-nav a.active {
       background: rgba(99,102,241,0.12);
       color: var(--blue-dark);
       font-weight: 600;
     }
-    .top-nav a.cta {
-      background: linear-gradient(135deg,var(--blue),var(--blue-dark));
-      color: #fff;
-      font-weight: 600;
-      padding: 6px 12px;
-      box-shadow: 0 10px 20px rgba(99,102,241,0.4);
+    .top-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 4px 10px;
+      border-radius: 999px;
+      background: rgba(99,102,241,0.08);
+      border: 1px solid rgba(99,102,241,0.18);
+      font-size: 0.75rem;
+      color: var(--blue-dark);
+      text-transform: uppercase;
+      letter-spacing: 0.07em;
     }
+    .top-pill-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 999px;
+      background: #22c55e;
+      box-shadow: 0 0 0 4px rgba(34,197,94,0.35);
+    }
+    @media (max-width: 900px) {
+      .top-inner {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+      .top-right {
+        width: 100%;
+        flex-wrap: wrap;
+        justify-content: space-between;
+      }
+      .top-nav {
+        width: 100%;
+      }
+    }
+
     .main {
       max-width: 1100px;
       margin: 24px auto 32px;
       padding: 0 20px;
     }
-    .hero-title {
-      font-size: clamp(2.1rem,4vw,2.5rem);
-      line-height: 1.1;
+
+    .page-title {
+      font-size: clamp(1.8rem,3vw,2.2rem);
       font-weight: 800;
       letter-spacing: -0.05em;
-      margin-bottom: 10px;
+      margin-bottom: 6px;
       color: var(--text-main);
     }
-    .hero-highlight {
-      background: linear-gradient(120deg, var(--blue), var(--accent));
-      -webkit-background-clip: text;
-      color: transparent;
-    }
-    .hero-subtitle {
+    .page-subtitle {
       font-size: 0.95rem;
       color: var(--text-muted);
-      max-width: 36rem;
+      max-width: 42rem;
       margin-bottom: 20px;
     }
+
     .steps-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(230px,1fr));
+      grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
       gap: 16px;
-      margin-top: 10px;
     }
-    .card {
+    .step-card {
       background: #ffffff;
       border-radius: var(--radius-lg);
       border: 1px solid rgba(148,163,184,0.5);
       padding: 14px 14px 12px;
-      box-shadow: 0 16px 32px rgba(15,23,42,0.08);
+      box-shadow: 0 10px 22px rgba(15,23,42,0.08);
       font-size: 0.85rem;
     }
-    .step-badge {
-      width: 24px;
-      height: 24px;
+    .step-number {
+      width: 22px;
+      height: 22px;
       border-radius: 999px;
-      background: rgba(99,102,241,0.12);
-      display: flex;
+      background: rgba(99,102,241,0.1);
+      display: inline-flex;
       align-items: center;
       justify-content: center;
       font-size: 0.8rem;
       color: var(--blue-dark);
+      margin-bottom: 6px;
+    }
+    .step-title {
+      font-weight: 600;
       margin-bottom: 4px;
+      color: var(--text-main);
     }
-    .card-title {
-      font-size: 0.95rem;
-      font-weight: 700;
-      color: var(--blue-dark);
-      margin-bottom: 4px;
-    }
-    .card-subtitle {
-      font-size: 0.8rem;
+    .step-text {
+      font-size: 0.84rem;
       color: var(--text-muted);
-      margin-bottom: 8px;
     }
-    .mini {
-      font-size: 0.76rem;
-      color: var(--text-muted);
-      margin-top: 2px;
-    }
+
     .section-title {
-      margin: 26px 0 8px;
+      margin: 22px 0 8px;
       font-size: 1rem;
       font-weight: 600;
       color: var(--blue-dark);
-      display: flex;
-      align-items: center;
-      gap: 8px;
     }
-    .section-title .badge {
-      font-size: 0.72rem;
-      padding: 2px 7px;
-      border-radius: 999px;
-      border: 1px solid rgba(148,163,184,0.7);
-      text-transform: uppercase;
-      letter-spacing: 0.08em;
-      color: var(--text-muted);
-    }
-    .text-muted {
+    .mini-list {
+      padding-left: 18px;
       font-size: 0.8rem;
       color: var(--text-muted);
-      max-width: 42rem;
     }
-    .primary-button {
-      border: none;
-      cursor: pointer;
-      border-radius: 999px;
-      padding: 8px 16px;
-      font-size: 0.86rem;
-      font-weight: 600;
+    .mini-list li { margin-bottom: 4px; }
+
+    .primary-link {
       display: inline-flex;
       align-items: center;
       gap: 6px;
+      padding: 8px 14px;
+      border-radius: 999px;
+      border: none;
       background: linear-gradient(135deg,var(--blue),var(--blue-dark));
       color: #ffffff;
-      box-shadow: 0 12px 26px rgba(99,102,241,0.55);
-      transition: transform 0.1s, box-shadow 0.1s, filter 0.1s;
-      margin-top: 16px;
+      text-decoration: none;
+      font-size: 0.82rem;
+      font-weight: 600;
+      box-shadow: 0 12px 26px rgba(99,102,241,0.5);
     }
-    .primary-button:hover {
-      transform: translateY(-1px);
-      filter: brightness(1.05);
-      box-shadow: 0 16px 32px rgba(99,102,241,0.65);
-    }
-    .primary-button .icon { font-size: 0.9rem; }
     footer {
       text-align: center;
       font-size: 0.74rem;
@@ -213,128 +220,116 @@
 <header class="top-bar">
   <div class="top-inner">
     <div class="brand">
-      <a href="/">
-        <svg width="40" height="40" viewBox="0 0 40 40" class="logo-svg" aria-hidden="true">
-  <defs>
-    <linearGradient id="fcGradient" x1="0" y1="0" x2="1" y2="1">
-      <!-- stesso blu e stesso rosa della hero -->
-      <stop offset="0%" stop-color="#6366f1" />   <!-- var(--blue) -->
-      <stop offset="100%" stop-color="#ec4899" /> <!-- var(--accent) -->
-    </linearGradient>
-  </defs>
-  <rect x="0" y="0" width="40" height="40" rx="12" fill="url(#fcGradient)" />
-  <text
-    x="50%"
-    y="50%"
-    text-anchor="middle"
-    dominant-baseline="middle"
-    fill="#ffffff"
-    font-size="16"
-    font-family="system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif"
-    font-weight="700">
-    fc
-  </text>
-</svg>
-      </a>
+      <svg width="40" height="40" viewBox="0 0 40 40" class="logo-svg" aria-hidden="true">
+        <defs>
+          <linearGradient id="fcGradient" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0%" stop-color="#6366f1" />
+            <stop offset="100%" stop-color="#ec4899" />
+          </linearGradient>
+        </defs>
+        <rect x="0" y="0" width="40" height="40" rx="12" fill="url(#fcGradient)" />
+        <text
+          x="50%"
+          y="50%"
+          text-anchor="middle"
+          dominant-baseline="middle"
+          fill="#ffffff"
+          font-size="16"
+          font-family="system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif"
+          font-weight="700">
+          fc
+        </text>
+      </svg>
       <div class="brand-text">
         <div class="brand-name">ForCreators</div>
         <div class="brand-sub">Da profilo casual a top agency, con un solo strumento.</div>
       </div>
     </div>
-    <nav class="top-nav">
-      <a href="/">Dashboard</a>
-      <a href="/pricing">Pricing</a>
-      <a href="/come-funziona" class="active">Come funziona</a>
-      <a href="/per-brand">Per brand</a>
-      <a href="/faq">FAQ</a>
-      <a href="/contatti" class="cta">Contatti</a>
-    </nav>
+    <div class="top-right">
+      <nav class="top-nav">
+        <a href="/">Dashboard</a>
+        <a href="/pricing">Pricing</a>
+        <a href="/come-funziona" class="active">Come funziona</a>
+        <a href="/per-brand">Per brand</a>
+        <a href="/faq">FAQ</a>
+        <a href="/contatti">Contatti</a>
+      </nav>
+      <div class="top-pill">
+        <span class="top-pill-dot"></span>
+        <span>Pricing intelligence per social profile</span>
+      </div>
+    </div>
   </div>
 </header>
 
 <main class="main">
-  <section>
-    <h1 class="hero-title">
-      Come funziona
-      <span class="hero-highlight">ForCreators</span>.
-    </h1>
-    <p class="hero-subtitle">
-      L’idea è semplice: normalizziamo il caos dei compensi social.
-      Tu inserisci i tuoi dati reali (follower, piattaforma, profili gestiti),
-      noi ti restituiamo un segmento e un media kit con range di prezzo sensati.
-    </p>
+  <h1 class="page-title">Come funziona ForCreators</h1>
+  <p class="page-subtitle">
+    In pochi step passi da “non so quanto chiedere” a “questo è il mio listino base”.
+    Il sistema lavora sui tuoi follower, sulla piattaforma e sul segmento in cui rientri.
+  </p>
 
-    <div class="steps-grid">
-      <div class="card">
-        <div class="step-badge">1</div>
-        <div class="card-title">Registrazione rapida</div>
-        <p class="card-subtitle">
-          Crei il tuo account con email e password, scegli la piattaforma principale
-          (Instagram, TikTok, YouTube, Twitch, altro) e inserisci il tuo @username.
-        </p>
-        <p class="mini">
-          In qualunque momento potrai aggiornare follower e profili gestiti.
-        </p>
-      </div>
+  <section class="steps-grid">
+    <article class="step-card">
+      <div class="step-number">1</div>
+      <h2 class="step-title">Registrazione</h2>
+      <p class="step-text">
+        Inserisci email, password, piattaforma principale (Instagram, TikTok, YouTube, Twitch)
+        e il totale follower che hai sui vari social. Se gestisci più profili, indica anche il
+        numero di account che segui.
+      </p>
+    </article>
 
-      <div class="card">
-        <div class="step-badge">2</div>
-        <div class="card-title">Inserisci i numeri chiave</div>
-        <p class="card-subtitle">
-          Indichi i follower complessivi (sommando approssimativamente tutte le
-          piattaforme) e quanti profili gestisci se fai parte di un team o agenzia.
-        </p>
-        <p class="mini">
-          Nessun collegamento complesso alle API: tu controlli cosa inserire.
-        </p>
-      </div>
+    <article class="step-card">
+      <div class="step-number">2</div>
+      <h2 class="step-title">Segmentazione automatica</h2>
+      <p class="step-text">
+        ForCreators ti classifica come <strong>Casual</strong>, <strong>Emergente</strong>,
+        <strong>Creator Pro</strong> o <strong>Top Agenzia</strong> in base ai follower e ai profili
+        gestiti. Ogni segmento ha un piano e una logica prezzi dedicata.
+      </p>
+    </article>
 
-      <div class="card">
-        <div class="step-badge">3</div>
-        <div class="card-title">Algoritmo di segmentazione</div>
-        <p class="card-subtitle">
-          ForCreators ti assegna automaticamente a uno dei segmenti:
-          <strong>Casual, Emergente, Creator Pro o Top Agenzia</strong>,
-          con un piano coerente ai tuoi numeri.
-        </p>
-        <p class="mini">
-          Le regole possono essere affinate nel tempo in base all’uso reale.
-        </p>
-      </div>
+    <article class="step-card">
+      <div class="step-number">3</div>
+      <h2 class="step-title">Media kit & prezzi</h2>
+      <p class="step-text">
+        Con un click generi il tuo media kit: stime di views per post e stories, e
+        <strong>prezzi suggeriti esatti</strong> per singolo post, singola story e pacchetto
+        post + 3 stories, tarati sulla piattaforma che usi.
+      </p>
+    </article>
 
-      <div class="card">
-        <div class="step-badge">4</div>
-        <div class="card-title">Media kit e prezzi suggeriti</div>
-        <p class="card-subtitle">
-          Generi un media kit con views stimate e range di prezzo consigliati
-          per post singolo, story singola e pacchetti post + stories.
-        </p>
-        <p class="mini">
-          Non è un tariffario rigido: è una base solida per trattare con brand e agenzie.
-        </p>
-      </div>
-    </div>
-
-    <h2 class="section-title">
-      Cosa succede per brand e agenzie
-      <span class="badge">Lato business</span>
-    </h2>
-    <p class="text-muted">
-      Un brand può usare ForCreators per valutare in modo omogeneo profili diversi
-      (Casual, Emergente, Pro, Agenzia) e capire se un compenso richiesto è in linea
-      rispetto al segmento. Le agenzie possono gestire più account e avere una
-      visione di portafoglio, non solo del singolo creator.
-    </p>
-
-    <a href="/pricing" class="primary-button">
-      <span class="icon">💸</span>
-      <span>Vai ai piani e scegli il tuo segmento</span>
-    </a>
+    <article class="step-card">
+      <div class="step-number">4</div>
+      <h2 class="step-title">Consigli profilo</h2>
+      <p class="step-text">
+        Oltre ai numeri, ricevi consigli pratici diversi se sei Casual, Emergente, Pro o Agenzia:
+        come sistemare bio, highlights, frequenza di pubblicazione e come presentarti ai brand.
+      </p>
+    </article>
   </section>
+
+  <h2 class="section-title">Cosa succede nella Dashboard</h2>
+  <ul class="mini-list">
+    <li>Vedi il tuo segmento aggiornato e il piano consigliato (gratis, emergente, pro o agenzia).</li>
+    <li>Hai una vista chiara su follower, piattaforma e profili gestiti.</li>
+    <li>Generi in pochi secondi il media kit aggiornato.</li>
+    <li>Puoi tornare quando vuoi e rigenerare tutto dopo una crescita di follower.</li>
+  </ul>
+
+  <p style="margin-top:18px; font-size:0.85rem; color:var(--text-muted);">
+    Nessun vincolo: inizi dal piano Casual gratuito e passi ai piani a pagamento solo quando ha senso
+    per i tuoi numeri.
+  </p>
+
+  <p style="margin-top:10px;">
+    <a href="/" class="primary-link">Vai alla Dashboard ForCreators</a>
+  </p>
 </main>
 
 <footer>
-  © ForCreators. Segmentazione automatica pensata per chi crea contenuti, non per complicarti la vita.
+  © ForCreators. Segmenti e prezzi indicativi basati su follower e stime di reach.
 </footer>
 </body>
 </html>

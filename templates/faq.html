@@ -2,9 +2,9 @@
 <html lang="it">
 <head>
   <meta charset="UTF-8" />
-  <title>ForCreators – Domande frequenti</title>
+  <title>ForCreators – FAQ</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <meta name="description" content="Domande frequenti su ForCreators: segmenti, prezzi, cancellazione, uso per brand e agenzie." />
+  <meta name="description" content="Domande frequenti su ForCreators: piani, prezzi e funzionamento." />
   <style>
     :root {
       --bg: #f3f4f6;
@@ -26,7 +26,7 @@
       background: radial-gradient(circle at top left, #eef2ff 0, var(--bg) 40%, #fdf2ff 100%);
       color: var(--text-main);
     }
-    a { color: inherit; text-decoration: none; }
+
     .top-bar {
       position: sticky;
       top: 0;
@@ -58,120 +58,117 @@
       flex-direction: column;
     }
     .brand-name {
-  font-size: 1.05rem;
-  font-weight: 700;
-  letter-spacing: 0;          
-  color: var(--blue-dark);    
-}
+      font-size: 1.05rem;
+      font-weight: 700;
+      letter-spacing: 0;
+      color: var(--blue-dark);
+    }
     .brand-sub {
       font-size: 0.78rem;
       color: var(--text-muted);
     }
+    .top-right {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
     .top-nav {
       display: flex;
       align-items: center;
-      gap: 14px;
+      gap: 12px;
       font-size: 0.82rem;
       color: var(--text-muted);
+      flex-wrap: wrap;
     }
     .top-nav a {
       padding: 4px 8px;
       border-radius: 999px;
+      text-decoration: none;
+      color: inherit;
     }
     .top-nav a.active {
       background: rgba(99,102,241,0.12);
       color: var(--blue-dark);
       font-weight: 600;
     }
-    .top-nav a.cta {
-      background: linear-gradient(135deg,var(--blue),var(--blue-dark));
-      color: #fff;
-      font-weight: 600;
-      padding: 6px 12px;
-      box-shadow: 0 10px 20px rgba(99,102,241,0.4);
+    .top-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 4px 10px;
+      border-radius: 999px;
+      background: rgba(99,102,241,0.08);
+      border: 1px solid rgba(99,102,241,0.18);
+      font-size: 0.75rem;
+      color: var(--blue-dark);
+      text-transform: uppercase;
+      letter-spacing: 0.07em;
     }
+    .top-pill-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 999px;
+      background: #22c55e;
+      box-shadow: 0 0 0 4px rgba(34,197,94,0.35);
+    }
+    @media (max-width: 900px) {
+      .top-inner {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+      .top-right {
+        width: 100%;
+        flex-wrap: wrap;
+        justify-content: space-between;
+      }
+      .top-nav {
+        width: 100%;
+      }
+    }
+
     .main {
       max-width: 1100px;
       margin: 24px auto 32px;
       padding: 0 20px;
     }
-    .hero-title {
-      font-size: clamp(2.1rem,4vw,2.5rem);
-      line-height: 1.1;
+
+    .page-title {
+      font-size: clamp(1.8rem,3vw,2.2rem);
       font-weight: 800;
       letter-spacing: -0.05em;
-      margin-bottom: 10px;
+      margin-bottom: 6px;
       color: var(--text-main);
     }
-    .hero-highlight {
-      background: linear-gradient(120deg, var(--blue), var(--accent));
-      -webkit-background-clip: text;
-      color: transparent;
-    }
-    .hero-subtitle {
+    .page-subtitle {
       font-size: 0.95rem;
       color: var(--text-muted);
-      max-width: 40rem;
+      max-width: 42rem;
       margin-bottom: 20px;
     }
+
     .faq-list {
-      display: grid;
-      grid-template-columns: minmax(0,1.2fr) minmax(0,0.8fr);
-      gap: 20px;
-    }
-    @media (max-width: 900px) {
-      .faq-list { grid-template-columns: 1fr; }
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
     }
     .faq-item {
       background: #ffffff;
       border-radius: var(--radius-lg);
       border: 1px solid rgba(148,163,184,0.5);
-      padding: 12px 14px 10px;
-      box-shadow: 0 12px 26px rgba(15,23,42,0.08);
+      padding: 12px 14px;
+      box-shadow: 0 10px 18px rgba(15,23,42,0.06);
       font-size: 0.85rem;
-      margin-bottom: 10px;
     }
-    .faq-q {
+    .faq-question {
       font-weight: 600;
-      color: var(--blue-dark);
       margin-bottom: 4px;
-      font-size: 0.9rem;
+      color: var(--text-main);
     }
-    .faq-a {
-      font-size: 0.8rem;
+    .faq-answer {
+      font-size: 0.84rem;
       color: var(--text-muted);
     }
-    .side-card {
-      background: #ffffff;
-      border-radius: var(--radius-lg);
-      border: 1px solid rgba(148,163,184,0.5);
-      padding: 12px 14px 10px;
-      box-shadow: 0 12px 26px rgba(15,23,42,0.08);
-      font-size: 0.8rem;
-      color: var(--text-muted);
-    }
-    .primary-button {
-      border: none;
-      cursor: pointer;
-      border-radius: 999px;
-      padding: 8px 16px;
-      font-size: 0.86rem;
-      font-weight: 600;
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      background: linear-gradient(135deg,var(--blue),var(--blue-dark));
-      color: #ffffff;
-      box-shadow: 0 12px 26px rgba(99,102,241,0.55);
-      transition: transform 0.1s, box-shadow 0.1s, filter 0.1s;
-      margin-top: 8px;
-    }
-    .primary-button:hover {
-      transform: translateY(-1px);
-      filter: brightness(1.05);
-      box-shadow: 0 16px 32px rgba(99,102,241,0.65);
-    }
-    .primary-button .icon { font-size: 0.9rem; }
+
     footer {
       text-align: center;
       font-size: 0.74rem;
@@ -184,135 +181,109 @@
 <header class="top-bar">
   <div class="top-inner">
     <div class="brand">
-      <a href="/">
-        <svg width="40" height="40" viewBox="0 0 40 40" class="logo-svg" aria-hidden="true">
-  <defs>
-    <linearGradient id="fcGradient" x1="0" y1="0" x2="1" y2="1">
-      <!-- stesso blu e stesso rosa della hero -->
-      <stop offset="0%" stop-color="#6366f1" />   <!-- var(--blue) -->
-      <stop offset="100%" stop-color="#ec4899" /> <!-- var(--accent) -->
-    </linearGradient>
-  </defs>
-  <rect x="0" y="0" width="40" height="40" rx="12" fill="url(#fcGradient)" />
-  <text
-    x="50%"
-    y="50%"
-    text-anchor="middle"
-    dominant-baseline="middle"
-    fill="#ffffff"
-    font-size="16"
-    font-family="system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif"
-    font-weight="700">
-    fc
-  </text>
-</svg>
-      </a>
+      <svg width="40" height="40" viewBox="0 0 40 40" class="logo-svg" aria-hidden="true">
+        <defs>
+          <linearGradient id="fcGradient" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0%" stop-color="#6366f1" />
+            <stop offset="100%" stop-color="#ec4899" />
+          </linearGradient>
+        </defs>
+        <rect x="0" y="0" width="40" height="40" rx="12" fill="url(#fcGradient)" />
+        <text
+          x="50%"
+          y="50%"
+          text-anchor="middle"
+          dominant-baseline="middle"
+          fill="#ffffff"
+          font-size="16"
+          font-family="system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif"
+          font-weight="700">
+          fc
+        </text>
+      </svg>
       <div class="brand-text">
         <div class="brand-name">ForCreators</div>
         <div class="brand-sub">Da profilo casual a top agency, con un solo strumento.</div>
       </div>
     </div>
-    <nav class="top-nav">
-      <a href="/">Dashboard</a>
-      <a href="/pricing">Pricing</a>
-      <a href="/come-funziona">Come funziona</a>
-      <a href="/per-brand">Per brand</a>
-      <a href="/faq" class="active">FAQ</a>
-      <a href="/contatti" class="cta">Contatti</a>
-    </nav>
+    <div class="top-right">
+      <nav class="top-nav">
+        <a href="/">Dashboard</a>
+        <a href="/pricing">Pricing</a>
+        <a href="/come-funziona">Come funziona</a>
+        <a href="/per-brand">Per brand</a>
+        <a href="/faq" class="active">FAQ</a>
+        <a href="/contatti">Contatti</a>
+      </nav>
+      <div class="top-pill">
+        <span class="top-pill-dot"></span>
+        <span>Pricing intelligence per social profile</span>
+      </div>
+    </div>
   </div>
 </header>
 
 <main class="main">
-  <section>
-    <h1 class="hero-title">
-      Domande
-      <span class="hero-highlight">frequenti</span>.
-    </h1>
-    <p class="hero-subtitle">
-      Qui trovi le risposte veloci ai dubbi più comuni su segmenti, prezzi,
-      cancellazione e utilizzo lato creator e lato brand.
-    </p>
+  <h1 class="page-title">FAQ</h1>
+  <p class="page-subtitle">
+    Le risposte alle domande più comuni su ForCreators. Se non trovi quello che cerchi,
+    puoi scriverci dalla pagina Contatti.
+  </p>
 
-    <div class="faq-list">
-      <div>
-        <div class="faq-item">
-          <div class="faq-q">Come viene calcolato il mio segmento?</div>
-          <div class="faq-a">
-            In base ai follower complessivi che inserisci e al numero di profili
-            che gestisci. Sotto i 2.000 follower sei “Casual”, tra 2.000 e 9.999
-            “Emergente”, tra 10.000 e 199.999 “Creator Pro”, oltre o con molti
-            profili gestiti entri in “Top Agenzia”.
-          </div>
-        </div>
+  <section class="faq-list">
+    <article class="faq-item">
+      <h2 class="faq-question">ForCreators è gratuito?</h2>
+      <p class="faq-answer">
+        Sì, il piano <strong>Casual</strong> per profili sotto i 2.000 follower è gratuito.
+        Puoi usarlo per capire quanto “vali” come profilo "sport" e avere i primi prezzi suggeriti.
+      </p>
+    </article>
 
-        <div class="faq-item">
-          <div class="faq-q">I prezzi suggeriti sono obbligatori?</div>
-          <div class="faq-a">
-            No. Sono range indicativi basati sui tuoi numeri e sul segmento
-            assegnato. Puoi usarli come base di partenza per trattare con brand
-            e agenzie, ma la cifra finale la decidi sempre tu.
-          </div>
-        </div>
+    <article class="faq-item">
+      <h2 class="faq-question">Come vengono calcolati i prezzi suggeriti?</h2>
+      <p class="faq-answer">
+        Usiamo follower, stime di views per post e stories e i numeri più diffusi nel mercato
+        (es. valore per 1.000 follower, differenza tra post e stories, ecc.), adattati alla piattaforma
+        (Instagram, TikTok, YouTube, Twitch) e al tuo segmento (Casual, Emerging, Pro, Agenzia).
+      </p>
+    </article>
 
-        <div class="faq-item">
-          <div class="faq-q">Posso cambiare segmento?</div>
-          <div class="faq-a">
-            Il segmento cambia automaticamente quando aggiornando i follower
-            superi o scendi sotto determinate soglie. Non devi fare richieste
-            manuali: ti basta tenere aggiornati i tuoi numeri.
-          </div>
-        </div>
+    <article class="faq-item">
+      <h2 class="faq-question">I prezzi sono garantiti o vincolanti?</h2>
+      <p class="faq-answer">
+        No. I prezzi ForCreators sono <strong>suggerimenti</strong>, non tariffe obbligatorie.
+        Ti aiutano a capire un ordine di grandezza credibile, ma puoi sempre negoziare al rialzo o al ribasso.
+      </p>
+    </article>
 
-        <div class="faq-item">
-          <div class="faq-q">Posso cancellare l’abbonamento quando voglio?</div>
-          <div class="faq-a">
-            Sì. I piani mensili sono disattivabili in qualunque momento dalla
-            tua area account. Il piano annuale resta attivo fino alla scadenza e
-            poi decidi se rinnovare o no.
-          </div>
-        </div>
+    <article class="faq-item">
+      <h2 class="faq-question">Posso cambiare piano?</h2>
+      <p class="faq-answer">
+        Sì. Inizi dal piano che ti spetta in base ai follower (Casual, Emergente, Pro o Agenzia) e,
+        quando superi certe soglie di numeri o inizi a gestire più profili, puoi passare al piano superiore.
+      </p>
+    </article>
 
-        <div class="faq-item">
-          <div class="faq-q">Funziona anche se uso più piattaforme?</div>
-          <div class="faq-a">
-            Sì, inserisci i follower complessivi sommando in modo approssimativo
-            tutte le piattaforme. Nel media kit specificherai tu dove sei più
-            forte (es. IG concentrato, TikTok di supporto, ecc.).
-          </div>
-        </div>
+    <article class="faq-item">
+      <h2 class="faq-question">Supportate più piattaforme insieme?</h2>
+      <p class="faq-answer">
+        Sì, inserisci il totale follower sommato tra piattaforme e seleziona la piattaforma principale
+        su cui lavori. In futuro potrai gestire in modo separato anche le singole piattaforme.
+      </p>
+    </article>
 
-        <div class="faq-item">
-          <div class="faq-q">È pensato solo per i creator grandi?</div>
-          <div class="faq-a">
-            No. C’è un segmento dedicato ai profili “Casual” e uno a chi è
-            “Emergente”. L’obiettivo è aiutarti fin da subito a capire quanto
-            ha senso chiedere, anche per una prima collaborazione piccola.
-          </div>
-        </div>
-      </div>
-
-      <aside class="side-card">
-        <strong>Non trovi la risposta che ti serve?</strong>
-        <p>
-          Nessun problema: puoi contattarci per dubbi specifici, proposte o
-          partnership lato brand / agenzia.
-        </p>
-        <a href="/contatti" class="primary-button">
-          <span class="icon">✉️</span>
-          <span>Vai alla pagina contatti</span>
-        </a>
-        <p style="margin-top:8px;">
-          Se usi ForCreators in beta o su invito, il feedback che ci dai
-          contribuisce direttamente a migliorare i segmenti e i range prezzo.
-        </p>
-      </aside>
-    </div>
+    <article class="faq-item">
+      <h2 class="faq-question">ForCreators è utile anche ai profili piccolissimi?</h2>
+      <p class="faq-answer">
+        Sì. Anche chi ha poche centinaia di follower ma un buon engagement può iniziare a fare piccole
+        collaborazioni locali. Il piano Casual è pensato proprio per dare una guida subito, senza costi.
+      </p>
+    </article>
   </section>
 </main>
 
 <footer>
-  © ForCreators. Segmenti e prezzi indicativi, non costituiscono consulenza finanziaria o legale.
+  © ForCreators. Segmenti e prezzi indicativi basati su follower e stime di reach.
 </footer>
 </body>
 </html>
