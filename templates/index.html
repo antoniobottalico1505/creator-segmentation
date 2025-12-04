@@ -109,6 +109,51 @@
       background: #22c55e;
       box-shadow: 0 0 0 4px rgba(34,197,94,0.35);
     }
+
+    /* NAV SOTTO HEADER (mobile/desktop) */
+    .main-nav {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 6px 20px 10px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+    .nav-link {
+      font-size: 0.8rem;
+      padding: 6px 10px;
+      border-radius: 999px;
+      border: 1px solid rgba(148,163,184,0.5);
+      background: rgba(255,255,255,0.9);
+      color: var(--text-muted);
+      text-decoration: none;
+      white-space: nowrap;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .nav-link:hover {
+      border-color: var(--blue);
+      color: var(--blue-dark);
+      box-shadow: 0 1px 4px rgba(15,23,42,0.12);
+    }
+    .nav-link span.dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 999px;
+      background: var(--accent);
+    }
+    @media (max-width: 720px) {
+      .main-nav {
+        justify-content: flex-start;
+      }
+    }
+    @media (min-width: 721px) {
+      .main-nav {
+        justify-content: flex-end;
+      }
+    }
+
     .main {
       max-width: 1100px;
       margin: 24px auto 32px;
@@ -507,6 +552,34 @@
       </div>
     </div>
   </div>
+
+  <!-- NAV PILL SOTTO HEADER (stessa pagina, utile su mobile) -->
+  <nav class="main-nav">
+    <a href="#dashboardSection" class="nav-link">
+      <span class="dot"></span>
+      <span>Dashboard</span>
+    </a>
+    <a href="/pricing" class="nav-link">
+      <span class="dot"></span>
+      <span>Pricing</span>
+    </a>
+    <a href="/come-funziona" class="nav-link">
+      <span class="dot"></span>
+      <span>Come funziona</span>
+    </a>
+    <a href="/per-brand" class="nav-link">
+      <span class="dot"></span>
+      <span>Per brand</span>
+    </a>
+    <a href="/faq" class="nav-link">
+      <span class="dot"></span>
+      <span>FAQ</span>
+    </a>
+    <a href="/contatti" class="nav-link">
+      <span class="dot"></span>
+      <span>Contatti</span>
+    </a>
+  </nav>
 </header>
 
 <main class="main">
@@ -1048,7 +1121,7 @@
       mkPostViews.textContent = kit.estimated.post_avg_views.toLocaleString("it-IT");
       mkStoryViews.textContent = kit.estimated.story_avg_views.toLocaleString("it-IT");
 
-           mkPostPrice.textContent = formatPrice(kit.suggested_rates_eur.single_post);
+      mkPostPrice.textContent = formatPrice(kit.suggested_rates_eur.single_post);
       mkStoryPrice.textContent = formatPrice(kit.suggested_rates_eur.single_story);
       mkBundlePrice.textContent = formatPrice(kit.suggested_rates_eur.bundle_post_3stories);
 
