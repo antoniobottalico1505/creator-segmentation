@@ -9,15 +9,30 @@ import smtplib
 from email.message import EmailMessage
 
 # =======================
-# CONFIG SMTP NEL CODICE
+# CONFIG SMTP DA ENV VARS
 # =======================
-SMTP_HOST = "smtp.gmail.com"
-SMTP_PORT = 587
+SMTP_HOST = os.getenv("SMTP_HOST", "smtp.gmail.com")
+SMTP_PORT = int(os.getenv("SMTP_PORT", "587"))
 
 # mittente tecnico: account con cui fai LOGIN su Gmail
-SMTP_SENDER = "antoniobottalico1505@gmail.com"
-SMTP_PASSWORD = "uxqahnmdjvjddycv"
-CONTACT_RECIPIENT = "we20trust25@gmail.com"
+SMTP_SENDER = os.getenv("SMTP_SENDER")
+SMTP_PASSWORD = os.getenv("SMTP_PASSWORD")
+CONTACT_RECIPIENT = os.getenv("CONTACT_RECIPIENT")
+# =======================
+
+# =======================
+# CONFIG STRIPE (PAGAMENTI)
+# =======================
+try:
+    import stripe
+except ImportError:  # se stripe non è installato, lo gestiamo dopo
+    stripe = None
+
+STRIPE_SECRET_KEY = os.getenv("STRIPE_SECRET_KEY", "")
+STRIPE_WEBHOOK_SECRET = os.getenv("STRIPE_WEBHOOK_SECRET", "")
+
+if stripe and STRIPE_SECRET_KEY:
+    stripe.api_key = STRIPE_SECRET_KEY
 # =======================
 
 app = FastAPI(title="ForCreators App")
@@ -80,6 +95,15 @@ class User(BaseModel):
     profiles_count: int
     segment: SegmentType
     plan: Dict[str, Any]
+    # flag premium dopo pagamento
+    is_premium: bool = False
+
+
+# richiesta per creare la sessione di pagamento
+class CheckoutRequest(BaseModel):
+    user_id: str
+    # es. "monthly" / "yearly" per gestire poi i prezzi
+    billing_period: Literal["monthly", "yearly"] = "monthly"
 
 
 users_db: Dict[str, User] = {}
@@ -243,7 +267,7 @@ def compute_profile_tips(user: User) -> Dict[str, Any]:
             "Scegli 1–2 temi principali (es. fitness, moda low cost) invece di parlare di tutto.",
             "Pubblica con costanza: anche solo 2–3 contenuti a settimana ma regolari.",
             "Attiva le stories in evidenza con 3 categorie chiare (es. “Chi sono”, “Best post”, “Collab”).",
-            "Rispondi ai commenti: aumenta l’engagement, anche con pochi follower."
+            "Rispondi ai commenti: aumenta l’engagement, anche con pochi follower.",
         ]
     elif segment == "emerging":
         level = "Emergente – in crescita"
@@ -255,7 +279,7 @@ def compute_profile_tips(user: User) -> Dict[str, Any]:
             "In ogni collaborazione, chiedi feedback al brand e tieni traccia di risultati (reach, click, vendite).",
             "Crea un mini media kit PDF oltre a quello generato qui, con 3 screenshot di insight aggiornati.",
             "Fissa 1–2 prezzi base (post + stories) e aggiungi extra per contenuti complessi.",
-            "Sfrutta i contenuti che performano meglio replicando format, hook e stile visivo."
+            "Sfrutta i contenuti che performano meglio replicando format, hook e stile visivo.",
         ]
     elif segment == "pro":
         level = "Creator Pro – strutturato"
@@ -267,7 +291,7 @@ def compute_profile_tips(user: User) -> Dict[str, Any]:
             "Mantieni aggiornati gli highlight per mostrare solo lavori recenti e coerenti con la tua nicchia.",
             "Tieni uno storico delle campagne con risultati principali per negoziare meglio le prossime fee.",
             "Prepara una pagina o link dedicato ai brand (portfolio, media kit, contatti).",
-            "Stabilisci un minimo sotto il quale non scendi per preservare il posizionamento."
+            "Stabilisci un minimo sotto il quale non scendi per preservare il posizionamento.",
         ]
     else:
         level = "Top / Agenzia – multi profilo"
@@ -279,7 +303,7 @@ def compute_profile_tips(user: User) -> Dict[str, Any]:
             "Centralizza la comunicazione con i brand (un’unica mail tipo collab@forcreators.app o simile).",
             "Invia report semplici ma chiari dopo ogni campagna: reach, click, salvataggi, vendite se disponibili.",
             "Definisci un minimo di spesa per campagna per evitare micro-task poco profittevoli.",
-            "Prepara casi studio con prima/dopo per i brand migliori che hai gestito."
+            "Prepara casi studio con prima/dopo per i brand migliori che hai gestito.",
         ]
 
     return {
@@ -291,13 +315,15 @@ def compute_profile_tips(user: User) -> Dict[str, Any]:
     }
 
 
-from typing import Dict, Any
-
 def send_contact_email(record: Dict[str, Any]) -> None:
     """
     Invia una mail al proprietario del sito con i dati del form contatti.
-    Usa i parametri SMTP scritti nelle costanti in alto.
+    Usa i parametri SMTP presi dalle variabili d'ambiente.
     """
+    if not (SMTP_SENDER and SMTP_PASSWORD and CONTACT_RECIPIENT):
+        print("⚠️ Config SMTP mancante: controlla le variabili d'ambiente.")
+        return
+
     user_email = (record.get("email") or "").strip()
 
     msg = EmailMessage()
@@ -328,7 +354,6 @@ def send_contact_email(record: Dict[str, Any]) -> None:
         server.login(SMTP_SENDER, SMTP_PASSWORD)
         server.send_message(msg)
         print("✅ Email contatto inviata a", CONTACT_RECIPIENT)
-
 
 @app.get("/", response_class=HTMLResponse)
 async def index_page(request: Request):
@@ -379,6 +404,7 @@ async def api_signup(payload: SignupRequest):
         profiles_count=payload.profiles_count,
         segment=segment,
         plan=plan,
+        is_premium=False,  # diventa True dopo pagamento
     )
 
     users_db[user_id] = user
@@ -413,9 +439,20 @@ async def api_get_user(user_id: str):
 
 @app.get("/api/media-kit")
 async def api_media_kit(user_id: str):
+    """
+    Media kit:
+    - GRATIS per segment 'casual'
+    - Per 'emerging', 'pro', 'agency' serve avere is_premium = True
+    """
     user = users_db.get(user_id)
     if not user:
         raise HTTPException(status_code=404, detail="Utente non trovato.")
+
+    if user.segment != "casual" and not user.is_premium:
+        raise HTTPException(
+            status_code=402,
+            detail="Per il tuo segmento il media kit completo è disponibile solo dopo l’attivazione del piano a pagamento."
+        )
 
     kit = compute_media_kit(user)
     return kit
@@ -423,9 +460,20 @@ async def api_media_kit(user_id: str):
 
 @app.get("/api/profile-tips")
 async def api_profile_tips(user_id: str):
+    """
+    Consigli profilo:
+    - GRATIS per segment 'casual'
+    - Per 'emerging', 'pro', 'agency' serve is_premium = True
+    """
     user = users_db.get(user_id)
     if not user:
         raise HTTPException(status_code=404, detail="Utente non trovato.")
+
+    if user.segment != "casual" and not user.is_premium:
+        raise HTTPException(
+            status_code=402,
+            detail="I consigli avanzati sul profilo sono disponibili solo dopo l’attivazione del piano a pagamento."
+        )
 
     tips = compute_profile_tips(user)
     return tips
@@ -441,7 +489,109 @@ async def api_contact(payload: ContactRequest):
     try:
         send_contact_email(record)
     except Exception as e:
-        # importante: loggare l’errore
         print("❌ Errore invio email contatto:", repr(e))
 
     return {"contact_id": contact_id, "status": "received"}
+
+
+# =======================
+# PAGAMENTI STRIPE
+# =======================
+
+@app.post("/api/create-checkout-session")
+async def create_checkout_session(payload: CheckoutRequest):
+    """
+    Crea una sessione di pagamento Stripe per sbloccare il piano premium dell'utente.
+    """
+    if stripe is None:
+        raise HTTPException(status_code=500, detail="Stripe non è installato sul server.")
+    if not STRIPE_SECRET_KEY:
+        raise HTTPException(status_code=500, detail="Pagamenti non configurati lato server.")
+
+    user = users_db.get(payload.user_id)
+    if not user:
+        raise HTTPException(status_code=404, detail="Utente non trovato.")
+
+    # PREZZO da usare lato Stripe (puoi cambiare le cifre)
+    plan = user.plan
+    if payload.billing_period == "monthly":
+        amount_eur = plan.get("monthly_price", 0.0)
+        description = f"ForCreators {user.segment} – piano mensile"
+    else:
+        amount_eur = plan.get("yearly_price", 0.0) or plan.get("monthly_price", 0.0) * 10
+        description = f"ForCreators {user.segment} – piano annuale"
+
+    # Stripe lavora in centesimi
+    amount_cents = int(round(amount_eur * 100))
+
+    if amount_cents <= 0:
+        raise HTTPException(status_code=400, detail="Nessun importo valido per il tuo piano.")
+
+    # Cambia con il tuo dominio reale
+    success_url = "https://forcreators.onrender.com/checkout-success"
+    cancel_url = "https://forcreators.onrender.com/checkout-cancel"
+
+    try:
+        session = stripe.checkout.Session.create(
+            payment_method_types=["card"],
+            mode="payment",  # pagamento singolo (non abbonamento ricorrente)
+            line_items=[
+                {
+                    "price_data": {
+                        "currency": "eur",
+                        "product_data": {"name": description},
+                        "unit_amount": amount_cents,
+                    },
+                    "quantity": 1,
+                }
+            ],
+            success_url=success_url + "?session_id={CHECKOUT_SESSION_ID}",
+            cancel_url=cancel_url,
+            metadata={
+                "user_id": user.user_id,
+                "segment": user.segment,
+                "billing_period": payload.billing_period,
+            },
+        )
+    except Exception as e:
+        print("❌ Errore creazione checkout Stripe:", repr(e))
+        raise HTTPException(status_code=500, detail="Errore nella creazione della sessione di pagamento.")
+
+    return {"checkout_url": session.url}
+
+
+@app.post("/stripe/webhook")
+async def stripe_webhook(request: Request):
+    """
+    Webhook Stripe:
+    - ascolta gli eventi
+    - quando riceve checkout.session.completed → setta user.is_premium = True
+    """
+    if stripe is None:
+        raise HTTPException(status_code=500, detail="Stripe non è installato sul server.")
+    if not STRIPE_WEBHOOK_SECRET:
+        raise HTTPException(status_code=500, detail="Webhook Stripe non configurato.")
+
+    payload = await request.body()
+    sig_header = request.headers.get("stripe-signature")
+
+    try:
+        event = stripe.Webhook.construct_event(
+            payload, sig_header, STRIPE_WEBHOOK_SECRET
+        )
+    except ValueError:
+        raise HTTPException(status_code=400, detail="Payload non valido.")
+    except stripe.error.SignatureVerificationError:
+        raise HTTPException(status_code=400, detail="Firma webhook non valida.")
+
+    if event["type"] == "checkout.session.completed":
+        session = event["data"]["object"]
+        metadata = session.get("metadata", {}) or {}
+        user_id = metadata.get("user_id")
+        if user_id and user_id in users_db:
+            user = users_db[user_id]
+            user.is_premium = True
+            users_db[user_id] = user
+            print(f"✅ Utente {user.email} marcato come PREMIUM")
+
+    return {"status": "ok"}
