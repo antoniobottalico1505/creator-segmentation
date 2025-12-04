@@ -2,9 +2,9 @@
 <html lang="it">
 <head>
   <meta charset="UTF-8" />
-  <title>For Creators – Domande frequenti</title>
+  <title>ForCreators – Domande frequenti</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <meta name="description" content="Domande frequenti su For Creators: segmenti, prezzi, cancellazione, uso per brand e agenzie." />
+  <meta name="description" content="Domande frequenti su ForCreators: segmenti, prezzi, cancellazione, uso per brand e agenzie." />
   <style>
     :root {
       --bg: #f3f4f6;
@@ -58,12 +58,11 @@
       flex-direction: column;
     }
     .brand-name {
-      font-size: 1.05rem;
-      font-weight: 700;
-      letter-spacing: 0.04em;
-      text-transform: uppercase;
-      color: var(--blue-dark);
-    }
+  font-size: 1.05rem;
+  font-weight: 700;
+  letter-spacing: 0;          
+  color: var(--blue-dark);    
+}
     .brand-sub {
       font-size: 0.78rem;
       color: var(--text-muted);
@@ -187,28 +186,29 @@
     <div class="brand">
       <a href="/">
         <svg width="40" height="40" viewBox="0 0 40 40" class="logo-svg" aria-hidden="true">
-          <defs>
-            <linearGradient id="fcGradient" x1="0" y1="0" x2="1" y2="1">
-              <stop offset="0%" stop-color="#6366f1" />
-              <stop offset="100%" stop-color="#4f46e5" />
-            </linearGradient>
-          </defs>
-          <rect x="0" y="0" width="40" height="40" rx="12" fill="url(#fcGradient)" />
-          <text
-            x="50%"
-            y="50%"
-            text-anchor="middle"
-            dominant-baseline="middle"
-            fill="#ffffff"
-            font-size="16"
-            font-family="system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif"
-            font-weight="700">
-            fc
-          </text>
-        </svg>
+  <defs>
+    <linearGradient id="fcGradient" x1="0" y1="0" x2="1" y2="1">
+      <!-- stesso blu e stesso rosa della hero -->
+      <stop offset="0%" stop-color="#6366f1" />   <!-- var(--blue) -->
+      <stop offset="100%" stop-color="#ec4899" /> <!-- var(--accent) -->
+    </linearGradient>
+  </defs>
+  <rect x="0" y="0" width="40" height="40" rx="12" fill="url(#fcGradient)" />
+  <text
+    x="50%"
+    y="50%"
+    text-anchor="middle"
+    dominant-baseline="middle"
+    fill="#ffffff"
+    font-size="16"
+    font-family="system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif"
+    font-weight="700">
+    fc
+  </text>
+</svg>
       </a>
       <div class="brand-text">
-        <div class="brand-name">For Creators</div>
+        <div class="brand-name">ForCreators</div>
         <div class="brand-sub">Da profilo casual a top agency, con un solo strumento.</div>
       </div>
     </div>
@@ -303,7 +303,7 @@
           <span>Vai alla pagina contatti</span>
         </a>
         <p style="margin-top:8px;">
-          Se usi For Creators in beta o su invito, il feedback che ci dai
+          Se usi ForCreators in beta o su invito, il feedback che ci dai
           contribuisce direttamente a migliorare i segmenti e i range prezzo.
         </p>
       </aside>
@@ -312,7 +312,7 @@
 </main>
 
 <footer>
-  © For Creators. Segmenti e prezzi indicativi, non costituiscono consulenza finanziaria o legale.
+  © ForCreators. Segmenti e prezzi indicativi, non costituiscono consulenza finanziaria o legale.
 </footer>
 </body>
 </html>

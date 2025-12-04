@@ -1,7 +1,9 @@
 fastapi
 uvicorn[standard]
 jinja2
-pydantic[email]
 python-multipart
 passlib[bcrypt]
 sqlite-utils
+pydantic
+email-validator
+

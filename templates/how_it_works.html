@@ -2,9 +2,9 @@
 <html lang="it">
 <head>
   <meta charset="UTF-8" />
-  <title>For Creators – Come funziona</title>
+  <title>ForCreators – Come funziona</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <meta name="description" content="Come funziona For Creators: segmentazione automatica del profilo social e media kit con prezzi suggeriti." />
+  <meta name="description" content="Come funziona ForCreators: segmentazione automatica del profilo social e media kit con prezzi suggeriti." />
   <style>
     :root {
       --bg: #f3f4f6;
@@ -58,12 +58,11 @@
       flex-direction: column;
     }
     .brand-name {
-      font-size: 1.05rem;
-      font-weight: 700;
-      letter-spacing: 0.04em;
-      text-transform: uppercase;
-      color: var(--blue-dark);
-    }
+  font-size: 1.05rem;
+  font-weight: 700;
+  letter-spacing: 0;           
+  color: var(--blue-dark);     
+}
     .brand-sub {
       font-size: 0.78rem;
       color: var(--text-muted);
@@ -216,28 +215,29 @@
     <div class="brand">
       <a href="/">
         <svg width="40" height="40" viewBox="0 0 40 40" class="logo-svg" aria-hidden="true">
-          <defs>
-            <linearGradient id="fcGradient" x1="0" y1="0" x2="1" y2="1">
-              <stop offset="0%" stop-color="#6366f1" />
-              <stop offset="100%" stop-color="#4f46e5" />
-            </linearGradient>
-          </defs>
-          <rect x="0" y="0" width="40" height="40" rx="12" fill="url(#fcGradient)" />
-          <text
-            x="50%"
-            y="50%"
-            text-anchor="middle"
-            dominant-baseline="middle"
-            fill="#ffffff"
-            font-size="16"
-            font-family="system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif"
-            font-weight="700">
-            fc
-          </text>
-        </svg>
+  <defs>
+    <linearGradient id="fcGradient" x1="0" y1="0" x2="1" y2="1">
+      <!-- stesso blu e stesso rosa della hero -->
+      <stop offset="0%" stop-color="#6366f1" />   <!-- var(--blue) -->
+      <stop offset="100%" stop-color="#ec4899" /> <!-- var(--accent) -->
+    </linearGradient>
+  </defs>
+  <rect x="0" y="0" width="40" height="40" rx="12" fill="url(#fcGradient)" />
+  <text
+    x="50%"
+    y="50%"
+    text-anchor="middle"
+    dominant-baseline="middle"
+    fill="#ffffff"
+    font-size="16"
+    font-family="system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif"
+    font-weight="700">
+    fc
+  </text>
+</svg>
       </a>
       <div class="brand-text">
-        <div class="brand-name">For Creators</div>
+        <div class="brand-name">ForCreators</div>
         <div class="brand-sub">Da profilo casual a top agency, con un solo strumento.</div>
       </div>
     </div>
@@ -256,7 +256,7 @@
   <section>
     <h1 class="hero-title">
       Come funziona
-      <span class="hero-highlight">For Creators</span>.
+      <span class="hero-highlight">ForCreators</span>.
     </h1>
     <p class="hero-subtitle">
       L’idea è semplice: normalizziamo il caos dei compensi social.
@@ -293,7 +293,7 @@
         <div class="step-badge">3</div>
         <div class="card-title">Algoritmo di segmentazione</div>
         <p class="card-subtitle">
-          For Creators ti assegna automaticamente a uno dei segmenti:
+          ForCreators ti assegna automaticamente a uno dei segmenti:
           <strong>Casual, Emergente, Creator Pro o Top Agenzia</strong>,
           con un piano coerente ai tuoi numeri.
         </p>
@@ -320,7 +320,7 @@
       <span class="badge">Lato business</span>
     </h2>
     <p class="text-muted">
-      Un brand può usare For Creators per valutare in modo omogeneo profili diversi
+      Un brand può usare ForCreators per valutare in modo omogeneo profili diversi
       (Casual, Emergente, Pro, Agenzia) e capire se un compenso richiesto è in linea
       rispetto al segmento. Le agenzie possono gestire più account e avere una
       visione di portafoglio, non solo del singolo creator.
@@ -334,7 +334,7 @@
 </main>
 
 <footer>
-  © For Creators. Segmentazione automatica pensata per chi crea contenuti, non per complicarti la vita.
+  © ForCreators. Segmentazione automatica pensata per chi crea contenuti, non per complicarti la vita.
 </footer>
 </body>
 </html>

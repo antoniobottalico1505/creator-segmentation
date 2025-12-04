@@ -2,15 +2,15 @@
 <html lang="it">
 <head>
   <meta charset="UTF-8" />
-  <title>For Creators – Segmentation & Pricing</title>
+  <title>ForCreators – Segmentation & Pricing</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <meta name="description" content="Calcola il tuo segmento social e il piano ideale in base ai follower, da profilo casual fino ad agenzia top." />
+  <meta name="description" content="ForCreators: calcola il tuo segmento social e il piano ideale in base ai follower, da profilo casual fino ad agenzia top." />
   <style>
     :root {
-      --bg: #f3f4f6;          /* body background */
-      --blue: #6366f1;        /* brand primary */
-      --blue-dark: #4f46e5;   /* brand darker */
-      --accent: #ec4899;      /* social accent (rosa) */
+      --bg: #f3f4f6;
+      --blue: #6366f1;
+      --blue-dark: #4f46e5;
+      --accent: #ec4899;
       --text-main: #0f172a;
       --text-muted: #6b7280;
       --card-bg: #ffffff;
@@ -59,13 +59,35 @@
     .brand-name {
       font-size: 1.05rem;
       font-weight: 700;
-      letter-spacing: 0.04em;
-      text-transform: uppercase;
+      letter-spacing: 0;
       color: var(--blue-dark);
     }
     .brand-sub {
       font-size: 0.78rem;
       color: var(--text-muted);
+    }
+    .top-right {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .top-nav {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-size: 0.82rem;
+      color: var(--text-muted);
+    }
+    .top-nav a {
+      padding: 4px 8px;
+      border-radius: 999px;
+      text-decoration: none;
+      color: inherit;
+    }
+    .top-nav a.active {
+      background: rgba(99,102,241,0.12);
+      color: var(--blue-dark);
+      font-weight: 600;
     }
     .top-pill {
       display: inline-flex;
@@ -100,6 +122,18 @@
     }
     @media (max-width: 900px) {
       .hero { grid-template-columns: 1fr; }
+      .top-inner {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+      .top-right {
+        width: 100%;
+        flex-wrap: wrap;
+        justify-content: space-between;
+      }
+      .top-nav {
+        flex-wrap: wrap;
+      }
     }
     .pill {
       display: inline-flex;
@@ -410,6 +444,17 @@
       font-weight: 500;
       color: var(--text-main);
     }
+
+    .tips-list {
+      margin: 8px 0 0;
+      padding-left: 18px;
+      font-size: 0.8rem;
+      color: var(--text-muted);
+    }
+    .tips-list li {
+      margin-bottom: 4px;
+    }
+
     footer {
       text-align: center;
       font-size: 0.74rem;
@@ -426,7 +471,7 @@
         <defs>
           <linearGradient id="fcGradient" x1="0" y1="0" x2="1" y2="1">
             <stop offset="0%" stop-color="#6366f1" />
-            <stop offset="100%" stop-color="#4f46e5" />
+            <stop offset="100%" stop-color="#ec4899" />
           </linearGradient>
         </defs>
         <rect x="0" y="0" width="40" height="40" rx="12" fill="url(#fcGradient)" />
@@ -443,13 +488,23 @@
         </text>
       </svg>
       <div class="brand-text">
-        <div class="brand-name">For Creators</div>
+        <div class="brand-name">ForCreators</div>
         <div class="brand-sub">Da profilo casual a top agency, con un solo strumento.</div>
       </div>
     </div>
-    <div class="top-pill">
-      <span class="top-pill-dot"></span>
-      <span>Pricing intelligence per social profile</span>
+    <div class="top-right">
+      <nav class="top-nav">
+        <a href="/" class="active">Dashboard</a>
+        <a href="/pricing">Pricing</a>
+        <a href="/come-funziona">Come funziona</a>
+        <a href="/per-brand">Per brand</a>
+        <a href="/faq">FAQ</a>
+        <a href="/contatti">Contatti</a>
+      </nav>
+      <div class="top-pill">
+        <span class="top-pill-dot"></span>
+        <span>Pricing intelligence per social profile</span>
+      </div>
     </div>
   </div>
 </header>
@@ -503,7 +558,6 @@
             <button class="tab" id="tab-login">Login</button>
           </div>
 
-          <!-- SIGNUP -->
           <div id="signupPanel">
             <div class="field-group">
               <h3>Dati account</h3>
@@ -556,7 +610,6 @@
             <p id="signupStatus" class="status-text"></p>
           </div>
 
-          <!-- LOGIN -->
           <div id="loginPanel" class="hidden">
             <div class="field-group">
               <h3>Login</h3>
@@ -580,7 +633,6 @@
     </div>
   </section>
 
-  <!-- DASHBOARD -->
   <section id="dashboardSection" class="hidden">
     <div class="section-title">
       <span>La tua posizione nel mondo social</span>
@@ -693,11 +745,24 @@
         </div>
       </div>
     </div>
+
+    <div class="section-title" style="margin-top:18px;">
+      <span>Consigli per il tuo profilo</span>
+      <span class="badge">Suggerimenti</span>
+    </div>
+
+    <div class="dash-card" id="tipsCard">
+      <h3 id="tipsLevel">Nessun profilo selezionato.</h3>
+      <p id="tipsSummary" style="font-size:0.8rem; color:var(--text-muted); margin-top:2px;">
+        Crea o carica un account per vedere suggerimenti personalizzati su come migliorare il profilo.
+      </p>
+      <ul id="tipsList" class="tips-list"></ul>
+    </div>
   </section>
 </main>
 
 <footer>
-  © For Creators. Segmenti e prezzi indicativi basati su follower e stime di reach.
+  © ForCreators. Segmenti e prezzi indicativi basati su follower e stime di reach.
 </footer>
 
 <script>
@@ -769,6 +834,10 @@
   const mkStoryPrice = document.getElementById("mkStoryPrice");
   const mkBundlePrice = document.getElementById("mkBundlePrice");
 
+  const tipsLevel = document.getElementById("tipsLevel");
+  const tipsSummary = document.getElementById("tipsSummary");
+  const tipsList = document.getElementById("tipsList");
+
   function setStatus(el, msg, type = "") {
     el.textContent = msg || "";
     el.classList.remove("error", "success");
@@ -795,6 +864,33 @@
     if (segment === "pro") return "Creator Pro · collaborazioni strutturate";
     if (segment === "agency") return "Top / Agenzia · gestione profili importanti";
     return "Profilo";
+  }
+
+  async function loadProfileTips(userId) {
+    try {
+      const res = await fetch(`/api/profile-tips?user_id=${encodeURIComponent(userId)}`);
+      if (!res.ok) {
+        tipsLevel.textContent = "Nessun consiglio disponibile.";
+        tipsSummary.textContent = "Si è verificato un errore nel recupero dei suggerimenti.";
+        tipsList.innerHTML = "";
+        return;
+      }
+      const tips = await res.json();
+      tipsLevel.textContent = tips.level || "Suggerimenti profilo";
+      tipsSummary.textContent = tips.summary || "";
+      tipsList.innerHTML = "";
+      if (Array.isArray(tips.tips)) {
+        tips.tips.forEach((t) => {
+          const li = document.createElement("li");
+          li.textContent = t;
+          tipsList.appendChild(li);
+        });
+      }
+    } catch (err) {
+      tipsLevel.textContent = "Errore nei suggerimenti.";
+      tipsSummary.textContent = "Controlla la connessione e riprova.";
+      tipsList.innerHTML = "";
+    }
   }
 
   function fillDashboardFromUser(data) {
@@ -829,6 +925,10 @@
 
     dashboardSection.classList.remove("hidden");
     dashboardSection.scrollIntoView({ behavior: "smooth", block: "start" });
+
+    if (currentUserId) {
+      loadProfileTips(currentUserId);
+    }
   }
 
   signupButton.addEventListener("click", async () => {
@@ -948,9 +1048,9 @@
       mkPostViews.textContent = kit.estimated.post_avg_views.toLocaleString("it-IT");
       mkStoryViews.textContent = kit.estimated.story_avg_views.toLocaleString("it-IT");
 
-      mkPostPrice.textContent = formatRange(kit.suggested_rates_eur.single_post);
-      mkStoryPrice.textContent = formatRange(kit.suggested_rates_eur.single_story);
-      mkBundlePrice.textContent = formatRange(kit.suggested_rates_eur.bundle_post_3stories);
+           mkPostPrice.textContent = formatPrice(kit.suggested_rates_eur.single_post);
+      mkStoryPrice.textContent = formatPrice(kit.suggested_rates_eur.single_story);
+      mkBundlePrice.textContent = formatPrice(kit.suggested_rates_eur.bundle_post_3stories);
 
       mkContent.classList.remove("hidden");
     } catch (err) {
