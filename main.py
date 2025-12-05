@@ -315,28 +315,29 @@ def compute_profile_tips(user: User) -> Dict[str, Any]:
     }
 
 
-import os
 import httpx
-from typing import Dict, Any
 
 RESEND_API_KEY = os.getenv("RESEND_API_KEY", "")
-RESEND_FROM = os.getenv("RESEND_FROM", "ForCreators <no-reply@creator-segmentation>")  # adatta al tuo dominio
-CONTACT_RECIPIENT = "we20trust25@gmail.com"  # resta il tuo indirizzo di destinazione
+RESEND_FROM = os.getenv(
+    "RESEND_FROM",
+    "ForCreators <no-reply@forcreators.vip>" )
+CONTACT_RECIPIENT = os.getenv(
+    "CONTACT_RECIPIENT",
+    "we20trust25@gmail.com"
+)
 
 
-def send_contact_email(record: Dict[str, Any]) -> None:
+async def send_contact_email(record: Dict[str, Any]) -> None:
     """
-    Invia la mail di contatto usando Resend (API HTTP).
-    Funziona anche su Render perché usa HTTPS (porta 443), NON SMTP.
+    Invia una mail tramite Resend con i dati del form contatti.
     """
     if not RESEND_API_KEY:
-        print("❌ RESEND_API_KEY mancante: salto invio email")
+        print("⚠️ RESEND_API_KEY mancante: nessuna mail inviata.")
         return
 
     user_email = (record.get("email") or "").strip()
 
-    subject = f"[ForCreators] Nuovo contatto: {record.get('subject', '')}"
-    lines = [
+    body_lines = [
         "Hai ricevuto un nuovo messaggio dal form Contatti di ForCreators:",
         "",
         f"Nome: {record.get('name', '')}",
@@ -346,32 +347,27 @@ def send_contact_email(record: Dict[str, Any]) -> None:
         "Messaggio:",
         record.get("message", ""),
     ]
-    text_body = "\n".join(lines)
-    html_body = "<br>".join(lines)
+    text_body = "\n".join(body_lines)
 
     payload = {
-        "from": RESEND_FROM,
+        "from": RESEND_FROM,          
         "to": [CONTACT_RECIPIENT],
-        "subject": subject,
+        "subject": f"[ForCreators] Nuovo contatto: {record.get('subject', '')}",
         "text": text_body,
-        "html": f"<pre>{html_body}</pre>",
     }
 
-    # se vuoi che "Rispondi" vada all'utente:
     if user_email:
-        payload["reply_to"] = [user_email]
+        payload["reply_to"] = user_email
 
-    try:
-        resp = httpx.post(
+    async with httpx.AsyncClient() as client:
+        r = await client.post(
             "https://api.resend.com/emails",
-            headers={"Authorization": f"Bearer {RESEND_API_KEY}"},
             json=payload,
-            timeout=10,
+            headers={"Authorization": f"Bearer {RESEND_API_KEY}"},
+            timeout=10.0,
         )
-        resp.raise_for_status()
-        print("✅ Email contatto inviata via Resend")
-    except Exception as e:
-        print("❌ Errore invio email via Resend:", repr(e))
+        print("RESEND STATUS:", r.status_code, r.text)
+        r.raise_for_status()
 
 
 @app.get("/", response_class=HTMLResponse)
@@ -506,7 +502,7 @@ async def api_contact(payload: ContactRequest):
     contacts_db.append(record)
 
     try:
-        send_contact_email(record)
+        await send_contact_email(record)
     except Exception as e:
         print("❌ Errore invio email contatto:", repr(e))
 
