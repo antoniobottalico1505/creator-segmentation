@@ -315,27 +315,28 @@ def compute_profile_tips(user: User) -> Dict[str, Any]:
     }
 
 
+import os
+import httpx
+from typing import Dict, Any
+
+RESEND_API_KEY = os.getenv("RESEND_API_KEY", "")
+RESEND_FROM = os.getenv("RESEND_FROM", "ForCreators <no-reply@creator-segmentation>")  # adatta al tuo dominio
+CONTACT_RECIPIENT = "we20trust25@gmail.com"  # resta il tuo indirizzo di destinazione
+
+
 def send_contact_email(record: Dict[str, Any]) -> None:
     """
-    Invia una mail al proprietario del sito con i dati del form contatti.
-    Usa i parametri SMTP presi dalle variabili d'ambiente.
+    Invia la mail di contatto usando Resend (API HTTP).
+    Funziona anche su Render perché usa HTTPS (porta 443), NON SMTP.
     """
-    if not (SMTP_SENDER and SMTP_PASSWORD and CONTACT_RECIPIENT):
-        print("⚠️ Config SMTP mancante: controlla le variabili d'ambiente.")
+    if not RESEND_API_KEY:
+        print("❌ RESEND_API_KEY mancante: salto invio email")
         return
 
     user_email = (record.get("email") or "").strip()
 
-    msg = EmailMessage()
-    msg["Subject"] = f"[ForCreators] Nuovo contatto: {record.get('subject', '')}"
-    msg["From"] = SMTP_SENDER
-    msg["To"] = CONTACT_RECIPIENT
-
-    # così quando fai "Rispondi" dal client mail, rispondi all'utente
-    if user_email:
-        msg["Reply-To"] = user_email
-
-    body_lines = [
+    subject = f"[ForCreators] Nuovo contatto: {record.get('subject', '')}"
+    lines = [
         "Hai ricevuto un nuovo messaggio dal form Contatti di ForCreators:",
         "",
         f"Nome: {record.get('name', '')}",
@@ -345,15 +346,33 @@ def send_contact_email(record: Dict[str, Any]) -> None:
         "Messaggio:",
         record.get("message", ""),
     ]
-    msg.set_content("\n".join(body_lines))
+    text_body = "\n".join(lines)
+    html_body = "<br>".join(lines)
 
-    print("DEBUG SMTP:", SMTP_HOST, SMTP_PORT, "FROM:", SMTP_SENDER, "TO:", CONTACT_RECIPIENT)
+    payload = {
+        "from": RESEND_FROM,
+        "to": [CONTACT_RECIPIENT],
+        "subject": subject,
+        "text": text_body,
+        "html": f"<pre>{html_body}</pre>",
+    }
 
-    with smtplib.SMTP(SMTP_HOST, SMTP_PORT) as server:
-        server.starttls()
-        server.login(SMTP_SENDER, SMTP_PASSWORD)
-        server.send_message(msg)
-        print("✅ Email contatto inviata a", CONTACT_RECIPIENT)
+    # se vuoi che "Rispondi" vada all'utente:
+    if user_email:
+        payload["reply_to"] = [user_email]
+
+    try:
+        resp = httpx.post(
+            "https://api.resend.com/emails",
+            headers={"Authorization": f"Bearer {RESEND_API_KEY}"},
+            json=payload,
+            timeout=10,
+        )
+        resp.raise_for_status()
+        print("✅ Email contatto inviata via Resend")
+    except Exception as e:
+        print("❌ Errore invio email via Resend:", repr(e))
+
 
 @app.get("/", response_class=HTMLResponse)
 async def index_page(request: Request):

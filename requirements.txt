@@ -6,4 +6,6 @@ passlib[bcrypt]
 sqlite-utils
 pydantic
 email-validator
+stripe==8.10.0
+httpx
 
