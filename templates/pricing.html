@@ -216,20 +216,54 @@
       font-size: 0.85rem;
       color: var(--text-muted);
     }
-    .primary-link {
+        .primary-link {
       display: inline-flex;
       align-items: center;
-      gap: 6px;
-      padding: 8px 14px;
+      justify-content: center;
+      padding: 7px 12px;
       border-radius: 999px;
-      border: none;
-      background: linear-gradient(135deg,var(--blue),var(--blue-dark));
+      font-size: 0.8rem;
+      font-weight: 600;
+      background: linear-gradient(135deg, var(--blue), var(--blue-dark));
       color: #ffffff;
       text-decoration: none;
-      font-size: 0.82rem;
-      font-weight: 600;
-      box-shadow: 0 12px 26px rgba(99,102,241,0.5);
+      box-shadow: 0 12px 26px rgba(99,102,241,0.55);
+      transition: transform 0.1s, box-shadow 0.1s, filter 0.1s;
     }
+    .primary-link:hover {
+      transform: translateY(-1px);
+      filter: brightness(1.05);
+      box-shadow: 0 16px 32px rgba(99,102,241,0.65);
+    }
+
+    .price-actions {
+      margin-top: 12px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .secondary-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 7px 12px;
+  border-radius: 999px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  background: linear-gradient(135deg, var(--blue), var(--blue-dark));
+  color: #ffffff;
+  text-decoration: none;
+  box-shadow: 0 12px 26px rgba(99,102,241,0.55);
+  border: none; /* niente bordo blu */
+  transition: transform 0.1s, box-shadow 0.1s, filter 0.1s;
+}
+
+.secondary-link:hover {
+  transform: translateY(-1px);
+  filter: brightness(1.05);
+  box-shadow: 0 16px 32px rgba(99,102,241,0.65);
+}
 
     footer {
       text-align: center;
@@ -310,18 +344,20 @@
         <li>Media kit base con prezzi suggeriti</li>
         <li>Consigli per passare a profilo emergente</li>
       </ul>
+<a href="https://forcreators.vip/" class="primary-link price-cta">
+  <span>Inizia gratis</span>
+</a>
     </article>
 
-    <article class="price-card">
-      <div class="price-badge">Emergente</div>
-      <div class="price-name">Emerging Creator</div>
-      <div class="price-main">
-        <span class="price-value">4,90€</span>
-        <span class="price-period">/ mese</span>
-      </div>
-      <div class="price-yearly">49€ / anno (2 mesi gratis)</div>
+       <article class="price-card">
+      <h3 class="price-title">Emergente – primi brand</h3>
+      <p class="price-sub">
+        Per chi sta iniziando a ricevere proposte dai brand e vuole una struttura base sensata.
+      </p>
+      <div class="price-main">4,90€ / mese</div>
+      <div class="price-yearly">49€ / anno</div>
       <p class="price-note">
-        Per profili tra 2.000 e 10.000 follower che iniziano a lavorare con i brand.
+        Pensato per profili tra 2.000 e 10.000 follower che vogliono iniziare a monetizzare in modo ordinato.
       </p>
       <ul class="price-list">
         <li>Segmentazione emergente con revisione automatica</li>
@@ -329,15 +365,37 @@
         <li>Consigli personalizzati per aumentare le collaborazioni</li>
         <li>Supporto base via email</li>
       </ul>
+
+      <div class="price-actions">
+        <!-- MENSILE EMERGENTE -->
+        <a
+          href="https://buy.stripe.com/aFa5kEgDbgtp6hq56i4gg00"
+          class="primary-link"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          Attiva piano mensile
+        </a>
+
+        <!-- ANNUALE EMERGENTE -->
+        <a
+          href="https://buy.stripe.com/dRmbJ22Ml5OL9tC6am4gg06"
+          class="secondary-link"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          Attiva piano annuale (2 mesi gratis)
+        </a>
+      </div>
     </article>
 
-    <article class="price-card">
-      <div class="price-badge">Creator Pro</div>
-      <div class="price-name">Creator Pro</div>
-      <div class="price-main">
-        <span class="price-value">9,90€</span>
-        <span class="price-period">/ mese</span>
-      </div>
+       <article class="price-card price-highlight">
+      <div class="badge">Più scelto</div>
+      <h3 class="price-title">Creator Pro – collaborazioni strutturate</h3>
+      <p class="price-sub">
+        Per chi lavora con più brand, ha già un minimo di storico e vuole prezzi chiari per campagne continue.
+      </p>
+      <div class="price-main">9,90€ / mese</div>
       <div class="price-yearly">99€ / anno</div>
       <p class="price-note">
         Per creator tra 10.000 e 200.000 follower che gestiscono collaborazioni strutturate.
@@ -348,25 +406,88 @@
         <li>Consigli strategici per posizionamento e fee minime</li>
         <li>Aggiornamenti periodici sugli standard di mercato</li>
       </ul>
+
+      <div class="price-actions">
+        <!-- MENSILE PRO -->
+        <a
+          href="https://buy.stripe.com/cNi28s9aJ5OL9tC0Q24gg01"
+          class="primary-link"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          Attiva piano mensile
+        </a>
+
+        <!-- ANNUALE PRO -->
+        <a
+          href="https://buy.stripe.com/cNiaEYdqZ4KHdJS42e4gg07"
+          class="secondary-link"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          Attiva piano annuale (2 mesi gratis)
+        </a>
+      </div>
     </article>
 
     <article class="price-card">
-      <div class="price-badge">Top Agenzia</div>
-      <div class="price-name">Agenzie & network</div>
-      <div class="price-main">
-        <span class="price-value">99–399€</span>
-        <span class="price-period">/ mese</span>
-      </div>
-      <div class="price-yearly">fatturazione mensile</div>
+      <h3 class="price-title">Top Agenzia – multi profilo</h3>
+      <p class="price-sub">
+        Per agenzie, network e team che gestiscono più profili importanti e vogliono standardizzare i prezzi.
+      </p>
+      <div class="price-main">Da 99€ / mese</div>
+      <div class="price-yearly">Su misura</div>
       <p class="price-note">
-        Per chi gestisce più profili o numeri importanti.
+        Il canone varia in base al numero di profili gestiti e al volume di campagne.
       </p>
       <ul class="price-list">
-        <li>99€ / mese – fino a 2 profili</li>
-        <li>199€ / mese – fino a 3 profili</li>
-        <li>299€ / mese – fino a 4 profili</li>
+        <li>99€ / mese – fino a 2 profili gestiti</li>
+        <li>199€ / mese – fino a 3 profili gestiti</li>
+        <li>299€ / mese – fino a 4 profili gestiti</li>
         <li>399€ / mese – da 5 profili in su</li>
       </ul>
+
+      <div class="price-actions">
+        <!-- LINK STRIPE: FINO A 2 PROFILI -->
+        <a
+          href="https://buy.stripe.com/3cI4gAfz7cd9dJS8iu4gg02"
+          class="primary-link"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          Fino a 2 profili – 99€/mese
+        </a>
+
+        <!-- LINK STRIPE: FINO A 3 PROFILI -->
+        <a
+          href="https://buy.stripe.com/7sYfZi2Ml1yvaxG56i4gg03"
+          class="secondary-link"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          Fino a 3 profili – 199€/mese
+        </a>
+
+        <!-- LINK STRIPE: FINO A 4 PROFILI -->
+        <a
+          href="https://buy.stripe.com/3cI4gA1Ih4KH35egP04gg04"
+          class="secondary-link"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          Fino a 4 profili – 299€/mese
+        </a>
+
+        <!-- LINK STRIPE: 5+ PROFILI -->
+        <a
+          href="https://buy.stripe.com/bJecN6biR90XgW4cyK4gg05"
+          class="secondary-link"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          5+ profili – 399€/mese
+        </a>
+      </div>
     </article>
   </section>
 
@@ -376,7 +497,7 @@
       direttamente dalla <a href="/" style="color:var(--blue-dark); font-weight:600;">Dashboard ForCreators</a>.
     </p>
     <p style="margin-top:8px;">
-      <a href="/" class="primary-link">
+      <a href="https://forcreators.vip/" class="primary-link">
         <span>Vai alla Dashboard</span>
       </a>
     </p>
