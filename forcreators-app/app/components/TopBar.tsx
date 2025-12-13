@@ -11,7 +11,7 @@ import {
 import { useRouter, usePathname } from 'expo-router';
 
 type TopBarProps = {
-  active?: string; // opzionale: per compatibilità con <TopBar active="pricing" />
+  active?: string; // es: <TopBar active="pricing" /> oppure <TopBar active="privacy" />
 };
 
 const TopBar: React.FC<TopBarProps> = ({ active }) => {
@@ -32,19 +32,33 @@ const TopBar: React.FC<TopBarProps> = ({ active }) => {
     router.push(path as any);
   }
 
+  function normalize(p: string) {
+    // "pricing" -> "/pricing"
+    const cleaned = (p || '').trim().toLowerCase();
+    if (!cleaned) return '';
+    if (cleaned === 'home' || cleaned === 'dashboard') return '/';
+    return cleaned.startsWith('/') ? cleaned : `/${cleaned}`;
+  }
+
   function isActive(path: string) {
-    // se passi active="pricing" ecc, lo usiamo
+    const itemPath = normalize(path);
+
+    // 1) se passi active="privacy" ecc.
     if (active && typeof active === 'string') {
-      const key = active.trim().toLowerCase();
-      if (path === '/' && (key === 'dashboard' || key === 'home')) return true;
-      if (path.replace('/', '') === key) return true;
+      const activePath = normalize(active);
+      if (activePath === '/' && itemPath === '/') return true;
+      if (activePath === itemPath) return true;
     }
 
-    // fallback: pathname reale
-    if (path === '/' && (pathname === '/' || pathname === '/(tabs)')) {
-      return true;
-    }
-    return pathname === path;
+    // 2) fallback: pathname reale
+    const current = normalize(pathname || '');
+    if (itemPath === '/' && (current === '/' || current === '/(tabs)')) return true;
+
+    // match esatto o sotto-route (es. /privacy/qualcosa)
+    if (current === itemPath) return true;
+    if (itemPath !== '/' && current.startsWith(itemPath + '/')) return true;
+
+    return false;
   }
 
   return (
@@ -128,7 +142,7 @@ const styles = StyleSheet.create({
     gap: 10,
   },
 
-  // ✅ LOGO IMMAGINE (stessa dimensione/ombra del vecchio box)
+  // LOGO IMMAGINE (dimensione/ombra come prima)
   logoImg: {
     width: 40,
     height: 40,
