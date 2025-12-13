@@ -39,9 +39,18 @@ from sqlalchemy.orm import declarative_base, sessionmaker
 PUBLIC_BASE_URL = os.getenv("PUBLIC_BASE_URL", "http://localhost:8000")
 
 DATABASE_URL = os.getenv("DATABASE_URL", "")
-# fallback locale (solo dev): su Render NON è persistente
 if not DATABASE_URL:
     DATABASE_URL = "sqlite:///./local.db"
+
+# Render a volte dà "postgres://". SQLAlchemy vuole "postgresql://"
+DATABASE_URL = DATABASE_URL.replace("postgres://", "postgresql://")
+
+# ✅ Forza driver psycopg (v3) invece di psycopg2
+if DATABASE_URL.startswith("postgresql://") and "+psycopg" not in DATABASE_URL:
+    DATABASE_URL = DATABASE_URL.replace("postgresql://", "postgresql+psycopg://", 1)
+
+# (opzionale) se per sbaglio hai salvato psycopg2 da qualche parte:
+DATABASE_URL = DATABASE_URL.replace("postgresql+psycopg2://", "postgresql+psycopg://")
 
 STRIPE_SECRET_KEY = os.getenv("STRIPE_SECRET_KEY", "")
 STRIPE_WEBHOOK_SECRET = os.getenv("STRIPE_WEBHOOK_SECRET", "")
