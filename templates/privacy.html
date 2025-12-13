@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8" />
+  <title>ForCreators – Privacy Policy</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="Privacy Policy di ForCreators." />
+  <style>
+    :root {
+      --bg: #f3f4f6;
+      --blue: #6366f1;
+      --blue-dark: #4f46e5;
+      --accent: #ec4899;
+      --text-main: #0f172a;
+      --text-muted: #6b7280;
+      --card-bg: #ffffff;
+      --border: #e5e7eb;
+      --radius-xl: 24px;
+      --radius-lg: 16px;
+      --shadow: 0 18px 40px rgba(15, 23, 42, 0.16);
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: radial-gradient(circle at top left, #eef2ff 0, var(--bg) 40%, #fdf2ff 100%);
+      color: var(--text-main);
+    }
+
+    .top-bar {
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      backdrop-filter: blur(12px);
+      background: linear-gradient(to bottom, rgba(245,247,251,0.9), rgba(245,247,251,0.75));
+      border-bottom: 1px solid rgba(148,163,184,0.3);
+    }
+    .top-inner {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 12px 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .logo-img {
+      width: 40px;
+      height: 40px;
+      border-radius: 12px;
+      object-fit: cover;
+      box-shadow: 0 10px 24px rgba(15,23,42,0.18);
+    }
+    .brand-text { display: flex; flex-direction: column; }
+    .brand-name {
+      font-size: 1.05rem;
+      font-weight: 800;
+      color: var(--blue-dark);
+    }
+    .brand-sub {
+      font-size: 0.78rem;
+      color: var(--text-muted);
+    }
+    .top-right {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+      flex: 1;
+    }
+    .top-nav {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-size: 0.82rem;
+      color: var(--text-muted);
+      flex-wrap: wrap;
+    }
+    .top-nav a {
+      padding: 4px 8px;
+      border-radius: 999px;
+      text-decoration: none;
+      color: inherit;
+    }
+    .top-nav a.active {
+      background: rgba(99,102,241,0.12);
+      color: var(--blue-dark);
+      font-weight: 700;
+    }
+    .top-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 4px 10px;
+      border-radius: 999px;
+      background: rgba(99,102,241,0.08);
+      border: 1px solid rgba(99,102,241,0.18);
+      font-size: 0.75rem;
+      color: var(--blue-dark);
+      text-transform: uppercase;
+      letter-spacing: 0.07em;
+      white-space: nowrap;
+    }
+    .top-pill-dot {
+      width: 8px; height: 8px; border-radius: 999px;
+      background: #22c55e;
+      box-shadow: 0 0 0 4px rgba(34,197,94,0.35);
+    }
+    @media (max-width: 900px) {
+      .top-inner { flex-direction: column; align-items: flex-start; }
+      .top-right { width: 100%; justify-content: space-between; }
+      .top-nav { width: 100%; }
+    }
+
+    .main {
+      max-width: 1100px;
+      margin: 24px auto 32px;
+      padding: 0 20px;
+    }
+    .page-title {
+      font-size: clamp(1.8rem,3vw,2.1rem);
+      font-weight: 900;
+      letter-spacing: -0.05em;
+      margin: 0 0 8px;
+    }
+    .page-subtitle {
+      font-size: 0.95rem;
+      color: var(--text-muted);
+      max-width: 46rem;
+      margin: 0 0 18px;
+    }
+
+    .card {
+      background: #ffffff;
+      border-radius: var(--radius-xl);
+      border: 1px solid rgba(148,163,184,0.5);
+      padding: 16px 16px 14px;
+      box-shadow: 0 10px 24px rgba(15,23,42,0.07);
+      margin-bottom: 14px;
+    }
+    h2 {
+      margin: 0 0 8px;
+      font-size: 1.05rem;
+      color: var(--blue-dark);
+    }
+    p, li {
+      font-size: 0.9rem;
+      color: var(--text-main);
+      line-height: 1.5;
+    }
+    .muted {
+      color: var(--text-muted);
+      font-size: 0.86rem;
+    }
+    ul { margin: 8px 0 0; padding-left: 18px; }
+    a { color: var(--blue-dark); font-weight: 700; text-decoration: none; }
+    a:hover { text-decoration: underline; }
+
+    footer {
+      text-align: center;
+      font-size: 0.74rem;
+      color: var(--text-muted);
+      padding: 10px 20px 18px;
+    }
+  </style>
+</head>
+<body>
+<header class="top-bar">
+  <div class="top-inner">
+    <div class="brand">
+      <!-- Cambia questo path se il tuo file si chiama diverso -->
+      <img class="logo-img" src="/static/logo.png" alt="ForCreators" onerror="this.style.display='none'" />
+      <div class="brand-text">
+        <div class="brand-name">ForCreators</div>
+        <div class="brand-sub">Da profilo casual a top agency, con un solo strumento.</div>
+      </div>
+    </div>
+    <div class="top-right">
+      <nav class="top-nav">
+        <a href="/">Dashboard</a>
+        <a href="/pricing">Pricing</a>
+        <a href="/come-funziona">Come funziona</a>
+        <a href="/per-brand">Per brand</a>
+        <a href="/faq">FAQ</a>
+        <a href="/contatti">Contatti</a>
+        <a href="/privacy" class="active">Privacy</a>
+      </nav>
+      <div class="top-pill">
+        <span class="top-pill-dot"></span>
+        <span>Privacy & dati</span>
+      </div>
+    </div>
+  </div>
+</header>
+
+<main class="main">
+  <h1 class="page-title">Privacy Policy</h1>
+  <p class="page-subtitle">
+    Questa informativa descrive come ForCreators raccoglie e tratta i dati personali su sito e app.
+    <span class="muted">Ultimo aggiornamento: <strong>13/12/2025</strong></span>
+  </p>
+
+  <div class="card">
+    <h2>1) Titolare del trattamento</h2>
+    <p>
+      <strong>ForCreators</strong> (di seguito “ForCreators”, “noi”).
+      Contatti privacy: <a href="mailto:we20trust25@gmail.com">we20trust25@gmail.com</a>.
+    </p>
+    <p class="muted">
+      Sostituisci PRIVACY_EMAIL@forcreators.vip con la tua email reale (es. support@forcreators.vip).
+    </p>
+  </div>
+
+  <div class="card">
+    <h2>2) Dati che raccogliamo</h2>
+    <ul>
+      <li><strong>Dati account</strong>: email, password (da conservare in forma sicura/criptata lato server), username.</li>
+      <li><strong>Dati profilo</strong>: piattaforma principale, numero follower, numero profili gestiti.</li>
+      <li><strong>Dati di utilizzo</strong>: azioni nell’app/sito (es. generazione media kit), log tecnici essenziali.</li>
+      <li><strong>Contatti</strong>: se ci scrivi dal form contatti, nome, email e messaggio.</li>
+      <li><strong>Pagamenti</strong>: non memorizziamo i dati della carta. I pagamenti sono gestiti dai provider (vedi punto 6).</li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <h2>3) Perché li usiamo (finalità)</h2>
+    <ul>
+      <li>Creare e gestire l’account.</li>
+      <li>Calcolare il segmento e mostrare suggerimenti/prezzi indicativi.</li>
+      <li>Gestire abbonamenti e sbloccare funzionalità premium (se previste).</li>
+      <li>Rispondere ai messaggi inviati dal form contatti.</li>
+      <li>Sicurezza, prevenzione abusi e funzionamento tecnico del servizio.</li>
+    </ul>
+    <p class="muted">
+      Nota: prezzi e suggerimenti sono indicativi/consulenziali e non costituiscono garanzia o consulenza professionale.
+    </p>
+  </div>
+
+  <div class="card">
+    <h2>4) Base giuridica</h2>
+    <ul>
+      <li><strong>Esecuzione di un contratto</strong> (fornire il servizio richiesto: account, media kit, funzioni premium).</li>
+      <li><strong>Consenso</strong> (solo dove richiesto, es. eventuali newsletter/marketing).</li>
+      <li><strong>Legittimo interesse</strong> (sicurezza, prevenzione frodi/abusi, miglioramento del servizio).</li>
+      <li><strong>Obbligo legale</strong> (es. obblighi fiscali/contabili se applicabili).</li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <h2>5) Conservazione dei dati</h2>
+    <ul>
+      <li>Dati account: finché l’account resta attivo (o fino a richiesta di cancellazione, salvo obblighi di legge).</li>
+      <li>Dati contatti: per il tempo necessario a gestire la richiesta e storico minimo.</li>
+      <li>Log tecnici: per il tempo strettamente necessario a sicurezza e diagnosi.</li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <h2>6) Pagamenti e abbonamenti</h2>
+    <p>
+      Se offri abbonamenti/funzionalità digitali:
+    </p>
+    <ul>
+      <li><strong>Web</strong>: pagamenti gestiti da <strong>Stripe</strong> (noi non vediamo i dati completi della carta).</li>
+      <li><strong>App iOS/Android</strong>: per sblocchi digitali gli store richiedono in genere <strong>In-App Purchase</strong> (Apple/Google) oppure un gestore come <strong>RevenueCat</strong>.</li>
+    </ul>
+    <p class="muted">
+      Aggiorna questo punto in base a cosa stai usando davvero (Stripe solo web / IAP su mobile).
+    </p>
+  </div>
+
+  <div class="card">
+    <h2>7) Con chi condividiamo i dati (fornitori)</h2>
+    <ul>
+      <li>Hosting/infra (es. server, database).</li>
+      <li>Email provider (es. Resend) per invii tecnici/contatti.</li>
+      <li>Pagamenti (Stripe / Apple / Google / RevenueCat se usati).</li>
+    </ul>
+    <p class="muted">
+      Condividiamo solo quanto necessario per erogare il servizio.
+    </p>
+  </div>
+
+  <div class="card">
+    <h2>8) Cookie e tecnologie simili (sito)</h2>
+    <p>
+      Il sito può usare cookie/strumenti tecnici per sessione e funzionamento.
+      Se aggiungi analytics o marketing, dovrai gestire consenso (banner cookie) dove richiesto.
+    </p>
+  </div>
+
+  <div class="card">
+    <h2>9) Diritti dell’utente</h2>
+    <p>
+      Puoi chiedere accesso, rettifica, cancellazione, limitazione, portabilità, opposizione e revoca del consenso (se applicabile).
+      Scrivi a: <a href="mailto:we20trust25@gmail.com">we20trust25@gmail.com</a>.
+    </p>
+  </div>
+
+  <div class="card">
+    <h2>10) Modifiche</h2>
+    <p>
+      Potremmo aggiornare questa informativa. La data di “ultimo aggiornamento” in alto indica l’ultima modifica.
+    </p>
+  </div>
+
+  <p class="muted">
+    Link rapido: <a href="/contatti">Contatti</a>
+  </p>
+</main>
+
+<footer>
+  © ForCreators · <a href="/privacy">Privacy Policy</a>
+</footer>
+</body>
+</html>

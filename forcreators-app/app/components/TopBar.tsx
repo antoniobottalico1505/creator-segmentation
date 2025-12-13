@@ -25,6 +25,7 @@ const TopBar: React.FC<TopBarProps> = ({ active }) => {
     { label: 'Per brand', path: '/per-brand' },
     { label: 'FAQ', path: '/faq' },
     { label: 'Contatti', path: '/contatti' },
+    { label: 'Privacy', path: '/privacy' },
   ];
 
   function go(path: string) {
