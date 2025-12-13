@@ -1,3 +1,4 @@
+from fastapi.middleware.cors import CORSMiddleware
 from fastapi import FastAPI, Request, HTTPException
 from fastapi.responses import HTMLResponse
 from fastapi.templating import Jinja2Templates
@@ -6,6 +7,7 @@ from typing import Dict, Any, Literal, List
 import uuid
 import os
 import smtplib
+import stripe
 from email.message import EmailMessage
 
 # =======================
@@ -23,10 +25,6 @@ CONTACT_RECIPIENT = os.getenv("CONTACT_RECIPIENT")
 # =======================
 # CONFIG STRIPE (PAGAMENTI)
 # =======================
-try:
-    import stripe
-except ImportError:  # se stripe non è installato, lo gestiamo dopo
-    stripe = None
 
 STRIPE_SECRET_KEY = os.getenv("STRIPE_SECRET_KEY", "")
 STRIPE_WEBHOOK_SECRET = os.getenv("STRIPE_WEBHOOK_SECRET", "")
@@ -36,9 +34,44 @@ if stripe and STRIPE_SECRET_KEY:
 # =======================
 
 app = FastAPI(title="ForCreators App")
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],  # per iniziare: accetta da ovunque. Poi potrai limitarlo.
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 templates = Jinja2Templates(directory="templates")
 
+# =======================
+# TIPI SEGMENTO / PIANO
+# =======================
+
+SegmentType = Literal["casual", "emerging", "pro", "agency"]
+# Piano pagato dall'utente (non per forza uguale al segmento attuale)
+PlanType = Literal["free", "emerging", "pro", "agency"]
+
+# Quale piano minimo serve per ogni segmento
+SEGMENT_TO_PLAN: Dict[SegmentType, PlanType] = {
+    "casual": "free",
+    "emerging": "emerging",
+    "pro": "pro",
+    "agency": "agency",
+}
+
+# Ordine "a salire" dei piani
+PLAN_ORDER: Dict[PlanType, int] = {
+    "free": 0,
+    "emerging": 1,
+    "pro": 2,
+    "agency": 3,
+}
+
+
+# =======================
+# MODELLI
+# =======================
 
 class SignupRequest(BaseModel):
     email: str
@@ -82,7 +115,9 @@ class ContactRequest(BaseModel):
         return v.strip()
 
 
-SegmentType = Literal["casual", "emerging", "pro", "agency"]
+class PlanUpdateRequest(BaseModel):
+    user_id: str
+    new_plan: PlanType
 
 
 class User(BaseModel):
@@ -95,21 +130,31 @@ class User(BaseModel):
     profiles_count: int
     segment: SegmentType
     plan: Dict[str, Any]
-    # flag premium dopo pagamento
+    # flag premium dopo pagamento (qualsiasi piano ≠ free)
     is_premium: bool = False
+    # piano pagato attuale (serve per la “regola d’oro” sui prezzi)
+    paid_plan: PlanType = "free"
 
 
-# richiesta per creare la sessione di pagamento
+# richiesta per creare la sessione di pagamento (se usi l’endpoint API, non i Payment Link)
 class CheckoutRequest(BaseModel):
     user_id: str
     # es. "monthly" / "yearly" per gestire poi i prezzi
     billing_period: Literal["monthly", "yearly"] = "monthly"
 
 
+# =======================
+# DB IN RAM
+# =======================
+
 users_db: Dict[str, User] = {}
 email_index: Dict[str, str] = {}
 contacts_db: List[Dict[str, Any]] = []
 
+
+# =======================
+# LOGICA SEGMENTO / PIANO
+# =======================
 
 def compute_segment(followers: int, profiles_count: int) -> SegmentType:
     if profiles_count > 1 or followers >= 200_000:
@@ -315,15 +360,20 @@ def compute_profile_tips(user: User) -> Dict[str, Any]:
     }
 
 
+# =======================
+# RESEND (EMAIL CONTATTI)
+# =======================
+
 import httpx
 
 RESEND_API_KEY = os.getenv("RESEND_API_KEY", "")
 RESEND_FROM = os.getenv(
     "RESEND_FROM",
-    "ForCreators <no-reply@forcreators.vip>" )
+    "ForCreators <no-reply@forcreators.vip>",
+)
 CONTACT_RECIPIENT = os.getenv(
     "CONTACT_RECIPIENT",
-    "we20trust25@gmail.com"
+    "we20trust25@gmail.com",
 )
 
 
@@ -350,7 +400,7 @@ async def send_contact_email(record: Dict[str, Any]) -> None:
     text_body = "\n".join(body_lines)
 
     payload = {
-        "from": RESEND_FROM,          
+        "from": RESEND_FROM,
         "to": [CONTACT_RECIPIENT],
         "subject": f"[ForCreators] Nuovo contatto: {record.get('subject', '')}",
         "text": text_body,
@@ -369,6 +419,10 @@ async def send_contact_email(record: Dict[str, Any]) -> None:
         print("RESEND STATUS:", r.status_code, r.text)
         r.raise_for_status()
 
+
+# =======================
+# PAGINE HTML
+# =======================
 
 @app.get("/", response_class=HTMLResponse)
 async def index_page(request: Request):
@@ -400,6 +454,10 @@ async def contact_page(request: Request):
     return templates.TemplateResponse("contact.html", {"request": request})
 
 
+# =======================
+# API USER / MEDIA KIT
+# =======================
+
 @app.post("/api/signup")
 async def api_signup(payload: SignupRequest):
     if payload.email in email_index:
@@ -420,6 +478,7 @@ async def api_signup(payload: SignupRequest):
         segment=segment,
         plan=plan,
         is_premium=False,  # diventa True dopo pagamento
+        paid_plan="free",
     )
 
     users_db[user_id] = user
@@ -454,22 +513,39 @@ async def api_get_user(user_id: str):
 
 @app.get("/api/media-kit")
 async def api_media_kit(user_id: str):
-    """
-    Media kit:
-    - GRATIS per segment 'casual'
-    - Per 'emerging', 'pro', 'agency' serve avere is_premium = True
-    """
     user = users_db.get(user_id)
     if not user:
         raise HTTPException(status_code=404, detail="Utente non trovato.")
 
-    if user.segment != "casual" and not user.is_premium:
-        raise HTTPException(
-            status_code=402,
-            detail="Per il tuo segmento il media kit completo è disponibile solo dopo l’attivazione del piano a pagamento."
+    kit = compute_media_kit(user)
+
+    # -------------------------
+    # REGOLA D'ORO:
+    # - Casual => sempre tutto sbloccato (piano FREE basta)
+    # - Emerging => servono almeno 4,90€ (piano "emerging")
+    # - Pro      => servono almeno 9,90€ (piano "pro")
+    # - Agency   => servono piani agenzia
+    # -------------------------
+    required_plan = SEGMENT_TO_PLAN[user.segment]
+    current_plan = user.paid_plan
+
+    if PLAN_ORDER.get(current_plan, 0) < PLAN_ORDER[required_plan]:
+        # piano pagato TROPPO BASSO => niente prezzi precisi
+        kit["locked"] = True
+        kit["locked_reason"] = (
+            "Per vedere i prezzi precisi per questo segmento attiva il piano "
+            f"{required_plan} dalla pagina Pricing."
         )
 
-    kit = compute_media_kit(user)
+        # Lasciamo le views, ma oscuriamo i prezzi
+        sr = kit.get("suggested_rates_eur") or {}
+        sr["single_post"] = "LOCKED"
+        sr["single_story"] = "LOCKED"
+        sr["bundle_post_3stories"] = "LOCKED"
+        kit["suggested_rates_eur"] = sr
+    else:
+        kit["locked"] = False
+
     return kit
 
 
@@ -487,7 +563,7 @@ async def api_profile_tips(user_id: str):
     if user.segment != "casual" and not user.is_premium:
         raise HTTPException(
             status_code=402,
-            detail="I consigli avanzati sul profilo sono disponibili solo dopo l’attivazione del piano a pagamento."
+            detail="I consigli avanzati sul profilo sono disponibili solo dopo l’attivazione del piano a pagamento.",
         )
 
     tips = compute_profile_tips(user)
@@ -517,6 +593,7 @@ async def api_contact(payload: ContactRequest):
 async def create_checkout_session(payload: CheckoutRequest):
     """
     Crea una sessione di pagamento Stripe per sbloccare il piano premium dell'utente.
+    (Opzionale se usi i Payment Link, ma la lasciamo pronta.)
     """
     if stripe is None:
         raise HTTPException(status_code=500, detail="Stripe non è installato sul server.")
@@ -543,8 +620,8 @@ async def create_checkout_session(payload: CheckoutRequest):
         raise HTTPException(status_code=400, detail="Nessun importo valido per il tuo piano.")
 
     # Cambia con il tuo dominio reale
-    success_url = "https://forcreators.onrender.com/checkout-success"
-    cancel_url = "https://forcreators.onrender.com/checkout-cancel"
+    success_url = "https://forcreators.vip/checkout-success"
+    cancel_url = "https://forcreators.vip/checkout-cancel"
 
     try:
         session = stripe.checkout.Session.create(
@@ -570,9 +647,41 @@ async def create_checkout_session(payload: CheckoutRequest):
         )
     except Exception as e:
         print("❌ Errore creazione checkout Stripe:", repr(e))
-        raise HTTPException(status_code=500, detail="Errore nella creazione della sessione di pagamento.")
+        raise HTTPException(
+            status_code=500,
+            detail="Errore nella creazione della sessione di pagamento.",
+        )
 
     return {"checkout_url": session.url}
+
+
+def infer_paid_plan_from_amount(amount_cents: int, user: User) -> PlanType:
+    """
+    Regola molto semplice per capire che piano ha pagato l'utente in base all'importo.
+    Funziona sia per Payment Link che per checkout creati via API,
+    e ci basta distinguere free / emerging / pro / agency.
+    """
+    if amount_cents <= 0:
+        return "free"
+
+    # Emerging: 4,90€/mese o 49€/anno
+    if amount_cents in (490, 4900):
+        return "emerging"
+
+    # Pro: 9,90€/mese o 99€/anno (quando l'utente è segmento <= pro)
+    if amount_cents in (990, 9900):
+        # Se il segmento attuale è agency e sta pagando 99,
+        # lo consideriamo piano agenzia base (fino a 2 profili).
+        if user.segment == "agency":
+            return "agency"
+        return "pro"
+
+    # Agenzia: 199 / 299 / 399
+    if amount_cents in (19900, 29900, 39900):
+        return "agency"
+
+    # Fallback: piano richiesto dal segmento
+    return SEGMENT_TO_PLAN.get(user.segment, "free")
 
 
 @app.post("/stripe/webhook")
@@ -581,6 +690,8 @@ async def stripe_webhook(request: Request):
     Webhook Stripe:
     - ascolta gli eventi
     - quando riceve checkout.session.completed → setta user.is_premium = True
+      e aggiorna user.paid_plan in base all'importo pagato.
+    Funziona sia con Payment Link (buy.stripe.com) sia con checkout creati via API.
     """
     if stripe is None:
         raise HTTPException(status_code=500, detail="Stripe non è installato sul server.")
@@ -601,12 +712,51 @@ async def stripe_webhook(request: Request):
 
     if event["type"] == "checkout.session.completed":
         session = event["data"]["object"]
-        metadata = session.get("metadata", {}) or {}
-        user_id = metadata.get("user_id")
-        if user_id and user_id in users_db:
-            user = users_db[user_id]
-            user.is_premium = True
-            users_db[user_id] = user
-            print(f"✅ Utente {user.email} marcato come PREMIUM")
+
+        # 1) Identifichiamo l'utente dalla mail usata su Stripe
+        customer_email = None
+        details = session.get("customer_details") or {}
+        if details:
+            customer_email = (details.get("email") or "").strip()
+
+        if not customer_email:
+            customer_email = (session.get("customer_email") or "").strip()
+
+        if customer_email and customer_email in email_index:
+            user_id = email_index[customer_email]
+            user = users_db.get(user_id)
+            if user:
+                # 2) Capire quanto ha pagato
+                amount_total = session.get("amount_total") or 0
+                try:
+                    amount_total = int(amount_total)
+                except (TypeError, ValueError):
+                    amount_total = 0
+
+                # 3) Inferire che piano ha pagato
+                new_plan = infer_paid_plan_from_amount(amount_total, user)
+
+                user.is_premium = new_plan != "free"
+                user.paid_plan = new_plan
+                users_db[user_id] = user
+                print(f"✅ Utente {user.email} marcato come PREMIUM, piano {user.paid_plan}")
+        else:
+            print("⚠️ checkout.session.completed senza email nota, nessun utente aggiornato.")
 
     return {"status": "ok"}
+
+
+@app.post("/api/update-plan")
+async def api_update_plan(payload: PlanUpdateRequest):
+    """
+    Aggiorna il piano pagato dell'utente.
+    Questo lo userai se vuoi cambiare manualmente il piano da una dashboard/admin.
+    """
+    user = users_db.get(payload.user_id)
+    if not user:
+        raise HTTPException(status_code=404, detail="Utente non trovato.")
+
+    user.paid_plan = payload.new_plan
+    user.is_premium = payload.new_plan != "free"
+    users_db[user.user_id] = user
+    return {"user_id": user.user_id, "paid_plan": user.paid_plan}

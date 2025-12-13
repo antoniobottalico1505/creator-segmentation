@@ -1,0 +1,61 @@
+{
+  "expo": {
+    "name": "ForCreators",
+    "slug": "forcreators-app",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/ForCreators Image.png",
+    "scheme": "forcreators",
+    "userInterfaceStyle": "automatic",
+    "newArchEnabled": true,
+    "ios": {
+      "icon": "./assets/ForCreators Image.png",
+      "supportsTablet": true,
+      "bundleIdentifier": "vip.forcreators.app",
+      "infoPlist": {
+        "ITSAppUsesNonExemptEncryption": false
+      }
+    },
+    "android": {
+      "adaptiveIcon": {
+         "backgroundColor": "#ffffff",
+        "foregroundImage": "./assets/ForCreators Image.png",
+        "backgroundImage": "./assets/ForCreators Image.png",
+        "monochromeImage": "./assets/ForCreators Image.png"
+      },
+      "edgeToEdgeEnabled": true,
+      "predictiveBackGestureEnabled": false,
+      "package": "vip.forcreators.app"
+    },
+    "web": {
+      "output": "static",
+      "favicon": "./assets/images/favicon.png"
+    },
+    "plugins": [
+      "expo-router",
+      [
+        "expo-splash-screen",
+        {
+          "image": "./assets/images/splash-icon.png",
+          "imageWidth": 200,
+          "resizeMode": "contain",
+          "backgroundColor": "#ffffff",
+          "dark": {
+            "backgroundColor": "#000000"
+          }
+        }
+      ]
+    ],
+    "experiments": {
+      "typedRoutes": true,
+      "reactCompiler": true
+    },
+    "extra": {
+      "router": {},
+      "eas": {
+        "projectId": "00ff44bd-746f-4d34-8db8-d793e4736b67"
+      }
+    },
+    "owner": "antoniobottalico"
+  }
+}
