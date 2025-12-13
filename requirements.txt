@@ -4,5 +4,5 @@ jinja2
 pydantic[email]
 python-multipart
 httpx
-
+stripe
 

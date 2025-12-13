@@ -2,12 +2,17 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi import FastAPI, Request, HTTPException
 from fastapi.responses import HTMLResponse
 from fastapi.templating import Jinja2Templates
+from fastapi.staticfiles import StaticFiles
+app.mount("/static", StaticFiles(directory="static"), name="static")
 from pydantic import BaseModel, field_validator
 from typing import Dict, Any, Literal, List
 import uuid
 import os
 import smtplib
-import stripe
+try:
+    import stripe
+except ModuleNotFoundError:
+    stripe = None
 from email.message import EmailMessage
 
 # =======================
