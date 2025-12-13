@@ -49,10 +49,13 @@
       align-items: center;
       gap: 10px;
     }
-    .logo-svg {
-      flex-shrink: 0;
-      filter: drop-shadow(0 4px 14px rgba(15,23,42,0.22));
-    }
+   .logo-svg{
+  width:40px;
+  height:40px;
+  border-radius:12px;
+  object-fit:cover;
+  filter: drop-shadow(0 4px 14px rgba(15,23,42,0.22));
+}
     .brand-text {
       display: flex;
       flex-direction: column;
@@ -277,7 +280,7 @@
 <header class="top-bar">
   <div class="top-inner">
     <div class="brand">
-      <svg width="40" height="40" viewBox="0 0 40 40" class="logo-svg" aria-hidden="true">
+     <img src="/static/logo.png" class="logo-svg" alt="ForCreators" width="40" height="40" />
         <defs>
           <linearGradient id="fcGradient" x1="0" y1="0" x2="1" y2="1">
             <stop offset="0%" stop-color="#6366f1" />

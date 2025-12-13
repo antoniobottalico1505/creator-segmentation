@@ -6,11 +6,15 @@ import {
   StyleSheet,
   TouchableOpacity,
   Platform,
+  Image,
 } from 'react-native';
-import { LinearGradient } from 'expo-linear-gradient';
 import { useRouter, usePathname } from 'expo-router';
 
-const TopBar: React.FC = () => {
+type TopBarProps = {
+  active?: string; // opzionale: per compatibilità con <TopBar active="pricing" />
+};
+
+const TopBar: React.FC<TopBarProps> = ({ active }) => {
   const router = useRouter();
   const pathname = usePathname();
 
@@ -28,6 +32,14 @@ const TopBar: React.FC = () => {
   }
 
   function isActive(path: string) {
+    // se passi active="pricing" ecc, lo usiamo
+    if (active && typeof active === 'string') {
+      const key = active.trim().toLowerCase();
+      if (path === '/' && (key === 'dashboard' || key === 'home')) return true;
+      if (path.replace('/', '') === key) return true;
+    }
+
+    // fallback: pathname reale
     if (path === '/' && (pathname === '/' || pathname === '/(tabs)')) {
       return true;
     }
@@ -39,14 +51,10 @@ const TopBar: React.FC = () => {
       <View style={styles.inner}>
         {/* LOGO + BRAND */}
         <View style={styles.brandRow}>
-          <LinearGradient
-            colors={['#6366f1', '#ec4899']}
-            start={{ x: 0, y: 0 }}
-            end={{ x: 1, y: 1 }}
-            style={styles.logoBox}
-          >
-            <Text style={styles.logoText}>fc</Text>
-          </LinearGradient>
+          <Image
+            source={require('../../assets/ForCreators Image.png')}
+            style={styles.logoImg}
+          />
 
           <View style={styles.brandText}>
             <Text style={styles.brandName}>ForCreators</Text>
@@ -60,22 +68,14 @@ const TopBar: React.FC = () => {
         <View style={styles.right}>
           <View style={styles.nav}>
             {navItems.map((item) => {
-              const active = isActive(item.path);
+              const activeItem = isActive(item.path);
               return (
                 <TouchableOpacity
                   key={item.path}
                   onPress={() => go(item.path)}
-                  style={[
-                    styles.navItem,
-                    active && styles.navItemActive,
-                  ]}
+                  style={[styles.navItem, activeItem && styles.navItemActive]}
                 >
-                  <Text
-                    style={[
-                      styles.navText,
-                      active && styles.navTextActive,
-                    ]}
-                  >
+                  <Text style={[styles.navText, activeItem && styles.navTextActive]}>
                     {item.label}
                   </Text>
                 </TouchableOpacity>
@@ -126,24 +126,20 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     gap: 10,
   },
-  logoBox: {
+
+  // ✅ LOGO IMMAGINE (stessa dimensione/ombra del vecchio box)
+  logoImg: {
     width: 40,
     height: 40,
     borderRadius: 12,
-    alignItems: 'center',
-    justifyContent: 'center',
+    resizeMode: 'cover',
     shadowColor: '#0f172a',
     shadowOpacity: 0.22,
     shadowRadius: 14,
     shadowOffset: { width: 0, height: 4 },
     elevation: 4,
   },
-  logoText: {
-    color: '#ffffff',
-    fontWeight: '700',
-    fontSize: 16,
-    textTransform: 'lowercase',
-  },
+
   brandText: {
     flexDirection: 'column',
   },
