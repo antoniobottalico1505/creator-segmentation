@@ -748,3 +748,9 @@ async def api_update_plan(payload: PlanUpdateRequest):
         user.updated_at = datetime.now(timezone.utc)
         s.add(user)
         return {"user_id": user.user_id, "paid_plan": user.paid_plan}
+
+
+@app.get("/privacy", response_class=HTMLResponse)
+async def privacy_page(request: Request):
+    return templates.TemplateResponse("privacy.html", {"request": request})
+
