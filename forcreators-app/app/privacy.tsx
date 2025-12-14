@@ -29,10 +29,9 @@ export default function PrivacyScreen() {
           <View style={styles.card}>
             <Text style={styles.h2}>1) Titolare del trattamento</Text>
             <Text style={styles.p}>
-              ForCreators. Contatto privacy: we20trust25@gmail.com
+              ForCreators. Contatti privacy: we20trust25@gmail.com
             </Text>
             <Text style={styles.muted}>
-              Sostituisci con la tua email reale (es. support@forcreators.vip).
             </Text>
           </View>
 
